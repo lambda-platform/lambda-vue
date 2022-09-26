@@ -1,5 +1,6 @@
 import { defineAsyncComponent } from 'vue'
-import { renderCustom } from '~/dataform_custom/index.js'
+
+import { customElementList } from '~/dataform_custom/index.js'
 
 export const elementList = [
     {
@@ -58,10 +59,10 @@ export const elementList = [
         element: 'Checkbox',
         component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-Checkbox" */'./Checkbox.vue')),
     },
-    {
-        element: 'CK',
-        component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-CK" */'./CK.vue')),
-    },
+    // {
+    //     element: 'CK',
+    //     component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-CK" */'./CK.vue')),
+    // },
     {
         element: 'File',
         component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-File" */'./File.vue')),
@@ -178,22 +179,10 @@ export const elementList = [
         element: 'subform/Form',
         component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-sub-form" */'./subform/FormSub.vue')),
     },
+    ...customElementList
 ]
 
 
-const CustomElement = () => import(/* webpackChunkName: "form-field-CustomElement" */'./CustomElement.vue')
-
-const requireCustomElement = (type) => {
-
-    try {
-
-        return renderCustom(type, defineAsyncComponent(() => import(/* webpackChunkName: "form-field-not-fount" */'./NotFound.vue')))
-
-    } catch (exception_var) {
-
-        return CustomElement
-    }
-}
 
 export const element = (type) => {
 
@@ -205,5 +194,5 @@ export const element = (type) => {
         }
     }
 
-    return requireCustomElement(type);
+    return defineAsyncComponent(() => import(/* webpackChunkName: "form-field-not-fount" */'./NotFound.vue'));
 }

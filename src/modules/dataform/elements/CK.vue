@@ -1,33 +1,33 @@
 <template>
     <lambda-form-item  :label=label  :name="model.component" :meta="meta">
-        <ckeditor ref="ckeditor" v-model="model.form[model.component]"
-                  :editor="editor"
-                  :config="editorConfig"
+        <ckeditor ref="ckeditor" :editor="editor" v-model="model.form[model.component]"
+                  :config="editorConfig" :key="meta.editorType"
                   :placeholder="placeholder"
                   :disabled="disabled"
                   @ready="onReady" @blur="onBlur($event)" @focus="onFocus($event)"></ckeditor>
     </lambda-form-item>
 </template>
-<script>
-// import * as Editor from 'ckeditor5-custom-build/build/ckeditor';
-import ClassicEditor from 'ckeditor5-build-classic-custom-es';
-import mixin from "./_mixin"
 
+<script>
+import CKEditor from '@ckeditor/ckeditor5-vue';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import mixin from "./_mixin"
 export default {
     mixins:[mixin],
     components: {
-
+        ckeditor: CKEditor.component
     },
     data() {
         return {
             editor: ClassicEditor,
             editorConfig: {
                 toolbar:{items: ['heading', '|',
-                        'bold', 'italic', '|', 'link', '|',
-                        'blockQuote', '|',
-                        'insertTable', '|',
-                        "indent", "outdent", '|',
-                        'mediaEmbed'],  shouldNotGroupWhenFull: true
+                    'bold', 'italic', '|', 'link', '|',
+                    'blockQuote', '|',
+                    'insertTable', '|',
+                    "indent", "outdent", '|',
+                    'mediaEmbed'],  shouldNotGroupWhenFull: true
                 },
                 placeholder:'',
             },
