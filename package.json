@@ -1,14 +1,12 @@
 {
     "name": "@lambda-platform/lambda-vue",
-    "version": "3.0.11",
+    "version": "3.0.13",
     "description": "lambda builder",
     "main": "src/index.js",
     "repository": "git@github.com:lambda-platform/lambda-vue.git",
     "author": "Lambda Development Team",
     "license": "MIT",
-    "scripts": {
-
-    },
+    "scripts": {},
     "dependencies": {
         "@ckeditor/ckeditor5-vue": "^4.0.1",
         "@esri/calcite-colors": "^6.0.1",
@@ -20,6 +18,7 @@
         "ckeditor5-custom-build": "^0.0.6",
         "esri-leaflet": "^3.0.8",
         "jquery": "^3.6.1",
+        "json-logic-js": "^2.0.2",
         "leaflet": "^1.8.0",
         "leaflet-draw": "^1.0.4",
         "leaflet.fullscreen": "^2.4.0",
@@ -29,12 +28,11 @@
         "numeral": "^2.0.6",
         "portal-vue": "^3.0.0-beta.0",
         "turf": "^3.0.14",
+        "vue": "^3.2.39",
         "vue-i18n": "^9.2.2",
         "vue3-json-editor": "^1.1.5",
         "vuex": "^4.0.2",
-        "wkx": "^0.5.0",
-        "json-logic-js": "^2.0.2",
-        "vue": "^3.2.39"
+        "wkx": "^0.5.0"
     },
     "browserslist": [
         "> 1%",

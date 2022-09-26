@@ -7,19 +7,15 @@
                   @ready="onReady" @blur="onBlur($event)" @focus="onFocus($event)"></ckeditor>
     </lambda-form-item>
 </template>
-
 <script>
-import * as CKEditor from '@ckeditor/ckeditor5-vue';
 import * as Editor from 'ckeditor5-custom-build/build/ckeditor';
-import {  version } from "vue";
+
 import mixin from "./_mixin"
-console.log(version)
-console.log(version)
-console.log(version)
+
 export default {
     mixins:[mixin],
     components: {
-        ckeditor: CKEditor.component
+
     },
     data() {
         return {
