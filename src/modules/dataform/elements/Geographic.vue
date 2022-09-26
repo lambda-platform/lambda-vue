@@ -114,7 +114,7 @@ import "leaflet";
 import shadowUrl from  "leaflet/dist/images/marker-shadow.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
-import "esri-leaflet";
+
 import "leaflet-draw";
 
 
@@ -232,7 +232,6 @@ export default {
                             maxZoom: 20,
                             subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
                         }),
-                        esri: false
                     },
                     {
                         title: 'Google Гудамж',
@@ -242,7 +241,6 @@ export default {
                             maxZoom: 20,
                             subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
                         }),
-                        esri: false
                     },
                     {
                         title: 'Open Street Map',
@@ -252,7 +250,6 @@ export default {
                             subdomains: ['a', 'b', 'c']
                         }),
                         thumb: '/webgis/images/baseMaps/openstreet.jpg',
-                        esri: false
                     }
                 ],
             draw: null,
@@ -749,25 +746,9 @@ export default {
             this.currentBaseMap = baseMapIndex;
 
 
-            if (this.baseMaps[baseMapIndex].esri) {
+            this.map.options.maxZoom = 20;
 
-
-                if (this.map.getZoom() > this.baseMaps[baseMapIndex].maxZoom) {
-                    this.map.setZoom(this.baseMaps[baseMapIndex].maxZoom);
-
-                }
-                this.map.options.maxZoom = this.baseMaps[baseMapIndex].maxZoom;
-
-
-                L.esri.basemapLayer(this.baseMaps[baseMapIndex].baseMap).addTo(this.map);
-
-            } else {
-                this.map.options.maxZoom = 20;
-
-                this.map.addLayer(this.baseMaps[baseMapIndex].baseMap);
-
-
-            }
+            this.map.addLayer(this.baseMaps[baseMapIndex].baseMap);
 
         },
         createNewGeometry() {
