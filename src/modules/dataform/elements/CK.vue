@@ -1,15 +1,16 @@
 <template>
     <lambda-form-item  :label=label  :name="model.component" :meta="meta">
-        <ckeditor ref="ckeditor" :editor="editor" v-model="model.form[model.component]"
-                  :config="editorConfig" :key="meta.editorType"
+        <ckeditor ref="ckeditor" v-model="model.form[model.component]"
+                  :editor="editor"
+                  :config="editorConfig"
                   :placeholder="placeholder"
                   :disabled="disabled"
                   @ready="onReady" @blur="onBlur($event)" @focus="onFocus($event)"></ckeditor>
     </lambda-form-item>
 </template>
 <script>
-import * as Editor from 'ckeditor5-custom-build/build/ckeditor';
-
+// import * as Editor from 'ckeditor5-custom-build/build/ckeditor';
+import ClassicEditor from 'ckeditor5-build-classic-custom-es';
 import mixin from "./_mixin"
 
 export default {
@@ -19,14 +20,14 @@ export default {
     },
     data() {
         return {
-            editor: Editor,
+            editor: ClassicEditor,
             editorConfig: {
                 toolbar:{items: ['heading', '|',
-                    'bold', 'italic', '|', 'link', '|',
-                    'blockQuote', '|',
-                    'insertTable', '|',
-                    "indent", "outdent", '|',
-                    'mediaEmbed'],  shouldNotGroupWhenFull: true
+                        'bold', 'italic', '|', 'link', '|',
+                        'blockQuote', '|',
+                        'insertTable', '|',
+                        "indent", "outdent", '|',
+                        'mediaEmbed'],  shouldNotGroupWhenFull: true
                 },
                 placeholder:'',
             },
