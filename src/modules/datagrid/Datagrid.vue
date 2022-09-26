@@ -146,7 +146,7 @@ LicenseManager.prototype.validateLicense = () => {
 import { AgGridVue } from 'ag-grid-vue3';
 
 
-import _ from 'lodash';
+import 'lodash';
 import { data, tableToExcel } from './utils/data';
 import { dataFromTemplate, evil } from './utils/formula.js';
 import { compareObj, isValid } from './utils/methods';

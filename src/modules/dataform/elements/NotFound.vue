@@ -1,13 +1,13 @@
 <template>
-    <a-form-item :label=label :rules=rule>
+    <lambda-form-item  :label=label  :name="model.component" :meta="meta">
         <div>{{ lang.notFound }}</div>
-    </a-form-item>
+    </lambda-form-item>
 </template>
 
 <script>
-
+import mixin from "./_mixin"
 export default {
-    props: ["model", "rule", "label", "meta"],
+    mixins:[mixin],
     computed: {
         lang() {
             const labels = ['notFound',

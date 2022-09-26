@@ -1,4 +1,4 @@
-import { isValid } from '~~/vue3/src/modules/dataform/utils/methods'
+import { isValid } from '../utils/methods'
 
 export default {
     props: ['model', 'label', 'meta', 'do_render', 'editMode', 'is_show', 'relation_data', 'showInformationModal', 'url', 'setSchemaByModel', 'getSchemaByModel', 'isBuilder'],

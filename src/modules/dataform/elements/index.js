@@ -1,4 +1,5 @@
 import { defineAsyncComponent } from 'vue'
+import { renderCustom } from '~/dataform_custom/index.js'
 
 export const elementList = [
     {
@@ -179,15 +180,17 @@ export const elementList = [
     },
 ]
 
-const Notfount = defineAsyncComponent(() => import(/* webpackChunkName: "form-field-not-fount" */'./NotFound.vue'))
+
 const CustomElement = () => import(/* webpackChunkName: "form-field-CustomElement" */'./CustomElement.vue')
 
 const requireCustomElement = (type) => {
 
     try {
-        return defineAsyncComponent(() => import(`../../../../../src/dataform_custom/${type}.vue`))
+
+        return renderCustom(type, defineAsyncComponent(() => import(/* webpackChunkName: "form-field-not-fount" */'./NotFound.vue')))
+
     } catch (exception_var) {
-        console.log(exception_var)
+
         return CustomElement
     }
 }
