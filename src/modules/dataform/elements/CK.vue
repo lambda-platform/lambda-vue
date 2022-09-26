@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import CKEditor from '@ckeditor/ckeditor5-vue';
+import * as CKEditor from '@ckeditor/ckeditor5-vue';
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
 
 import mixin from "./_mixin"
