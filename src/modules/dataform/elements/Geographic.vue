@@ -129,7 +129,7 @@ const iconDefault = L.icon({
     shadowSize: [41, 41]
 });
 
-import * as turf from 'turf'
+import {point, polygon, inside} from 'turf'
 import mixin from './_mixin'
 export default {
     mixins: [mixin],
@@ -357,20 +357,20 @@ export default {
 
                     let not_inside = true;
                     searchFeature.geometry.coordinates.forEach(polygon_ => {
-                        let searchLayer = turf.polygon([polygon_]);
+                        let searchLayer = polygon([polygon_]);
                         editAbleLayer.features.forEach((layer) => {
 
                             if (this.geometryType == 'polygon') {
                                 layer.geometry.coordinates[0].map(lat_lng => {
-                                    let point = turf.point(lat_lng);
-                                    if (turf.inside(point, searchLayer)) {
+                                    let pointNew = point(lat_lng);
+                                    if (inside(pointNew, searchLayer)) {
                                         not_inside = false;
                                     }
                                 })
                             }
                             if (this.geometryType == 'point') {
-                                let point = turf.point(layer.geometry.coordinates);
-                                if (turf.inside(point, searchLayer)) {
+                                let pointNew = point(layer.geometry.coordinates);
+                                if (inside(pointNew, searchLayer)) {
                                     not_inside = false;
                                 }
 
