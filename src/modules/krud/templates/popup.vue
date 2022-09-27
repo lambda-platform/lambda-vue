@@ -80,7 +80,7 @@
 import common from '../components/common'
 import Krudtools from '../components/krudtools'
 import mixins from './mixin'
-
+import { Modal } from 'ant-design-vue'
 export default {
     inheritAttrs: false,
     name: 'Canvas',
@@ -94,7 +94,8 @@ export default {
     },
     components: {
         common,
-        Krudtools
+        Krudtools,
+        "a-modal": Modal,
     },
     methods: {
         hideSide () {
