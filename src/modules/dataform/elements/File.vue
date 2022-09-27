@@ -4,7 +4,7 @@
         <div class="file-uploader">
             <a-upload
                 v-model:file-list="uploadList"
-                :multiple="this.meta.file.isMultiple"
+                :multiple="this.isMultiple"
                 name="file"
                 list-type="picture-card"
                 :action="`${url ? url : ''}/lambda/krud/upload`"
