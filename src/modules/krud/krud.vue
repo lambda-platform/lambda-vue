@@ -31,29 +31,22 @@ export default defineComponent({
 
     },
     setup () {
-        const renderKrud = (template)=>{
+
+        const renderTemplate = (template) => {
+            if(isMobile.value){
+                if(template === 'drawer' || template === 'popup'){
+                    template = "canvas"
+                }
+            }
             if (templates.hasOwnProperty(template)) {
                 return templates[template]
             } else {
                 return templates.canvas
             }
-        }
-        const renderTemplate = (template) => {
-            if(!isMobile.value){
-                renderKrud(template)
-            } else {
-                if(template === 'drawer' || template === 'popup'){
-                    return templates.canvas
-                } else {
-                    renderKrud(template)
-                }
-            }
-
 
         }
         return {
             renderTemplate,
-            renderKrud,
         }
 
     }
