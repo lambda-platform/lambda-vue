@@ -1,6 +1,6 @@
 import {localeText} from "./agMN.js";
 
-export const data = (vm) => {
+export const data = () => {
     return {
 
         isLoading: true,
@@ -50,8 +50,8 @@ export const data = (vm) => {
         },
         query: {
             src: "",
-            paginate: 1000,
-            currentPage: vm.$route.query.dp ? parseInt(vm.$route.query.dp) : 1,
+            paginate: 50,
+            currentPage:1,
             sort: "",
             order: ""
         },

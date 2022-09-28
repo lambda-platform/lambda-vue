@@ -95,45 +95,87 @@ export default {
             exportLoading: false,
         }
     },
+    computed:{
+      path(){
+          return this.$route.fullPath
+      }
+    },
     components: {
         common,
         Krudtools
     },
     methods: {
         hideSide () {
-            this.openSlidePanel = false
-            this.$router.push({query: { }});
+            this.openSlidePanel = false;
+
+
+            this.$router.push({query: this.getQuery()});
             this.editMode = false;
+
         },
         openSide () {
-            this.$router.push({query: { add: 'true' } });
+            let query = this.getQuery();
+            query["add"] = true;
+            this.$router.push({query:query});
             this.openSlidePanel = true;
         },
 
         templateEdit (id) {
+            let query = this.getQuery();
+            query["edit"] = true;
+            query["id"] = id;
             if(this.$route.params.id && this.$route.query.edit){
                 if(this.$route.params.id.toString() !== id.toString()){
-                    this.$router.push({query: { edit: 'true', id:id } });
+
+                    this.$router.push({query:query });
+
+
                 }
             } else {
-                this.$router.push({query: { edit: 'true', id:id } });
+                this.$router.push({query: query});
+
+
             }
         },
         templateOnSuccess () {
             this.hideSide()
         },
+        handleChange(){
+            let add = this.$route.query.add;
+            let edit = this.$route.query.edit;
+            let id = this.$route.query.id;
+            if(add === 'true' || add === true){
+                this.openSlidePanel = true;
+            } else if(edit === 'true' || edit === true){
+                this.rowId = id;
+                this.editMode = true;
+                this.openSlidePanel = true;
+            }
+        },
+        getQuery(){
+            let query = { };
+            if(this.$route.query.sort){
+                query["sort"] = this.$route.query.sort
+            }
+            if(this.$route.query.order){
+                query["order"] = this.$route.query.order
+            }
+            if(this.$route.query.paginate){
+                query["paginate"] = this.$route.query.paginate
+            }
+            if(this.$route.query.currentPage){
+                query["currentPage"] = this.$route.query.currentPage
+            }
+            return query;
+        }
+    },
+    watch:{
+        path(){
+            this.handleChange();
+        }
     },
     beforeMount () {
-       let add = this.$route.query.add;
-       let edit = this.$route.query.edit;
-       let id = this.$route.query.id;
-       if(add === 'true' || add === true){
-           this.openSlidePanel = true;
-       } else if(edit === 'true' || edit === true){
-           this.rowId = id;
-           this.editMode = true;
-           this.openSlidePanel = true;
-       }
+      this.handleChange();
     },
 }
 </script>

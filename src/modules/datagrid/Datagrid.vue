@@ -181,6 +181,7 @@ import SetFilterAltered from './elements/SetFilterAltered';
 import './elements/ExcelFilter.js';
 // import GridRowUpdate from "./GridRowUpdate";
 import { notification } from 'ant-design-vue';
+import {isNumber} from "@vueuse/core";
 export default {
     name: 'datagrid',
     props: [
@@ -244,7 +245,7 @@ export default {
     },
 
     data() {
-        return data(this);
+        return data();
     },
 
     beforeMount() {
@@ -325,9 +326,35 @@ export default {
             this.model = gridSchema.model;
             this.template = gridSchema.template;
             this.schema = gridSchema.schema;
-            this.query.sort = gridSchema.sort;
-            this.query.order = gridSchema.sortOrder;
-            this.query.paginate = gridSchema.paging;
+
+
+            if(this.$route.query.sort){
+                this.query.sort = this.$route.query.sort
+            } else {
+                this.query.sort = gridSchema.sort;
+            }
+            if(this.$route.query.order){
+                this.query.order = this.$route.query.order
+            } else {
+                this.query.order = gridSchema.sortOrder;
+            }
+            if(this.$route.query.paginate){
+                if(!isNaN(this.$route.query.paginate)) {
+                    this.query.paginate = this.$route.query.paginate*1
+                }
+            } else {
+                this.query.paginate = gridSchema.paging;
+            }
+
+            if(this.$route.query.currentPage){
+               if(!isNaN(this.$route.query.currentPage)){
+                   this.query.currentPage = this.$route.query.currentPage*1
+               } else {
+                   this.query.currentPage = 1;
+               }
+            } else {
+                this.query.currentPage = 1;
+            }
             this.hasContextMenu = gridSchema.isContextMenu;
             this.gridActions = gridSchema.actions;
             this.identity = gridSchema.identity;
@@ -1335,9 +1362,14 @@ export default {
             }
 
             // this.$router.replace({...this.$route.query, dp: pageNumber})
-            // this.$router.push({
-            //     query: {...this.$route.query, dp: pageNumber}
-            // });
+            this.$router.push({
+                query: {
+                    sort:this.query.sort,
+                    order:this.query.order,
+                    paginate:this.query.paginate,
+                    currentPage:this.query.currentPage,
+                }
+            });
             // }
             this.fetchData();
         },
@@ -1407,7 +1439,30 @@ export default {
             this.filterModel = {};
             this.gridApi.setFilterModel(null);
             localStorage.removeItem(`grid-${this.schemaID}`);
-            this.changePage(this.$route.query.dp >= 2 ? this.$route.query.dp : 1);
+
+
+            if(this.$route.query.sort){
+                this.query.sort = this.$route.query.sort
+            }
+            if(this.$route.query.order){
+                this.query.order = this.$route.query.order
+            }
+            if(this.$route.query.paginate){
+                if(!isNaN(this.$route.query.paginate)) {
+                    this.query.paginate = this.$route.query.paginate*1
+                }
+            }
+
+            if(this.$route.query.currentPage){
+                if(!isNaN(this.$route.query.currentPage)){
+                    this.query.currentPage = this.$route.query.currentPage*1
+                } else {
+                    this.query.currentPage = 1;
+                }
+            } else {
+                this.query.currentPage = 1;
+            }
+            this.fetchData();
         },
 
         exportExcel(callBack) {
