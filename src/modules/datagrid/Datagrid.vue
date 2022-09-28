@@ -63,7 +63,7 @@
                     {{ lang.total }} : {{ info.total }}
                     <span v-if="aggregations.forumlaResult != ''">| {{ aggregations.forumlaResult }}</span>
                 </div>
-                <a-pagination v-if="!this.isClient"  :rows="query.paginate" :totalRecords="info.total" size="small" @change="changePage"></a-pagination>
+                <a-pagination v-if="!this.isClient"  :rows="query.paginate" v-model:current="query.currentPage" v-model:pageSize="query.paginate"  show-size-changer  :total="info.total" size="small" @change="changePage" :pageSizeOptions="['10', '20', '30', '50', '100', '500']"></a-pagination>
             </div>
         </div>
 
@@ -1330,6 +1330,10 @@ export default {
         changePage(page, pageSize) {
             // if (pageNumber > 1) {
             this.query.currentPage =page;
+            if(pageSize){
+                this.query.paginate =pageSize;
+            }
+
             // this.$router.replace({...this.$route.query, dp: pageNumber})
             // this.$router.push({
             //     query: {...this.$route.query, dp: pageNumber}

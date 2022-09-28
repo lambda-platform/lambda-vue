@@ -607,3 +607,8 @@ img.ag-grid-image {
         font-size: 12px;
     }
 }
+.anticon-left, .anticon-right{
+ svg{
+     display: block !important;
+ }
+}
