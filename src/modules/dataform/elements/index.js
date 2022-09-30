@@ -2,7 +2,7 @@ import { defineAsyncComponent } from 'vue'
 
 import { inject } from 'vue'
 
-
+import CK from "./CK"
 export const elementList = [
     {
         element: 'Text',
@@ -62,7 +62,7 @@ export const elementList = [
     },
     {
         element: 'CK',
-        component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-CK" */'./CK.vue')),
+        component: CK,
     },
     {
         element: 'File',

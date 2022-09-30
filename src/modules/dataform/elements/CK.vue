@@ -1,5 +1,7 @@
 <template>
     <lambda-form-item  :label=label  :name="model.component" :meta="meta">
+        <h1>{{meta.editorType}}</h1>
+        <h1>{{model.form[model.component]}} ?? {{model.component}}</h1>
         <ckeditor ref="ckeditor" :editor="editor" v-model="model.form[model.component]"
                   :config="editorConfig" :key="meta.editorType"
                   :placeholder="placeholder"
@@ -9,8 +11,9 @@
 </template>
 
 <script>
-import * as CKEditor from '@ckeditor/ckeditor5-vue';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from '@ckeditor/ckeditor5-vue';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import mixin from '@lambda-platform/lambda-vue/src/modules/dataform/elements/_mixin'
 export default {
     mixins:[mixin],
