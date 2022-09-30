@@ -1,6 +1,8 @@
 import { App } from "vue";
 import Dataform from "./Dataform.vue";
 import LambdaFormItem from "./elements/_LambdaFormItem.vue";
+import '@ckeditor/ckeditor5-vue';
+import '@ckeditor/ckeditor5-build-classic';
 import "./bootstrap"
 /**
  * Initialize DataForm component
