@@ -9,9 +9,8 @@
 </template>
 
 <script>
-import CKEditor from '@ckeditor/ckeditor5-vue';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
+import * as CKEditor from '@ckeditor/ckeditor5-vue';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import mixin from '@lambda-platform/lambda-vue/src/modules/dataform/elements/_mixin'
 export default {
     mixins:[mixin],
