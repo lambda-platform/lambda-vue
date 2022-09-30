@@ -198,7 +198,7 @@ export const element = (type) => {
                 if(customElementList.length >= 1){
                     const elIndex = customElementList.findIndex(el => el.element === type);
                     if (elIndex >= 0) {
-                        return elementList[elIndex].component
+                        return customElementList[elIndex].component
                     }
                 }
             }
