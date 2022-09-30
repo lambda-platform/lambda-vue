@@ -129,7 +129,7 @@ const iconDefault = L.icon({
     shadowSize: [41, 41]
 });
 
-import {point, polygon, inside} from '@turf/turf'
+// import {point, polygon, inside} from '@turf/turf'
 import mixin from './_mixin'
 export default {
     mixins: [mixin],
