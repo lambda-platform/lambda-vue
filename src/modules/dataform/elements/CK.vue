@@ -4,7 +4,7 @@
                   :config="editorConfig" :key="meta.editorType"
                   :placeholder="placeholder"
                   :disabled="disabled"
-                  @ready="onReady" @blur="onBlur($event)" @focus="onFocus($event)"></ckeditor>
+                  @ready="onReady" @blur="onBlur" @focus="onFocus"></ckeditor>
     </lambda-form-item>
 </template>
 
@@ -12,7 +12,7 @@
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-import mixin from "./_mixin"
+import mixin from '@lambda-platform/lambda-vue/src/modules/dataform/elements/_mixin'
 export default {
     mixins:[mixin],
     components: {
@@ -23,17 +23,19 @@ export default {
             editor: ClassicEditor,
             editorConfig: {
                 toolbar:{items: ['heading', '|',
-                    'bold', 'italic', '|', 'link', '|',
-                    'blockQuote', '|',
-                    'insertTable', '|',
-                    "indent", "outdent", '|',
-                    'mediaEmbed'],  shouldNotGroupWhenFull: true
+                        'bold', 'italic', '|', 'link', '|',
+                        'blockQuote', '|',
+                        'insertTable', '|',
+                        "indent", "outdent", '|',
+                        'mediaEmbed'],  shouldNotGroupWhenFull: true
                 },
                 placeholder:'',
             },
         };
     },
     created() {
+
+
         if (this.meta.editorType == "article") {
             this.editorConfig = {
                 toolbar: {
@@ -86,10 +88,7 @@ export default {
         onFocus(editor) {
         },
         onReady(event) {
-            if(!this.model.form[this.model.component])
-            {
-                this.model.form[this.model.component]='123';
-            }
+
         }
     }
 };

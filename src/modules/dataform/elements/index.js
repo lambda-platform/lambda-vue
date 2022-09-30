@@ -1,6 +1,7 @@
 import { defineAsyncComponent } from 'vue'
 
-import { customElementList } from '~/dataform_custom/index.js'
+import { inject } from 'vue'
+
 
 export const elementList = [
     {
@@ -59,10 +60,10 @@ export const elementList = [
         element: 'Checkbox',
         component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-Checkbox" */'./Checkbox.vue')),
     },
-    // {
-    //     element: 'CK',
-    //     component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-CK" */'./CK.vue')),
-    // },
+    {
+        element: 'CK',
+        component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-CK" */'./CK.vue')),
+    },
     {
         element: 'File',
         component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-File" */'./File.vue')),
@@ -179,7 +180,7 @@ export const elementList = [
         element: 'subform/Form',
         component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-sub-form" */'./subform/FormSub.vue')),
     },
-    ...customElementList
+
 ]
 
 
@@ -191,6 +192,17 @@ export const element = (type) => {
 
         if (elIndex >= 0) {
             return elementList[elIndex].component
+        } else {
+            const customElementList = inject('customElementList')
+            if(customElementList){
+                if(customElementList.length >= 1){
+                    const elIndex = customElementList.findIndex(el => el.element === type);
+                    if (elIndex >= 0) {
+                        return elementList[elIndex].component
+                    }
+                }
+            }
+
         }
     }
 

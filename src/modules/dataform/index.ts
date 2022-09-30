@@ -7,6 +7,7 @@ import "./bootstrap"
  * @param app vue instance
  */
 export function installDataForm(app: App<Element>) {
+
     app.component("dataform", Dataform);
     app.component("LambdaFormItem", LambdaFormItem);
 }
