@@ -1,6 +1,6 @@
 {
     "name": "@lambda-platform/lambda-vue",
-    "version": "3.0.24",
+    "version": "3.0.25",
     "description": "lambda builder",
     "main": "src/index.js",
     "repository": "git@github.com:lambda-platform/lambda-vue.git",
@@ -11,6 +11,7 @@
         "@ckeditor/ckeditor5-build-classic": "^35.1.0",
         "@ckeditor/ckeditor5-vue": "^4.0.1",
         "@esri/calcite-colors": "^6.0.1",
+        "@turf/turf": "^6.5.0",
         "@vueuse/core": "^9.3.0",
         "ag-grid-community": "^28.1.0",
         "ag-grid-enterprise": "^28.1.0",

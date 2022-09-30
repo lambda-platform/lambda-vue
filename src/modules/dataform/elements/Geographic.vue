@@ -129,7 +129,7 @@ const iconDefault = L.icon({
     shadowSize: [41, 41]
 });
 
-import {point, polygon, inside} from 'turf'
+import {point, polygon, inside} from '@turf/turf'
 import mixin from './_mixin'
 export default {
     mixins: [mixin],
@@ -634,10 +634,11 @@ export default {
             }
         },
         setElement(){
-            if (this.model.form[this.model.component]) {
+            if (this.itemValue) {
 
 
-                let geoJson = JSON.parse(this.model.form[this.model.component]);
+                let geoJson = JSON.parse(this.itemValue);
+
 
                 if (this.geometryType === 'point') {
                     geoJson = {
@@ -653,13 +654,15 @@ export default {
                             }
                         ]
                     }
+
+
                 }
                 let init_data = L.geoJSON(geoJson);
                 init_data.eachLayer((l) => {
 
                     this.layer.addLayer(this.setLayerOptions(l));
                 });
-                // this.map.fitBounds(this.layer.getBounds());
+                this.map.fitBounds(this.layer.getBounds());
 
             }
             this.map.addLayer(this.layer);

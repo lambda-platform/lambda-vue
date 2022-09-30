@@ -457,8 +457,8 @@ export default {
                     this.$data.model[name] = val_;
                     break
                 case 'CK':
-                    let ck_value = ''
-                    if (value != '' && value !== null) {
+                    let ck_value = ""
+                    if (value !== '' && value !== null) {
                         ck_value = value
                     }
                     this.$data.model[name] = ck_value;
@@ -833,13 +833,11 @@ export default {
                                 this.model[item.model] = false
                             }
                             break
-                        // case "Checkbox":
-                        //     if (this.model[item.model] == 1 || this.model[item.model] == "true") {
-                        //         this.model[item.model] = true;
-                        //     } else {
-                        //         this.model[item.model] = false;
-                        //     }
-                        //     break;
+                        case "CK":
+                            if (this.model[item.model] === null) {
+                                this.model[item.model] = "";
+                            }
+                            break;
                         case 'Password':
                             this.model[item.model] = ''
                             delete this.$data.rule[item.model]
