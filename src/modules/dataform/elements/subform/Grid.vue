@@ -76,7 +76,7 @@
             :name="`grid-modal-${form.sourceGridID}`"
             v-model:visible="modal_grid_show"
             class="form-modal"
-            title="form.sourceGridModalTitle "
+            :title="form.sourceGridModalTitle "
             :min-width="200"
             :min-height="100"
             :pivot-y="0.5"
@@ -322,7 +322,6 @@ export default {
         },
 
         add() {
-
             if (this.form.addFromGrid && this.form.sourceGridID) {
                 this.showAddSourceModal();
             } else {

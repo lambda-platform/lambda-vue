@@ -507,6 +507,7 @@ export default {
                 delete i['extra']
                 i.schemaID = this.$props.schemaID
             }
+
             return i
         },
 

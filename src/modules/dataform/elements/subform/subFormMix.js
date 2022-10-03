@@ -1,3 +1,5 @@
+import {notification} from "ant-design-vue";
+
 export default {
 
     data() {
@@ -28,8 +30,10 @@ export default {
                         this.custom_condition[parentCondition.grid_field] = this.model.form[parentCondition.parent_field];
                     } else {
                         errorFound = true;
-                        this.$Notice.error({
-                            title: parentCondition.message,
+
+                        notification["error"]({
+                            message:this.lang.informationIsIncomplete,
+                            description:  parentCondition.message,
                         });
                     }
                 });

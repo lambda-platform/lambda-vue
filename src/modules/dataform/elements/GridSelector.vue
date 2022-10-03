@@ -100,7 +100,7 @@
 </template>
 
 <script>
-
+import axios from "axios";
 import mixin from './_mixin'
 import { Modal } from 'ant-design-vue'
 export default {

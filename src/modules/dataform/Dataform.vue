@@ -174,10 +174,18 @@
                 </a-button>
 
                 <span v-for='button in getFooterButtons()' class='extra-buttons'>
-                    <a-button type='info' :loading='asyncMode' @click='setAndSend(button.model, option.value)'
-                            v-for='option in button.options' :key='button.index'>
-                     {{ option.label }}
-                    </a-button>
+                    <a-popconfirm
+                        title="Энэ үйлдлийг хийх үү?"
+                        ok-text="Тийм"
+                        cancel-text="Үгүй"
+                        @confirm="setAndSend(button.model, button.value)"
+                    >
+                        <a-button type='info' :loading='asyncMode'
+                                  v-for='option in button.options' :key='button.index'>
+                         {{ option.label }}
+                        </a-button>
+                    </a-popconfirm>
+
                 </span>
             </div>
         </a-form>
