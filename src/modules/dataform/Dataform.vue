@@ -178,10 +178,11 @@
                         title="Энэ үйлдлийг хийх үү?"
                         ok-text="Тийм"
                         cancel-text="Үгүй"
-                        @confirm="setAndSend(button.model, button.value)"
+                        v-for='option in button.options'
+                        @confirm="setAndSend(button.model, option.value)"
                     >
                         <a-button type='info' :loading='asyncMode'
-                                  v-for='option in button.options' :key='button.index'>
+                                   :key='button.index'>
                          {{ option.label }}
                         </a-button>
                     </a-popconfirm>
