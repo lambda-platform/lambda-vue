@@ -4,6 +4,7 @@
               :layout="meta.option.labelPosition === 'top' ? 'vertical' : 'horizontal'"
                 :rules="rule"
                 @finish="handleSubmit"
+                @finishFailed="finishFailed"
         >
             <div class='dataform-header' v-if="!hideTitle">
                 <h3>{{ title ? title : formTitle }}<b v-if='showID'><span v-if='model[identity]'>: {{model[identity]}}</span></b></h3>
@@ -180,9 +181,10 @@
                         cancel-text="Үгүй"
                         v-for='option in button.options'
                         @confirm="setAndSend(button.model, option.value)"
+                        :key='button.index'
                     >
                         <a-button type='info' :loading='asyncMode'
-                                   :key='button.index'>
+                                  >
                          {{ option.label }}
                         </a-button>
                     </a-popconfirm>

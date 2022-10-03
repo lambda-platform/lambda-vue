@@ -1,11 +1,12 @@
-import { element } from './elements'
-import { getRule, setModel, setIdentity } from './rule'
-import { dataFromTemplate } from './utils/formula.js'
-import { doFormula, doTrigger } from './utils/formula_and_trigger.js'
-import { evalstr, isValid } from './utils/methods.js'
-import { getRelationData } from './utils/helpers.js'
+import {element} from './elements'
+import {getRule, setModel, setIdentity} from './rule'
+import {dataFromTemplate} from './utils/formula.js'
+import {doFormula, doTrigger} from './utils/formula_and_trigger.js'
+import {evalstr, isValid} from './utils/methods.js'
+import {getRelationData} from './utils/helpers.js'
 import axios from 'axios'
-import { notification } from 'ant-design-vue';
+import {notification} from 'ant-design-vue';
+
 export default {
     name: 'dataform',
     props: [
@@ -55,7 +56,7 @@ export default {
             extraButtons: [],
             disableReset: false,
             withBackButton: false,
-            tabIndex:0
+            tabIndex: 0
         }
     },
 
@@ -402,7 +403,7 @@ export default {
                                 let rules_current_password = [{
                                     type: 'required',
                                     msg: this.lang.pleaseEnterPasswordYouUCurrentlyUsing
-                                }, { type: 'check_current_password', msg: null }]
+                                }, {type: 'check_current_password', msg: null}]
                                 rules_current_password.forEach(rule => {
                                     let r = getRule(rule, this.url)
                                     rules_for_current_password.push(r)
@@ -581,7 +582,7 @@ export default {
                         if (this.model[sbValidation.model].length == 0) {
 
                             notification["error"]({
-                                message:this.lang.informationIsIncomplete,
+                                message: this.lang.informationIsIncomplete,
                                 description: sbValidation.emptyErrorMsg,
                             });
                             subValid = false
@@ -590,9 +591,9 @@ export default {
 
 
                         notification["error"]({
-                            message:this.lang.informationIsIncomplete,
+                            message: this.lang.informationIsIncomplete,
                             description: sbValidation.emptyErrorMsg,
-                    });
+                        });
                         subValid = false
                     }
                 }
@@ -608,12 +609,12 @@ export default {
             } else {
                 this.asyncMode = true
                 axios.post(this.submitUrl, this.$data.model)
-                    .then(({ data }) => {
+                    .then(({data}) => {
 
                         if (data.status) {
 
                             notification["success"]({
-                                message:this.lang.successfullySaved,
+                                message: this.lang.successfullySaved,
                                 description: this.lang.successfullySaved
                             });
                             if (!this.editMode) {
@@ -633,7 +634,7 @@ export default {
                         } else {
 
                             notification["error"]({
-                                message:this.lang.errorSaving,
+                                message: this.lang.errorSaving,
                                 description: this.lang.errorSaving,
                             });
                             if (this.$props.onError) {
@@ -667,15 +668,15 @@ export default {
 
 
                             notification["error"]({
-                                message:this.lang.errorSaving,
-                                description:errorDesc
+                                message: this.lang.errorSaving,
+                                description: errorDesc
                             });
 
                         } else {
 
                             notification["error"]({
-                                message:this.lang.errorSaving,
-                                description:e
+                                message: this.lang.errorSaving,
+                                description: e
                             });
 
 
@@ -696,7 +697,7 @@ export default {
             setIdentity(this.identity, null)
             this.schema.forEach(item => {
                 if (item.formType == 'SubForm' && typeof this.$refs[`sf${item.model}`] != 'undefined') {
-                    if(this.$refs[`sf${item.model}`].length >= 1){
+                    if (this.$refs[`sf${item.model}`].length >= 1) {
                         this.$refs[`sf${item.model}`][0].reset()
                     }
                 }
@@ -757,7 +758,7 @@ export default {
 
         editModel(id, editData) {
             if (editData) {
-                this.model = { ...this.model, ...editData }
+                this.model = {...this.model, ...editData}
                 if (this.ui && this.ui.hasOwnProperty('schema')) {
                     this.setEditModel(this.ui.schema)
                     this.setUserConditionValues(false)
@@ -767,26 +768,26 @@ export default {
                 this.dataID = id
                 setIdentity(this.identity, id)
                 axios.post(this.page_id ? `${this.baseUrl}/lambda/krud/${this.$props.schemaID}/edit/${id}?page_id=${this.page_id}` : `${this.baseUrl}/lambda/krud/${this.$props.schemaID}/edit/${id}`)
-                    .then(({ data }) => {
+                    .then(({data}) => {
                         if (data.status) {
 
-                            this.model = { ...this.model, ...data.data }
+                            this.model = {...this.model, ...data.data}
                             if (this.ui && this.ui.hasOwnProperty('schema')) {
                                 this.setEditModel(this.ui.schema)
                             }
                             this.setUserConditionValues(false)
                             this.setCustomData()
                         }
-                    }).catch(e=>{
-                      if(e.response.data){
-                          if(e.response.data.error){
+                    }).catch(e => {
+                    if (e.response.data) {
+                        if (e.response.data.error) {
 
-                              notification["error"]({
-                                  message:this.lang.error,
-                                  description: e.response.data.error,
-                              });
-                          }
-                      }
+                            notification["error"]({
+                                message: this.lang.error,
+                                description: e.response.data.error,
+                            });
+                        }
+                    }
                 })
             }
         },
@@ -858,9 +859,9 @@ export default {
 
         cloneModel(id) {
             axios.post(`/lambda/krud/${this.$props.schemaID}/edit/${id}`)
-                .then(({ data }) => {
+                .then(({data}) => {
                     if (data.status) {
-                        this.model = { ...this.model, ...data.data }
+                        this.model = {...this.model, ...data.data}
                         delete this.model[this.identity]
                         this.setEditModel(this.ui.schema)
                         this.setUserConditionValues(false)
@@ -871,10 +872,10 @@ export default {
 
         getOptionsByRelations(baseUrl, relations) {
             if (Object.keys(relations).length >= 1) {
-                axios.post(`${baseUrl}/lambda/puzzle/get_options${this.optionUrl}`, { relations: relations })
-                    .then(({ data }) => {
+                axios.post(`${baseUrl}/lambda/puzzle/get_options${this.optionUrl}`, {relations: relations})
+                    .then(({data}) => {
                         Object.keys(data).map(relation => {
-                            let r = { ...this.relations[relation], data: data[relation] }
+                            let r = {...this.relations[relation], data: data[relation]}
                             this.$data.relations[relation] = r;
                         })
                     })
@@ -979,7 +980,7 @@ export default {
                     if (item.schema) {
                         let pre_selects = this.getSelects(item.schema, microserviceID)
                         if (pre_selects) {
-                            selects = { ...selects, ...pre_selects }
+                            selects = {...selects, ...pre_selects}
                         }
                     }
 
@@ -1026,14 +1027,13 @@ export default {
             let buttons = []
             this.schema.forEach(item => {
                 if (item.formType == 'FooterButton') {
-                    buttons.push({ ...item })
+                    buttons.push({...item})
                 }
             })
             return buttons
         },
 
         setAndSend(model, value) {
-
             let name = this.meta.model + '-' + this.schemaID
             this.setIdentityManual()
             if (_.isEmpty(this.$data.rule)) {
@@ -1046,29 +1046,28 @@ export default {
                 }
 
             } else {
-
-                this.$refs[name].validate().then(valid => {
-
-                    if (valid) {
-                        if (this.subFormValidations.length >= 1) {
-                            this.validateWithSubForm()
-                        } else {
-                            this.asyncMode = true
-                            this.$data.model[model] = value;
-                            this.postData()
-                        }
+                this.$data.model[model] = value;
+                this.$refs[name].validate().then(() => {
+                    this.$data.model[model] = value;
+                    if (this.subFormValidations.length >= 1) {
+                        this.validateWithSubForm()
                     } else {
-                        //auh дээр хэрэглэгдэж байгаа шүү
-
-
-                        notification["error"]({
-                            message:this.lang.informationIsIncomplete,
-                            description:this.formValidationCustomText != '' ? this.formValidationCustomText : this.lang.trRMandatoryFieldsFillInformationLookFormAFillRequiredFieldsWithRedBorder
-                        });
-
+                        this.asyncMode = truel
+                        this.postData()
                     }
-                })
+
+                }).catch(err => {
+                    this.finishFailed();
+                });
+
             }
+        },
+        finishFailed() {
+
+            notification["error"]({
+                message: this.lang.informationIsIncomplete,
+                description: this.formValidationCustomText != '' ? this.formValidationCustomText : this.lang.trRMandatoryFieldsFillInformationLookFormAFillRequiredFieldsWithRedBorder
+            });
         }
     }
 
