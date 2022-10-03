@@ -96,7 +96,7 @@
 
 
                 <div class="form-body">
-                    <dataform ref="form" :schemaID="form.formId"
+                    <dataform ref="form" v-if="modal_show" :schemaID="form.formId"
                               :do_render="modal_show"
                               :editMode="editIndex >= 0"
                               :isSubForm="true"
@@ -300,7 +300,6 @@ export default {
             // this.$modal.hide(`form-modal-${this.form.formId}`);
         },
         formReady(formData, subSchema) {
-
             let parentFieldIndex = subSchema.findIndex(field => field.model === this.form.parent);
 
             if (parentFieldIndex > 0) {
