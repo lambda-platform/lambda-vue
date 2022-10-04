@@ -1,6 +1,6 @@
 <template>
     <div class="card drawer-wrappper">
-        <common :parent="parent" :title="title" :hideAction="true"></common>
+        <common :parent="parent" :title="title" :hideAction="true" :permissions="permissions"></common>
 
         <section class="offcanvas-template">
             <div class="crud-page">

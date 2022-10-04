@@ -1,5 +1,5 @@
 <template>
-    <common :parent="parent" :title="title" :addAction="openSide"></common>
+    <common :parent="parent" :title="title" :addAction="openSide" :permissions="permissions"></common>
     <portal to="header-right">
         <Krudtools :search="search"
                    :refresh="refresh"

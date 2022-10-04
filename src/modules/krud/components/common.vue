@@ -10,7 +10,7 @@
                 </h2>
             </div>
         </div>
-        <div class="float-left ml-3 " v-if="!hideAction">
+        <div class="float-left ml-3 " v-if="!hideAction && permissions.c">
             <span class="divider"></span>
             <a-button type="primary" @click="addAction" shape="round">
                 <template #icon>
@@ -36,7 +36,7 @@
             </div>
         </div>
     </portal>
-    <portal to="header-mobile" v-if="!hideAction">
+    <portal to="header-mobile" v-if="!hideAction && permissions.c">
         <div class="fixed bottom-14 right-2">
             <a-button type="primary" @click="addAction" shape="circle" size="large">
                 <template #icon>
@@ -55,8 +55,7 @@
 
 export default {
     name: 'common',
-    props:["parent", "addAction", "title", "hideAction"],
-
+    props:["parent", "addAction", "title", "hideAction", "permissions"],
     computed:{
         lang() {
             const labels = [
