@@ -1027,7 +1027,7 @@ export default {
             let buttons = []
             this.schema.forEach(item => {
                 if (item.formType == 'FooterButton') {
-                    if(item.options >= 1){
+                    if(item.options.length >= 1){
                         buttons.push({...item})
                     } else {
                         buttons.push({...item, options:this.getRelation(item)})
