@@ -953,7 +953,7 @@ export default {
             let selects = {}
 
             schema.map(item => {
-                if (item.formType == 'Radio' || item.formType == 'Select' || item.formType == 'ISelect' || item.formType == 'TreeSelect') {
+                if (item.formType == 'Radio' || item.formType == 'Select' || item.formType == 'ISelect' || item.formType == 'TreeSelect' || item.formType == 'FooterButton') {
                     if (item.relation.table) {
                         if (typeof selects[item.relation.table] === 'undefined') {
 
@@ -1027,7 +1027,12 @@ export default {
             let buttons = []
             this.schema.forEach(item => {
                 if (item.formType == 'FooterButton') {
-                    buttons.push({...item})
+                    if(item.options >= 1){
+                        buttons.push({...item})
+                    } else {
+                        buttons.push({...item, options:this.getRelation(item)})
+                    }
+
                 }
             })
             return buttons
