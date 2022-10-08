@@ -2,7 +2,7 @@ import { defineAsyncComponent } from 'vue'
 
 import { inject } from 'vue'
 
-import CK from "./CK"
+// import CK from "./CK"
 export const elementList = [
     {
         element: 'Text',
@@ -62,7 +62,8 @@ export const elementList = [
     },
     {
         element: 'CK',
-        component: CK,
+        // component: CK,
+        component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-Textarea" */'./Textarea.vue')),
     },
     {
         element: 'File',
