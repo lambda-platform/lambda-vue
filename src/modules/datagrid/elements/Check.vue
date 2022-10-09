@@ -1,7 +1,12 @@
 <template>
+    <span class="svg-icon ">
+                      <inline-svg v-if="params.value === 1"
+                          src="/assets/icons/duotune/Navigation/Check.svg"
+                      />
+
+            </span>
     <span>
-        <Icon v-if="params.value === 1" class="status-checked" type="md-checkmark"/>
-        <Icon v-else class="status-unchecked" type="md-close"/>
+
     </span>
 </template>
 

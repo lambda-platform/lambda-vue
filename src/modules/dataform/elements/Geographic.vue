@@ -636,33 +636,38 @@ export default {
         setElement(){
             if (this.itemValue) {
 
+                try {
+                    let geoJson = JSON.parse(this.itemValue);
 
-                let geoJson = JSON.parse(this.itemValue);
 
-
-                if (this.geometryType === 'point') {
-                    geoJson = {
-                        type: "FeatureCollection",
-                        features: [
-                            {
-                                type: "Feature",
-                                properties: {},
-                                geometry: {
-                                    coordinates: [geoJson.lng, geoJson.lat],
-                                    type: "Point"
+                    if (this.geometryType === 'point') {
+                        geoJson = {
+                            type: "FeatureCollection",
+                            features: [
+                                {
+                                    type: "Feature",
+                                    properties: {},
+                                    geometry: {
+                                        coordinates: [geoJson.lng, geoJson.lat],
+                                        type: "Point"
+                                    }
                                 }
-                            }
-                        ]
+                            ]
+                        }
+
+
                     }
+                    let init_data = L.geoJSON(geoJson);
+                    init_data.eachLayer((l) => {
 
-
+                        this.layer.addLayer(this.setLayerOptions(l));
+                    });
+                    this.map.fitBounds(this.layer.getBounds());
+                } catch(e) {
+                    console.log(e)
                 }
-                let init_data = L.geoJSON(geoJson);
-                init_data.eachLayer((l) => {
 
-                    this.layer.addLayer(this.setLayerOptions(l));
-                });
-                this.map.fitBounds(this.layer.getBounds());
+
 
             }
             this.map.addLayer(this.layer);

@@ -1,6 +1,4 @@
-import { defineAsyncComponent } from 'vue'
-
-import { inject } from 'vue'
+import { defineAsyncComponent, inject } from 'vue'
 
 // import CK from "./CK"
 export const elementList = [

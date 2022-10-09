@@ -5,20 +5,28 @@
                 <h3>{{lang.infoCourt}}</h3>
             </div>
             <div class="dg-filter-widget-body">
-                <Form ref="filterFrm" :model="model" label-position="top">
+                <a-form ref="filterFrm" :model="model" layout="vertical" >
                     <template v-for="item in schema" >
-                        <FormItem v-if="item.filterable && item.filter && item.filter.type && item.filter.showSideFilter !== false"
+                        <a-form-item v-if="item.filterable && item.filter && item.filter.type && item.filter.showSideFilter !== false"
                                   :key="item.index">
-                            <component :is="element(item.filter.type)" :model="{form: model, component: item.model}"
-                                       :label="item.filter.label ? item.filter.label : item.label" :meta="setMeta(item)">
+                            <component
+                                :is="element(item.filter.type)"
+                                :model="{form: model, component: item.model}"
+                                       :label="item.filter.label ? item.filter.label : item.label"
+                                :meta="setMeta(item)"
+                                :relation_data='getRelation'
+                            >
                             </component>
-                        </FormItem>
+                        </a-form-item>
                     </template>
-                    <FormItem>
-                        <Button type="primary" long @click="$parent.filterData(1)">{{lang.filtering}}</Button>
-                    </FormItem>
+                    <a-form-item>
+                        <a-button type="primary" long @click="$parent.filterData(1)" block>
+                            <template #icon><SearchOutlined /></template>
+                            {{lang.filtering}}
+                        </a-button>
+                    </a-form-item>
                     <br/>
-                </Form>
+                </a-form>
             </div>
 
         </div>
@@ -30,15 +38,21 @@
 <script>
     import {element} from "./elements";
     import GridRowUpdate from "./GridRowUpdate";
+    import {getRelationData} from "../dataform/utils/helpers";
+    import {getOptionsData} from "../../utils/relation";
+    import { SearchOutlined } from '@ant-design/icons-vue';
     export default {
         props: ["model", "schema", "schemaID", "permissions", "url"],
         components:{
-            GridRowUpdate:GridRowUpdate
+            GridRowUpdate:GridRowUpdate,
+            SearchOutlined
+        },
+        data(){
+          return {
+              relations: {},
+          }
         },
         computed: {
-            // ...mapGetters({
-            //     user: "user"
-            // }),
             lang() {
                 const labels = ['infoCourt', 'filtering', 'updatedSuccessfully', 'errorOccurredWhileUpdating', 'pleaseSelectUpdateLine'
                 ];
@@ -53,9 +67,31 @@
             element: element,
             setMeta(item) {
                 item.schemaID = this.$props.schemaID;
+                item.relation = item.filter.relation
+                item.formType = item.filter.type
                 return item;
             },
 
-        }
+            getRelation(item) {
+                let s_index = this.schema.findIndex(schema => schema.model == item.model)
+                let i = s_index >= 0 ? this.schema[s_index] : item
+                return getRelationData({...i, relation:i.filter.relation}, this.relations)
+            },
+            async getRelations(){
+                let schema = []
+                this.schema.forEach(s=>{
+                    if(s.filterable){
+                        schema.push({
+                            ...s, formType: s.filter.type, relation:s.filter.relation
+                        })
+                    }
+                });
+                this.relations = await getOptionsData(schema, undefined, '');
+            }
+        },
+        async mounted() {
+            await this.getRelations();
+        },
+
     };
 </script>

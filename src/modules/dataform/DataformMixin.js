@@ -4,6 +4,7 @@ import {dataFromTemplate} from './utils/formula.js'
 import {doFormula, doTrigger} from './utils/formula_and_trigger.js'
 import {evalstr, isValid} from './utils/methods.js'
 import {getRelationData} from './utils/helpers.js'
+import {getOptionsData} from '../../utils/relation.js'
 import axios from 'axios'
 import {notification} from 'ant-design-vue';
 
@@ -313,7 +314,8 @@ export default {
                 }
             }
 
-            this.getOptionsData(formSchema.schema)
+            this.relations = await getOptionsData(formSchema.schema,this.setSchemaByModel, this.optionUrl);
+
             this.setUiSchemaFormItem(formSchema.ui.schema)
             this.setHiddenItemModel(formSchema.schema)
 
@@ -870,124 +872,7 @@ export default {
                 })
         },
 
-        getOptionsByRelations(baseUrl, relations) {
-            if (Object.keys(relations).length >= 1) {
-                axios.post(`${baseUrl}/lambda/puzzle/get_options${this.optionUrl}`, {relations: relations})
-                    .then(({data}) => {
-                        Object.keys(data).map(relation => {
-                            let r = {...this.relations[relation], data: data[relation]}
-                            this.$data.relations[relation] = r;
-                        })
-                    })
-            }
-        },
 
-        getOptionsData(schema) {
-            this.relations = this.getSelects(schema, undefined)
-            if (window.init) {
-                if (window.init.microserviceSettings.length >= 1) {
-
-                    window.init.microserviceSettings.forEach(microserviceSetting => {
-                        let relations = this.getSelects(schema, microserviceSetting.project_id)
-                        this.getOptionsByRelations(microserviceSetting.production_url, relations)
-                    })
-                } else {
-                    this.getOptionsByRelations('', this.relations)
-                }
-            } else {
-                this.getOptionsByRelations('', this.relations)
-            }
-
-        },
-        getSelectItem(item, selects) {
-
-            if (item.relation.filterWithUser) {
-                if (!!item.relation.filterWithUser && item.relation.filterWithUser.constructor === Array) {
-                    let userConditions = ''
-                    item.relation.filterWithUser.forEach(userFilter => {
-
-                        let condition = `${userFilter['tableField']} = '${window.init.user[userFilter['userField']]}'`
-
-                        if (userConditions == '') {
-                            userConditions = condition
-                        } else {
-                            userConditions = userConditions + ' AND ' + condition
-                        }
-                    })
-
-                    if (item.relation.filter == '' || typeof item.relation.filter === 'undefined') {
-                        item.relation.filter = userConditions
-
-
-                        this.setSchemaByModel(item.model, 'relation', item.relation)
-
-                    } else {
-                        item.relation.filter = `(${item.relation.filter}) OR (${userConditions})`
-                    }
-                } else {
-                    let condition = `${item.relation.filterWithUser['tableField']} = '${window.init.user[item.relation.filterWithUser['userField']]}'`
-                    if (item.relation.filter == '' || typeof item.relation.filter === 'undefined') {
-                        item.relation.filter = condition
-                    } else {
-                        item.relation.filter = item.relation.filter + ' AND ' + condition
-                    }
-                }
-
-
-                item.relation.filterWithUser = undefined
-
-
-            }
-
-            if (item.relation.filter == '' || typeof item.relation.filter === 'undefined') {
-
-                selects[item.relation.table] = item.relation
-
-            } else {
-
-                selects[item.model] = item.relation
-            }
-            return selects
-        },
-        getSelects(schema, microserviceID) {
-            let selects = {}
-
-            schema.map(item => {
-                if (item.formType == 'Radio' || item.formType == 'Select' || item.formType == 'ISelect' || item.formType == 'TreeSelect' || item.formType == 'FooterButton') {
-                    if (item.relation.table) {
-                        if (typeof selects[item.relation.table] === 'undefined') {
-
-
-                            if (microserviceID !== undefined) {
-                                if (item.relation.microservice_id == microserviceID) {
-                                    selects = this.getSelectItem(item, selects)
-                                }
-                            } else {
-                                selects = this.getSelectItem(item, selects)
-                            }
-
-                        }
-                    }
-                }
-
-                if (item.formType == 'AdminMenu') {
-                    if (item.relation.table)
-                        selects[item.relation.table] = item.relation
-                }
-
-                if (item.formType == 'SubForm') {
-
-                    if (item.schema) {
-                        let pre_selects = this.getSelects(item.schema, microserviceID)
-                        if (pre_selects) {
-                            selects = {...selects, ...pre_selects}
-                        }
-                    }
-
-                }
-            })
-            return selects
-        },
 
         /* countShowableChildren(children){
              let visible_item_found = false;

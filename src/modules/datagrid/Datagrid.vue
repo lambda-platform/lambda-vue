@@ -1,6 +1,6 @@
 <template>
     <div class='dg'>
-        <div class='dg-body'
+        <div class='dg-body bg-white dark:bg-slate-900 rounded-md'
              :style="fullWidth ? `flex: 1` : ''"
              ref='dgBody'>
             <div :class="`dg-table ${header != null ? 'custom-table' : ''} ${'template-'+template}`">
@@ -33,11 +33,7 @@
                     :getContextMenuItems='getContextMenuItems'
                     :overlayLoadingTemplate='overlayLoadingTemplate'
                     :rowSelection='selectionMethod'
-                    :defaultColDef='{
-                                    sortable: true,
-                                    resizable: true,
-                                    filter: true
-                                }'
+                    :defaultColDef='defaultColDef'
 
                     :singleClickEdit='singleClickEdit'
                     :editType='editType'
@@ -67,9 +63,9 @@
             </div>
         </div>
 
-        <!--        <datafilter v-if="template == 1 || template==3" :schemaID="schemaID" :schema="schema" :permissions="permissions"-->
-        <!--                    :url="url"-->
-        <!--                    :model="filterModel"></datafilter>-->
+                <datafilter class="bg-white dark:bg-slate-900 rounded-md" v-if="template == 1 || template==3" :schemaID="schemaID" :schema="schema" :permissions="permissions"
+                            :url="url"
+                            :model="filterModel"></datafilter>
 
         <!--        <paper-modal-->
         <!--            name="print-modal"-->
@@ -125,9 +121,9 @@
         <!--            </div>-->
         <!--        </Modal>-->
 
-        <!--        <GridRowUpdate v-if="template == 0 || template==2"-->
-        <!--                       :permissions="permissions" :model="filterModel" :schema="schema" :url="url" :inFilter="false" :schemaID="schemaID"-->
-        <!--        />-->
+<!--                <GridRowUpdate v-if="template == 0 || template==2"-->
+<!--                               :permissions="permissions" :model="filterModel" :schema="schema" :url="url" :inFilter="false" :schemaID="schemaID"-->
+<!--                />-->
 
     </div>
 </template>
@@ -153,7 +149,7 @@ import { compareObj, isValid } from './utils/methods';
 import { convertLink } from './utils/formula';
 // import Print from "./Print";
 // import ExcelImport from "./ExcelImport";
-// import DataFilter from "./DataFilter";
+import DataFilter from "./DataFilter";
 import { getNumber, number, formatedNumber } from './utils/number.js';
 import GridActions from './GridActions';
 
@@ -179,7 +175,7 @@ import SetFilter from './elements/SetFilter';
 import SetFilterDate from './elements/SetFilterDate';
 import SetFilterAltered from './elements/SetFilterAltered';
 import './elements/ExcelFilter.js';
-// import GridRowUpdate from "./GridRowUpdate";
+import GridRowUpdate from "./GridRowUpdate";
 import { notification } from 'ant-design-vue';
 import {isNumber} from "@vueuse/core";
 export default {
@@ -238,8 +234,8 @@ export default {
         // eslint-disable-next-line vue/no-unused-components
         SetFilterDate,
         GridActions: GridActions,
-        // "datafilter": DataFilter,
-        // "GridRowUpdate": GridRowUpdate,
+        "datafilter": DataFilter,
+        "GridRowUpdate": GridRowUpdate,
         // "print": Print,
         // "excel-import": ExcelImport
     },
@@ -378,7 +374,7 @@ export default {
             this.$parent.isSave = this.editableShouldSubmit = 'editableShouldSubmit' in gridSchema ? gridSchema.editableShouldSubmit : false;
 
             if (gridSchema.template == 2 || gridSchema.template == 3) {
-                this.gridOptions.floatingFilter = true;
+                this.defaultColDef.floatingFilter = true;
             }
 
             /**
@@ -593,7 +589,7 @@ export default {
             this.$data.init = true;
 
             if (filter_not_found) {
-                this.gridOptions.floatingFilter = false;
+                this.defaultColDef.floatingFilter = false;
             }
 
             // Setting actions
@@ -703,12 +699,15 @@ export default {
 
                 //Filterable
                 if (item.filterable) {
+                    // item.floatingFilter = true;
+                    // item.suppressMenu = true;
+
                     if (isValid(item.filter.param)) {
                         if (isValid(this.$route.query[item.filter.param])) {
                             this.filterModel[item.model] = {
                                 filter: this.$route.query[item.filter.param],
-                                filterType: 'text',
-                                type: isValid(item.filter.paramCompareType) ? item.filter.paramCompareType : 'contains',
+                                filterType: "text",
+                                type: isValid(item.filter.paramCompareType) ? item.filter.paramCompareType : "contains"
                             };
                         }
 
@@ -716,30 +715,30 @@ export default {
                             handler: () => {
                                 this.filterModel[item.model] = {
                                     filter: this.$route.query[item.filter.param] ? this.$route.query[item.filter.param] : '',
-                                    filterType: 'text',
-                                    type: isValid(item.filter.paramCompareType) ? item.filter.paramCompareType : 'contains',
+                                    filterType: "text",
+                                    type: isValid(item.filter.paramCompareType) ? item.filter.paramCompareType : "contains"
                                 };
                                 this.fetchData();
                             },
-                            deep: true,
+                            deep: true
                         });
                     }
 
 
                     switch (item.filter.type) {
                         case 'Number':
-                            colItem.filter = 'agNumberColumnFilter';
+                            colItem.filter = "agNumberColumnFilter";
                             colItem.filterParams = {
-                                newRowsAction: 'keep',
-                                suppressAndOrCondition: true,
+                                newRowsAction: "keep",
+                                suppressAndOrCondition: true
                             };
                             break;
                         case 'Date':
-                            colItem.filter = 'agDateColumnFilter';
+                            colItem.filter = "agDateColumnFilter";
                             colItem.filterParams = {
-                                newRowsAction: 'keep',
+                                newRowsAction: "keep",
                                 comparator: (filterLocalDateAtMidnight, cellValue) => {
-                                    let dateParts = cellValue.substr(0, 10).split('-');
+                                    let dateParts = cellValue.substr(0, 10).split("-");
                                     let day = parseInt(dateParts[2]);
                                     let month = parseInt(dateParts[1]) - 1;
                                     let year = parseInt(dateParts[0]);
@@ -755,48 +754,48 @@ export default {
                                 },
                                 inRangeInclusive: true,
                                 browserDatePicker: true,
-                                suppressAndOrCondition: true,
+                                suppressAndOrCondition: true
                             };
                             break;
                         case 'Select':
                             if (!this.isClient) {
-                                colItem.floatingFilterComponent = 'selectFloatingFilter';
+                                colItem.floatingFilterComponent = "selectFloatingFilter";
                                 colItem.floatingFilterComponentParams = {
-                                    newRowsAction: 'keep',
+                                    newRowsAction: "keep",
                                     suppressAndOrCondition: true,
                                     selectAllOnMiniFilter: true,
                                     suppressFilterButton: true,
                                     schemaID: this.schemaID,
-                                    column: this.schema.find(col => col.model == item.model),
+                                    column: this.schema.find(col => col.model === item.model),
                                     filterModel: this.filterModel,
-                                    filterData: this.filterData,
+                                    filterData: this.filterData
                                 };
                             } else {
-                                colItem.filter = 'agTextColumnFilter';
+                                colItem.filter = "agTextColumnFilter";
                                 colItem.filterParams = {
-                                    newRowsAction: 'keep',
-                                    suppressAndOrCondition: true,
+                                    newRowsAction: "keep",
+                                    suppressAndOrCondition: true
                                 };
                             }
                             break;
                         case 'Tag':
                             if (!this.isClient) {
-                                colItem.floatingFilterComponent = 'selectFloatingFilter';
+                                colItem.floatingFilterComponent = "selectFloatingFilter";
                                 colItem.floatingFilterComponentParams = {
-                                    newRowsAction: 'keep',
+                                    newRowsAction: "keep",
                                     suppressAndOrCondition: true,
                                     selectAllOnMiniFilter: true,
                                     suppressFilterButton: true,
                                     schemaID: this.schemaID,
                                     column: this.schema.find(col => col.model == item.model),
                                     filterModel: this.filterModel,
-                                    filterData: this.filterData,
+                                    filterData: this.filterData
                                 };
                             } else {
-                                colItem.filter = 'agTextColumnFilter';
+                                colItem.filter = "agTextColumnFilter";
                                 colItem.filterParams = {
-                                    newRowsAction: 'keep',
-                                    suppressAndOrCondition: true,
+                                    newRowsAction: "keep",
+                                    suppressAndOrCondition: true
                                 };
                             }
                             break;
@@ -805,9 +804,9 @@ export default {
                                 let t = this.schema.find(col => col.model == item.model);
                                 let dataUrl = `/lambda/krud/${this.schemaID}/options`;
 
-                                colItem.filter = 'agSetColumnFilter';
+                                colItem.filter = "agSetColumnFilter";
                                 colItem.filterParams = {
-                                    newRowsAction: 'keep',
+                                    newRowsAction: "keep",
                                     selectAllOnMiniFilter: true,
                                     suppressMiniFilter: false,
                                     // cellRenderer: params => params.value.label,
@@ -818,16 +817,16 @@ export default {
                                     // },
                                     cellRenderer: params => params.value.label,
                                     values: (params) => {
-                                        axios.post(dataUrl, t.filter.relation).then(({ data }) => {
+                                        axios.post(dataUrl, getRelation(t.filter.relation)).then(({data}) => {
                                             params.success(data);
                                         });
                                     },
                                 };
                             } else {
-                                colItem.filter = 'agSetColumnFilter';
+                                colItem.filter = "agSetColumnFilter";
 
                                 colItem.filterParams = {
-                                    newRowsAction: 'keep',
+                                    newRowsAction: "keep",
                                     selectAllOnMiniFilter: false,
                                     suppressSyncValuesAfterDataChange: false,
                                     suppressRemoveEntries: false,
@@ -838,16 +837,16 @@ export default {
                             break;
                         case 'Set-Filter-Altered':
                             if (this.isClient) {
-                                colItem.filter = 'agSetColumnFilter';
-                                colItem.floatingFilterComponent = 'SetFilterAltered';
+                                colItem.filter = "agSetColumnFilter";
+                                colItem.floatingFilterComponent = "SetFilterAltered";
                                 colItem.filterParams = {
-                                    newRowsAction: 'keep',
+                                    newRowsAction: "keep",
                                     selectAllOnMiniFilter: false,
                                     suppressSyncValuesAfterDataChange: false,
                                     suppressRemoveEntries: false,
                                     suppressSelectAll: true,
                                     suppressMiniFilter: false,
-                                    excelMode: 'windows',
+                                    excelMode: 'windows'
                                 };
 
                                 colItem.floatingFilterComponentParams = {
@@ -857,7 +856,7 @@ export default {
                                     isClient: this.isClient,
                                     filterModel: this.filterModel,
                                     filterType: 'text',
-                                    filterData: this.isClient ? this.onClientFilter : this.filterData,
+                                    filterData: this.isClient ? this.onClientFilter : this.filterData
                                 };
 
                                 this.selectInputModels.push(item.model);
@@ -872,11 +871,11 @@ export default {
                             if (!this.isClient) {
                                 //Todo when server filter fns
                             } else {
-                                colItem.filter = 'agSetColumnFilter';
-                                colItem.floatingFilterComponent = 'SetFilterDate';
+                                colItem.filter = "agSetColumnFilter";
+                                colItem.floatingFilterComponent = "SetFilterDate";
 
                                 colItem.filterParams = {
-                                    newRowsAction: 'keep',
+                                    newRowsAction: "keep",
                                     selectAllOnMiniFilter: false,
                                     suppressSyncValuesAfterDataChange: false,
                                     suppressRemoveEntries: false,
@@ -891,18 +890,18 @@ export default {
                                     isClient: this.isClient,
                                     filterModel: this.filterModel,
                                     filterType: 'text',
-                                    filterData: this.isClient ? this.onClientFilter : this.filterData,
+                                    filterData: this.isClient ? this.onClientFilter : this.filterData
                                 };
 
                                 this.selectInputModels.push(item.model);
                             }
                             break;
                         default:
-                            colItem.filter = 'agTextColumnFilter';
+                            colItem.filter = "agTextColumnFilter";
 
                             if (!this.isClient) {
                                 colItem.filterParams = {
-                                    newRowsAction: 'keep',
+                                    newRowsAction: "keep",
                                     suppressAndOrCondition: true,
                                     textCustomComparator: (filter, value, filterText) => {
                                         return filterText.replace('*', '');
@@ -910,7 +909,7 @@ export default {
                                 };
                             } else {
                                 colItem.filterParams = {
-                                    newRowsAction: 'keep',
+                                    newRowsAction: "keep",
                                     suppressAndOrCondition: true,
                                     textCustomComparator: (filter, value, filterText) => {
                                         let startWith = false;
@@ -948,6 +947,7 @@ export default {
                 } else {
                     colItem.filter = false;
                 }
+
 
                 if (this.isStatic) {
                     if (this.header != null) {

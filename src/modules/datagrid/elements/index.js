@@ -1,112 +1,92 @@
+import { defineAsyncComponent, inject } from 'vue'
 export const elementList = [
     {
         element: "Text",
-        component: () => import(/* webpackChunkName: "grid-Text" */'./Text.vue'),
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Text" */'./Text.vue')),
     },
-    // {
-    //     element: "Number",
-    //     component: () => import(/* webpackChunkName: "grid-Number" */'./Number.vue'),
-    // },
-    // {
-    //     element: "Date",
-    //     component: () => import(/* webpackChunkName: "grid-Date" */'./Date.vue'),
-    // },
-    // {
-    //     element: "Image",
-    //     component: () => import(/* webpackChunkName: "grid-Image" */'./Image.vue'),
-    // },
-    // {
-    //     element: "File",
-    //     component: () => import(/* webpackChunkName: "grid-File" */'./File.vue'),
-    // },
-    // {
-    //     element: "Checkbox",
-    //     component:()=> import(/* webpackChunkName: "grid-Checkbox" */'./Check.vue'),
-    // },
-    // // {
-    // //     element: "ColorPicker",
-    // //     component: () => import(/* webpackChunkName: "grid-ColorPicker" */'./ColorPicker.vue'),
-    // // },
-    // {
-    //     element: "Custom",
-    //     component: () => import(/* webpackChunkName: "grid-Custom" */'./Custom.vue'),
-    // },
-    // // {
-    // //     element: "DateRange",
-    // //     component: () => import(/* webpackChunkName: "grid-DateRange" */'./DateRange.vue'),
-    // // },
-    // // {
-    // //     element: "DateRangeDouble",
-    // //     component: () => import(/* webpackChunkName: "grid-DateRangeDouble" */'./DateRangeDouble.vue'),
-    // // },
-    // {
-    //     element: "File",
-    //     component: () => import(/* webpackChunkName: "grid-File" */'./File.vue'),
-    // },
-    // {
-    //     element: "Html",
-    //     component: () => import(/* webpackChunkName: "grid-Html" */'./Html.vue'),
-    // },
-    // {
-    //     element: "Input",
-    //     component: () => import(/* webpackChunkName: "grid-Input" */'./Input.vue'),
-    // },
-    // {
-    //     element: "InputNumber",
-    //     component:()=> import(/* webpackChunkName: "grid-InputNumber" */'./Number.vue'),
-    // },
-    // {
-    //     element: "Link",
-    //     component: () => import(/* webpackChunkName: "grid-Link" */'./Link.vue'),
-    // },
-    // {
-    //     element: "Radio",
-    //     component: () => import(/* webpackChunkName: "grid-Radio" */'./Radio.vue'),
-    // },
-    // {
-    //     element: "Select",
-    //     component: () => import(/* webpackChunkName: "grid-Select" */'./Select.vue'),
-    // },
-    // {
-    //     element: "Set-Filter",
-    //     component:()=> import(/* webpackChunkName: "grid-Text" */'./SetFilter.vue'),
-    // },
-    // {
-    //     element: "Selectable-Input",
-    //     component: () => import(/* webpackChunkName: "grid-SetFilter" */'./SetFilter.vue'),
-    // },
-    // {
-    //     element: "Set-Filter-Date",
-    //     component: () => import(/* webpackChunkName: "grid-SetFilterDate" */'./SetFilterDate.vue'),
-    // },
-    // {
-    //     element: "Set-Filter-Altered",
-    //     component: () => import(/* webpackChunkName: "grid-SetFilterAltered" */'./SetFilterAltered.vue'),
-    // },
-    // // {
-    // //     element: "Slider",
-    // //     component:()=> import(/* webpackChunkName: "grid-Text" */'./Text.vue'),
-    // // },
-    // {
-    //     element: "SVG",
-    //     component:()=> import(/* webpackChunkName: "grid-Text" */'./Image.vue'),
-    // },
-    // // {
-    // //     element: "Switch",
-    // //     component:()=> import(/* webpackChunkName: "grid-Text" */'./Switch.vue'),
-    // // },
-    // {
-    //     element: "Tag",
-    //     component: () => import(/* webpackChunkName: "grid-Tag" */'./Tag.vue'),
-    // },
-    // // {
-    // //     element: "Year",
-    // //     component:()=> import(/* webpackChunkName: "grid-Year" */'./Year.vue'),
-    // // },
-    // {
-    //     element: "Textarea",
-    //     component: () => import(/* webpackChunkName: "grid-Textarea" */'./Textarea.vue'),
-    // }
+    {
+        element: "Number",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Number" */'./Number.vue')),
+    },
+    {
+        element: "Date",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Date" */'./Date.vue')),
+    },
+    {
+        element: "Image",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Image" */'./Image.vue')),
+    },
+    {
+        element: "File",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-File" */'./File.vue')),
+    },
+    {
+        element: "Checkbox",
+        component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Checkbox" */'./Check.vue')),
+    },
+    {
+        element: "Custom",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Custom" */'./Custom.vue')),
+    },
+
+    {
+        element: "File",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-File" */'./File.vue')),
+    },
+    {
+        element: "Html",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Html" */'./Html.vue')),
+    },
+    {
+        element: "Input",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Input" */'./Input.vue')),
+    },
+    {
+        element: "InputNumber",
+        component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-InputNumber" */'./Number.vue')),
+    },
+    {
+        element: "Link",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Link" */'./Link.vue')),
+    },
+    {
+        element: "Radio",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Radio" */'./Radio.vue')),
+    },
+    {
+        element: "Select",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Select" */'./Select.vue')),
+    },
+    {
+        element: "Set-Filter",
+        component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Text" */'./SetFilter.vue')),
+    },
+    {
+        element: "Selectable-Input",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-SetFilter" */'./SetFilter.vue')),
+    },
+    {
+        element: "Set-Filter-Date",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-SetFilterDate" */'./SetFilterDate.vue')),
+    },
+    {
+        element: "Set-Filter-Altered",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-SetFilterAltered" */'./SetFilterAltered.vue')),
+    },
+
+    {
+        element: "SVG",
+        component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Text" */'./Image.vue')),
+    },
+
+    {
+        element: "Tag",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Tag" */'./Tag.vue')),
+    },
+    {
+        element: "Textarea",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Textarea" */'./Textarea.vue')),
+    }
 ]
 
 
@@ -126,15 +106,15 @@ export const element = (type) => {
                 return elementList[elIndex].component;
             }
         } catch (e) {
-            // if (window.init.data_grid_custom_elements) {
-            //     let custom = window.init.data_grid_custom_elements.find(custom_element => custom_element.element == type);
-            //     if (custom.length>0 && custom) {
-            //         return require(`datagrid_custom/${type}.vue`).default;
-            //     } else
-            //         return elementList[0].component;
-            // } else {
-            //     throw e;
-            // }
+            const customElementList = inject('customDataGridElementList')
+            if(customElementList){
+                if(customElementList.length >= 1){
+                    const elIndex = customElementList.findIndex(el => el.element === type);
+                    if (elIndex >= 0) {
+                        return customElementList[elIndex].component
+                    }
+                }
+            }
         }
     }
 }

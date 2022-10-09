@@ -61,11 +61,11 @@
         min-width: 230px;
         margin-left: 20px;
         &-widget {
-            background: #ffffff;
+
             &-header {
                 border-bottom: solid 1px #dedede;
                 padding: 5px 15px;
-                height: 32px;
+                height: 56px;
                 display: flex;
                 align-items: center;
                 h3 {
@@ -78,8 +78,8 @@
             }
             &-body {
                 padding: 20px 15px;
-                .ivu-form {
-                    .ivu-form-item {
+                .ant-form {
+                    .ant-form-item {
                         margin-bottom: 15px;
                         &:last-child {
                             margin-bottom: 0;
