@@ -1,8 +1,9 @@
 import {localeText} from "./agMN.js";
+import {isDesktop, isTablet} from "../../../utils/device";
 
 export const data = () => {
     return {
-
+        showMobileFilter:false,
         isLoading: true,
         identity: "id",
         overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Түр хүлээнэ үү</span>',
@@ -96,6 +97,7 @@ export const data = () => {
         showGrid: false,
         saveFilter: false,
         selectInputModels: [],
+
     }
 }
 

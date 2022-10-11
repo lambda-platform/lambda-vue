@@ -1,7 +1,7 @@
 <template>
     <div class="dg-filter">
         <div class="dg-filter-widget">
-            <div class="dg-filter-widget-header">
+            <div class="dg-filter-widget-header" v-if="!hideTitle">
                 <h3>{{lang.infoCourt}}</h3>
             </div>
             <div class="dg-filter-widget-body">
@@ -20,7 +20,7 @@
                         </a-form-item>
                     </template>
                     <a-form-item>
-                        <a-button type="primary" long @click="$parent.filterData(1)" block>
+                        <a-button type="primary" long @click="filterData(1)" block>
                             <template #icon><SearchOutlined /></template>
                             {{lang.filtering}}
                         </a-button>
@@ -40,9 +40,10 @@
     import GridRowUpdate from "./GridRowUpdate";
     import {getRelationData} from "../dataform/utils/helpers";
     import {getOptionsData} from "../../utils/relation";
+
     import { SearchOutlined } from '@ant-design/icons-vue';
     export default {
-        props: ["model", "schema", "schemaID", "permissions", "url"],
+        props: ["model", "schema", "schemaID", "permissions", "url", 'hideTitle', 'filterData'],
         components:{
             GridRowUpdate:GridRowUpdate,
             SearchOutlined
@@ -52,6 +53,7 @@
               relations: {},
           }
         },
+
         computed: {
             lang() {
                 const labels = ['infoCourt', 'filtering', 'updatedSuccessfully', 'errorOccurredWhileUpdating', 'pleaseSelectUpdateLine'
@@ -61,6 +63,7 @@
                     return obj;
                 }, {});
             },
+
         },
 
         methods: {

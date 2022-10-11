@@ -59,13 +59,46 @@
                     {{ lang.total }} : {{ info.total }}
                     <span v-if="aggregations.forumlaResult != ''">| {{ aggregations.forumlaResult }}</span>
                 </div>
-                <a-pagination v-if="!this.isClient"  :rows="query.paginate" v-model:current="query.currentPage" v-model:pageSize="query.paginate"  show-size-changer  :total="info.total" size="small" @change="changePage" :pageSizeOptions="['10', '20', '30', '50', '100', '500']"></a-pagination>
+                <a-pagination v-if="!this.isClient" :rows="query.paginate" v-model:current="query.currentPage"
+                              v-model:pageSize="query.paginate" show-size-changer :total="info.total" size="small"
+                              @change="changePage"
+                              :pageSizeOptions="['10', '20', '30', '50', '100', '500']"></a-pagination>
             </div>
         </div>
 
-                <datafilter class="bg-white dark:bg-slate-900 rounded-md" v-if="template == 1 || template==3" :schemaID="schemaID" :schema="schema" :permissions="permissions"
-                            :url="url"
-                            :model="filterModel"></datafilter>
+
+        <div class="fixed top-20 right-2"  v-if="isMobile && template == 1 || isMobile && template==3">
+            <a-button type="outline" @click="showMobileFilter = true" shape="circle" size="large">
+                <template #icon>
+                      <span class="settings-btn ant-btn-svg-icon">
+                        <inline-svg
+                            src="/assets/icons/duotune/general/gen021.svg"
+                        />
+                      </span>
+                </template>
+            </a-button>
+        </div>
+        <a-drawer
+            v-if="isMobile && template == 1 || isMobile && template==3"
+            v-model:visible="showMobileFilter"
+            class="custom-class"
+            style="color: red"
+            :title="lang.infoCourt"
+            placement="right"
+
+        >
+            <datafilter class="bg-white dark:bg-slate-900 rounded-md" v-if="isMobile && template == 1 || isMobile && template==3"
+                        :schemaID="schemaID" :schema="schema" :permissions="permissions"
+                        :url="url"
+                        :hideTitle="true"
+                        :filterData="filterData"
+                        :model="filterModel" ></datafilter>
+        </a-drawer>
+        <datafilter class="bg-white dark:bg-slate-900 rounded-md" v-if="!isMobile && template == 1 || !isMobile && template==3"
+                    :schemaID="schemaID" :schema="schema" :permissions="permissions"
+                    :url="url"
+                    :filterData="filterData"
+                    :model="filterModel" ></datafilter>
 
         <!--        <paper-modal-->
         <!--            name="print-modal"-->
@@ -121,9 +154,9 @@
         <!--            </div>-->
         <!--        </Modal>-->
 
-<!--                <GridRowUpdate v-if="template == 0 || template==2"-->
-<!--                               :permissions="permissions" :model="filterModel" :schema="schema" :url="url" :inFilter="false" :schemaID="schemaID"-->
-<!--                />-->
+        <!--                <GridRowUpdate v-if="template == 0 || template==2"-->
+        <!--                               :permissions="permissions" :model="filterModel" :schema="schema" :url="url" :inFilter="false" :schemaID="schemaID"-->
+        <!--                />-->
 
     </div>
 </template>
@@ -139,18 +172,19 @@ import {
 
 LicenseManager.prototype.validateLicense = () => {
 };
-import { AgGridVue } from 'ag-grid-vue3';
+import {AgGridVue} from 'ag-grid-vue3';
 
 
 import 'lodash';
-import { data, tableToExcel } from './utils/data';
-import { dataFromTemplate, evil } from './utils/formula.js';
-import { compareObj, isValid } from './utils/methods';
-import { convertLink } from './utils/formula';
+import {data, tableToExcel} from './utils/data';
+import {dataFromTemplate, evil} from './utils/formula.js';
+import {compareObj, isValid} from './utils/methods';
+import {convertLink} from './utils/formula';
 // import Print from "./Print";
 // import ExcelImport from "./ExcelImport";
 import DataFilter from "./DataFilter";
-import { getNumber, number, formatedNumber } from './utils/number.js';
+import {getNumber, number, formatedNumber} from './utils/number.js';
+import {isMobile} from '../../utils/device.ts';
 import GridActions from './GridActions';
 
 //Grid elements
@@ -176,8 +210,9 @@ import SetFilterDate from './elements/SetFilterDate';
 import SetFilterAltered from './elements/SetFilterAltered';
 import './elements/ExcelFilter.js';
 import GridRowUpdate from "./GridRowUpdate";
-import { notification } from 'ant-design-vue';
+import {notification} from 'ant-design-vue';
 import {isNumber} from "@vueuse/core";
+
 export default {
     name: 'datagrid',
     props: [
@@ -206,13 +241,16 @@ export default {
         // }),
         lang() {
             const labels = ['ruSureYouDeleteInfo', 'yes', 'no', 'total', 'infoDeleted', 'errorMsg', 'successfullySaved', 'noChangesHaveBeenReported',
-                'pleaseWaitForLoading',
+                'pleaseWaitForLoading', 'infoCourt'
             ];
 
             return labels.reduce((obj, key, i) => {
                 obj[key] = this.$t('dataGrid.' + labels[i]);
                 return obj;
             }, {});
+        },
+        isMobile(){
+            return isMobile.value
         }
     },
     components: {
@@ -242,10 +280,6 @@ export default {
 
     data() {
         return data();
-    },
-
-    beforeMount() {
-
     },
 
     watch: {
@@ -324,30 +358,30 @@ export default {
             this.schema = gridSchema.schema;
 
 
-            if(this.$route.query.sort){
+            if (this.$route.query.sort) {
                 this.query.sort = this.$route.query.sort
             } else {
                 this.query.sort = gridSchema.sort;
             }
-            if(this.$route.query.order){
+            if (this.$route.query.order) {
                 this.query.order = this.$route.query.order
             } else {
                 this.query.order = gridSchema.sortOrder;
             }
-            if(this.$route.query.paginate){
-                if(!isNaN(this.$route.query.paginate)) {
-                    this.query.paginate = this.$route.query.paginate*1
+            if (this.$route.query.paginate) {
+                if (!isNaN(this.$route.query.paginate)) {
+                    this.query.paginate = this.$route.query.paginate * 1
                 }
             } else {
                 this.query.paginate = gridSchema.paging;
             }
 
-            if(this.$route.query.currentPage){
-               if(!isNaN(this.$route.query.currentPage)){
-                   this.query.currentPage = this.$route.query.currentPage*1
-               } else {
-                   this.query.currentPage = 1;
-               }
+            if (this.$route.query.currentPage) {
+                if (!isNaN(this.$route.query.currentPage)) {
+                    this.query.currentPage = this.$route.query.currentPage * 1
+                } else {
+                    this.query.currentPage = 1;
+                }
             } else {
                 this.query.currentPage = 1;
             }
@@ -382,42 +416,42 @@ export default {
              */
             this.gridOptions.getRowStyle = (params) => {
                 if ((this.$props.schemaID == 220) && isValid(params.data.ubtirsenognoo)) {
-                    return { 'background-color': '#87cefa' };
+                    return {'background-color': '#87cefa'};
                 }
 
                 if ((this.$props.schemaID == 224 && isValid(params.data.chw_status))) {
                     if (params.data.chw_status == 9) {
-                        return { 'background-color': '#d7f9e2' };
+                        return {'background-color': '#d7f9e2'};
                     } else if (params.data.chw_status == 8) {
-                        return { 'background-color': '#ffe4e4' };
+                        return {'background-color': '#ffe4e4'};
                     } else if (params.data.chw_status == 7) {
-                        return { 'background-color': '#d5eaff' };
+                        return {'background-color': '#d5eaff'};
                     }
                 }
 
                 if (this.$props.schemaID == 230) {
                     if (params.data.chw_status == 9) {
-                        return { 'background-color': '#d7f9e2' };
+                        return {'background-color': '#d7f9e2'};
                     } else if (params.data.chw_status == 6 || params.data.chw_status == 8) {
-                        return { 'background-color': '#ffe4e4' };
+                        return {'background-color': '#ffe4e4'};
                     } else {
                         if (isValid(params.data.ubtirsenognoo)) {
-                            return { 'background-color': '#d5eaff' };
+                            return {'background-color': '#d5eaff'};
                         }
                     }
                 }
 
                 if (this.$props.schemaID == 264) {
                     if (params.data.chw_status == 7) {
-                        return { 'background-color': '#d5eaff' };
+                        return {'background-color': '#d5eaff'};
                     }
 
                     if (params.data.chw_status == 9) {
-                        return { 'background-color': '#d7f9e2' };
+                        return {'background-color': '#d7f9e2'};
                     }
 
                     if (params.data.chw_status == 6 || params.data.chw_status == 8) {
-                        return { 'background-color': '#ffe4e4' };
+                        return {'background-color': '#ffe4e4'};
                     }
                 }
             };
@@ -693,7 +727,7 @@ export default {
                 }
 
                 if (this.fullText) {
-                    colItem.cellStyle = { 'white-space': 'normal' };
+                    colItem.cellStyle = {'white-space': 'normal'};
                     colItem.autoHeight = true;
                 }
 
@@ -1107,8 +1141,8 @@ export default {
 
         columnResized(event) {
             if (event.finished) {
-               // console.log(event)
-               // window.localStorage.setItem(this.$props.schemaID + '_column_width_' + event.column.colId, event.column.actualWidth);
+                // console.log(event)
+                // window.localStorage.setItem(this.$props.schemaID + '_column_width_' + event.column.colId, event.column.actualWidth);
             }
         },
 
@@ -1171,7 +1205,7 @@ export default {
                 filters.custom_condition = this.custom_condition;
             }
 
-            axios.post(url, filters).then(({ data }) => {
+            axios.post(url, filters).then(({data}) => {
                 if (this.isClient) {
                     if (Array.isArray(data)) {
                         this.$data.data = data;
@@ -1244,13 +1278,14 @@ export default {
 
         filterData(page) {
             this.changePage(page);
+            this.showMobileFilter = false;
         },
 
         fetchAggregations(filters) {
             this.aggregations.loading = true;
             this.aggregations.forumlaResult = '';
             this.aggregations.data = [];
-            axios.post(`/lambda/puzzle/grid/aggergation/${this.customShemaId ? this.customShemaId : this.$props.schemaID}`, filters).then(({ data }) => {
+            axios.post(`/lambda/puzzle/grid/aggergation/${this.customShemaId ? this.customShemaId : this.$props.schemaID}`, filters).then(({data}) => {
                 let mirror_data = {};
 
                 this.aggregations.columnAggregations.map(columnAggregation => {
@@ -1356,18 +1391,18 @@ export default {
 
         changePage(page, pageSize) {
             // if (pageNumber > 1) {
-            this.query.currentPage =page;
-            if(pageSize){
-                this.query.paginate =pageSize;
+            this.query.currentPage = page;
+            if (pageSize) {
+                this.query.paginate = pageSize;
             }
 
             // this.$router.replace({...this.$route.query, dp: pageNumber})
             this.$router.push({
                 query: {
-                    sort:this.query.sort,
-                    order:this.query.order,
-                    paginate:this.query.paginate,
-                    currentPage:this.query.currentPage,
+                    sort: this.query.sort,
+                    order: this.query.order,
+                    paginate: this.query.paginate,
+                    currentPage: this.query.currentPage,
                 }
             });
             // }
@@ -1441,21 +1476,21 @@ export default {
             localStorage.removeItem(`grid-${this.schemaID}`);
 
 
-            if(this.$route.query.sort){
+            if (this.$route.query.sort) {
                 this.query.sort = this.$route.query.sort
             }
-            if(this.$route.query.order){
+            if (this.$route.query.order) {
                 this.query.order = this.$route.query.order
             }
-            if(this.$route.query.paginate){
-                if(!isNaN(this.$route.query.paginate)) {
-                    this.query.paginate = this.$route.query.paginate*1
+            if (this.$route.query.paginate) {
+                if (!isNaN(this.$route.query.paginate)) {
+                    this.query.paginate = this.$route.query.paginate * 1
                 }
             }
 
-            if(this.$route.query.currentPage){
-                if(!isNaN(this.$route.query.currentPage)){
-                    this.query.currentPage = this.$route.query.currentPage*1
+            if (this.$route.query.currentPage) {
+                if (!isNaN(this.$route.query.currentPage)) {
+                    this.query.currentPage = this.$route.query.currentPage * 1
                 } else {
                     this.query.currentPage = 1;
                 }
@@ -1493,7 +1528,7 @@ export default {
 
                 axios
                     .post(url, filters)
-                    .then(({ data }) => {
+                    .then(({data}) => {
                         if (data.tableRows) {
                             let Header = document.getElementById('custom-header');
                             tableToExcel(Header ? Header.innerHTML : '', data.tableRows, data.name);
@@ -1536,16 +1571,16 @@ export default {
                 byteArrays.push(byteArray);
             }
 
-            let blob = new Blob(byteArrays, { type: contentType });
+            let blob = new Blob(byteArrays, {type: contentType});
             return blob;
         },
 
         print() {
-            this.$modal.show('print-modal', { sid: this.customShemaId ? this.customShemaId : this.$props.schemaID });
+            this.$modal.show('print-modal', {sid: this.customShemaId ? this.customShemaId : this.$props.schemaID});
         },
 
         importExcel() {
-            this.$modal.show('import-excel-modal', { sid: this.customShemaId ? this.customShemaId : this.$props.schemaID });
+            this.$modal.show('import-excel-modal', {sid: this.customShemaId ? this.customShemaId : this.$props.schemaID});
         },
 
         //Default grid actions
@@ -1797,7 +1832,7 @@ export default {
 
                 //response should have data[] and status boolean
                 axios.post(editUrl, postData)
-                    .then(({ data }) => {
+                    .then(({data}) => {
                         if (data.status) {
                             setTimeout(() => {
                                 let successValue = `<span class='success-cell'><span>${cell.value}</span><i class='ti-check'></i></span>`;
@@ -1863,7 +1898,7 @@ export default {
             let editUrl = convertLink(this.editableAction, row.data);
 
             axios.post(editUrl, row.data)
-                .then(({ data }) => {
+                .then(({data}) => {
                     this.$Message.destroy();
                     if (data.status) {
                         this.$Message.success({
@@ -1921,7 +1956,7 @@ export default {
 
             //Post with row index and data. Response should have row index and update model data
             axios.post(editUrl, this.changedRowsData)
-                .then(({ data }) => {
+                .then(({data}) => {
                     this.$Message.destroy();
                     if (data.status) {
                         this.$Message.success({
@@ -1994,7 +2029,6 @@ export default {
 };
 </script>
 <style lang='scss'>
-
 
 
 </style>

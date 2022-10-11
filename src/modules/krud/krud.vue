@@ -1,5 +1,5 @@
 <template>
-    <component :is="renderTemplate(property.template)" v-bind="property"/>
+    <component :is="renderTemplate(property.template)" v-bind="property"  />
 </template>
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from 'vue'
