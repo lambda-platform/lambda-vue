@@ -802,7 +802,7 @@ export default {
                                     schemaID: this.schemaID,
                                     column: this.schema.find(col => col.model === item.model),
                                     filterModel: this.filterModel,
-                                    filterData: this.filterData
+                                    filterData: this.updateFilterModel
                                 };
                             } else {
                                 colItem.filter = "agTextColumnFilter";
@@ -823,7 +823,7 @@ export default {
                                     schemaID: this.schemaID,
                                     column: this.schema.find(col => col.model == item.model),
                                     filterModel: this.filterModel,
-                                    filterData: this.filterData
+                                    filterData: this.updateFilterModel
                                 };
                             } else {
                                 colItem.filter = "agTextColumnFilter";
@@ -890,7 +890,7 @@ export default {
                                     isClient: this.isClient,
                                     filterModel: this.filterModel,
                                     filterType: 'text',
-                                    filterData: this.isClient ? this.onClientFilter : this.filterData
+                                    filterData: this.isClient ? this.onClientFilter : this.updateFilterModel
                                 };
 
                                 this.selectInputModels.push(item.model);
@@ -924,7 +924,7 @@ export default {
                                     isClient: this.isClient,
                                     filterModel: this.filterModel,
                                     filterType: 'text',
-                                    filterData: this.isClient ? this.onClientFilter : this.filterData
+                                    filterData: this.isClient ? this.onClientFilter : this.updateFilterModel
                                 };
 
                                 this.selectInputModels.push(item.model);
@@ -1275,7 +1275,10 @@ export default {
                 this.isLoading = false;
             });
         },
-
+        updateFilterModel(model, val) {
+            this.filterModel[model] = val;
+            this.filterData(1);
+        },
         filterData(page) {
             this.changePage(page);
             this.showMobileFilter = false;
@@ -1768,15 +1771,18 @@ export default {
         },
 
         onFilterChanged(event) {
+
             if (this.saveFilter) {
                 this.saveFilterState(event);
             }
+
 
             //when enable server side filter
             if (!this.isClient) {
                 this.filterModel = {};
                 let filters = event.api.getFilterModel();
                 for (let key in filters) {
+
                     this.filterModel[key] = filters[key];
                 }
                 this.filterData(1);

@@ -6,16 +6,23 @@
 <!--             :allow-empty="false"-->
 <!--             @input="valueChanged">-->
 <!--    </mSelect>-->
-    <div>
-        Need update select
-    </div>
+    <a-select
+        ref="select"
+        v-model:value="selected"
+
+        allowClear
+        showSearch
+        @change="valueChanged"
+
+        :options="options"
+    />
+
 </template>
 
 <script>
 
 import axios from "axios";
 
-import {element} from "../elements";
 
 export default {
     components: {
@@ -64,15 +71,14 @@ export default {
     },
 
     methods: {
-        element: element,
+
         setMeta(item) {
             item.schemaID = this.params.schemaID;
             return item;
         },
 
         valueChanged(v) {
-            this.params.filterModel[this.params.column.model] = 'value' in v ? v.value : v[0];
-            this.params.filterData(1);
+            this.params.filterData(this.params.column.model, v);
         },
 
         onParentModelChanged(parentModel) {

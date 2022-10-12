@@ -11,6 +11,6 @@
 <script>
 import mixin from "./_mixin"
 export default {
-    mixins:[mixin]
+    mixins:[mixin],
 };
 </script>
