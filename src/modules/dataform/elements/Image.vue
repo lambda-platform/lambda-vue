@@ -3,7 +3,8 @@
 
         <a-upload
             v-model:file-list="uploadList"
-            :multiple="this.meta.file.isMultiple"
+            :multiple="this.isMultiple"
+            :disabled="disabled"
             name="file"
             list-type="picture-card"
             :action="`${url ? url : ''}/lambda/krud/upload`"
@@ -32,8 +33,8 @@
 
 <script>
 import mixin from './_mixin'
-import { message } from 'ant-design-vue'
-import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue'
+import {message} from 'ant-design-vue'
+import {PlusOutlined, LoadingOutlined} from '@ant-design/icons-vue'
 
 export default {
     mixins: [mixin],
@@ -42,7 +43,7 @@ export default {
         PlusOutlined,
     },
     computed: {
-        lang () {
+        lang() {
             const labels = ['viewPhotos', '_delete'
             ]
             return labels.reduce((obj, key, i) => {
@@ -50,12 +51,23 @@ export default {
                 return obj
             }, {})
         },
+        isMultiple() {
+            if (this.meta.file) {
+                if (typeof this.meta.file.isMultiple !== 'undefined' && this.meta.file.isMultiple) {
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                return false
+            }
+        }
     },
-    mounted () {
+    mounted() {
 
         this.init()
     },
-    data () {
+    data() {
         return {
             defaultList: [],
             uploadList: [],
@@ -67,10 +79,12 @@ export default {
 
     watch: {
 
-        itemValue (value, oldValue) {
+        itemValue(value, oldValue) {
             if ((oldValue && !value) || (value && !oldValue)) {
                 if (value) {
                     this.init()
+                } else {
+                    this.uploadList = [];
                 }
             }
         }
@@ -78,10 +92,10 @@ export default {
     },
 
     methods: {
-        init () {
+        init() {
 
             if (this.model.form[this.model.component]) {
-                if (typeof this.meta.file.isMultiple !== 'undefined' && this.meta.file.isMultiple) {
+                if (this.isMultiple) {
                     if (JSON.stringify(this.uploadList !== this.model.form[this.model.component])) {
                         let list = JSON.parse(this.model.form[this.model.component])
                         if (Array.isArray(list)) {
@@ -93,14 +107,14 @@ export default {
                         if (this.uploadList[0].response !== this.model.form[this.model.component]) {
                             this.uploadList = [{
                                 status: 'done',
-                                thumbUrl:this.url+ this.model.form[this.model.component],
+                                thumbUrl: this.url + this.model.form[this.model.component],
                                 response: this.model.form[this.model.component],
                             }]
                         }
                     } else {
                         this.uploadList = [{
                             status: 'done',
-                            thumbUrl: this.url+this.model.form[this.model.component],
+                            thumbUrl: this.url + this.model.form[this.model.component],
                             response: this.model.form[this.model.component],
                         }]
                     }
@@ -108,14 +122,14 @@ export default {
             }
 
         },
-        onVisibleChange (v) {
+        onVisibleChange(v) {
             this.showImage = v
         },
-        handleView (file) {
+        handleView(file) {
             this.showImage = true
-            this.showImageUrl = this.url+file.response
+            this.showImageUrl = this.url + file.response
         },
-        handleChange (info) {
+        handleChange(info) {
 
             if (info.file.status === 'uploading') {
                 this.loading = true
@@ -124,11 +138,11 @@ export default {
             }
             if (info.file.status === 'done') {
 
-                if (!this.meta.file.isMultiple) {
+                if (!this.isMultiple) {
                     this.model.form[this.model.component] = info.file.response
                     this.uploadList = [{
                         status: 'done',
-                        thumbUrl: this.url+this.model.form[this.model.component],
+                        thumbUrl: this.url + this.model.form[this.model.component],
                         response: this.model.form[this.model.component],
                         name: info.file.name
                     }]
@@ -136,7 +150,7 @@ export default {
                     this.uploadList = this.uploadList.map(u => {
                         return {
                             status: 'done',
-                            thumbUrl: this.url+u.response,
+                            thumbUrl: this.url + u.response,
                             response: u.response,
                             name: u.name
                         }
@@ -146,31 +160,35 @@ export default {
                 this.loading = false
             }
             if (info.file.status === 'error') {
-                this.uploadList = this.uploadList.filter(u=>u.status === 'done');
+                this.uploadList = this.uploadList.filter(u => u.status === 'done');
                 this.loading = false;
                 message.error(this.$t("alertMessage.errorMsg"))
             }
         },
 
-        success (val) {
+        success(val) {
 
-            if (this.meta.file.isMultiple) {
-                this.uploadList = this.$refs.upload.fileList
-                this.model.form[this.model.component] = JSON.stringify(this.uploadList.map(item => {
-                    return {
-                        name: item.name,
-                        response: item.response
-                    }
-                }))
+            if (this.meta.file) {
+                if (this.isMultiple) {
+                    this.uploadList = this.$refs.upload.fileList
+                    this.model.form[this.model.component] = JSON.stringify(this.uploadList.map(item => {
+                        return {
+                            name: item.name,
+                            response: item.response
+                        }
+                    }))
+                } else {
+                    this.model.form[this.model.component] = val
+                }
             } else {
                 this.model.form[this.model.component] = val
             }
         },
 
-        handleRemove (e) {
+        handleRemove(e) {
 
-            if (this.meta.file.isMultiple) {
-                this.model.form[this.model.component] = JSON.stringify(this.uploadList.filter(u=>u.response !== e.response))
+            if (this.isMultiple) {
+                this.model.form[this.model.component] = JSON.stringify(this.uploadList.filter(u => u.response !== e.response))
             } else {
                 this.model.form[this.model.component] = null
             }

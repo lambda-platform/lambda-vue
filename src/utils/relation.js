@@ -48,7 +48,7 @@ const getSelectItem = (item, selects, setSchemaByModel) =>{
                 }
             })
 
-            if (item.relation.filter == '' || typeof item.relation.filter === 'undefined') {
+            if (item.relation.filter === '' || typeof item.relation.filter === 'undefined') {
                 item.relation.filter = userConditions
 
                 if(setSchemaByModel !== undefined){
@@ -62,7 +62,7 @@ const getSelectItem = (item, selects, setSchemaByModel) =>{
             }
         } else {
             let condition = `${item.relation.filterWithUser['tableField']} = '${window.init.user[item.relation.filterWithUser['userField']]}'`
-            if (item.relation.filter == '' || typeof item.relation.filter === 'undefined') {
+            if (item.relation.filter === '' || typeof item.relation.filter === 'undefined') {
                 item.relation.filter = condition
             } else {
                 item.relation.filter = item.relation.filter + ' AND ' + condition
@@ -75,7 +75,7 @@ const getSelectItem = (item, selects, setSchemaByModel) =>{
 
     }
 
-    if (item.relation.filter == '' || typeof item.relation.filter === 'undefined') {
+    if (item.relation.filter === '' || typeof item.relation.filter === 'undefined') {
 
         selects[item.relation.table] = item.relation
 
@@ -88,30 +88,46 @@ const getSelectItem = (item, selects, setSchemaByModel) =>{
 const getSelects = (schema, microserviceID) =>{
     let selects = {}
 
-    schema.map(item => {
+    schema.forEach(item => {
         if (item.formType === 'Radio' || item.formType === 'Select' || item.formType === 'ISelect' || item.formType === 'TreeSelect' || item.formType === 'FooterButton') {
             if (item.relation.table) {
-                if (typeof selects[item.relation.table] === 'undefined') {
+
+                if (item.relation.filter === '' || typeof item.relation.filter === 'undefined') {
+                    if (typeof selects[item.relation.table] === 'undefined') {
 
 
-                    if (microserviceID !== undefined) {
-                        if (item.relation.microservice_id == microserviceID) {
+                        if (microserviceID !== undefined) {
+                            if (item.relation.microservice_id == microserviceID) {
+                                selects = getSelectItem(item, selects)
+                            }
+                        } else {
                             selects = getSelectItem(item, selects)
                         }
-                    } else {
-                        selects = getSelectItem(item, selects)
-                    }
 
+                    }
+                } else {
+                    if (typeof selects[item.model] === 'undefined') {
+
+
+                        if (microserviceID !== undefined) {
+                            if (item.relation.microservice_id == microserviceID) {
+                                selects = getSelectItem(item, selects)
+                            }
+                        } else {
+                            selects = getSelectItem(item, selects)
+                        }
+
+                    }
                 }
             }
         }
 
-        if (item.formType == 'AdminMenu') {
+        if (item.formType === 'AdminMenu') {
             if (item.relation.table)
                 selects[item.relation.table] = item.relation
         }
 
-        if (item.formType == 'SubForm') {
+        if (item.formType === 'SubForm') {
 
             if (item.schema) {
                 let pre_selects = getSelects(item.schema, microserviceID)

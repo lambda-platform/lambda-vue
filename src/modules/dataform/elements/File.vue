@@ -4,6 +4,7 @@
         <div class="file-uploader">
             <a-upload
                 v-model:file-list="uploadList"
+                :disabled="disabled"
                 :multiple="this.isMultiple"
                 name="file"
                 list-type="picture-card"
@@ -76,6 +77,8 @@ export default {
             if ((oldValue && !value) || (value && !oldValue)) {
                 if (value) {
                     this.init()
+                } else {
+                    this.uploadList = [];
                 }
             }
         }
@@ -120,8 +123,11 @@ export default {
 
             this.showImageUrl = file.response
 
+
+
             const a = document.createElement('a')
             a.href = file.response;
+            a.target = "_blank";
             a.click()
         },
         handleChange (info) {
@@ -133,11 +139,11 @@ export default {
             }
             if (info.file.status === 'done') {
 
-                if (this.isMultiple) {
+                if (!this.isMultiple) {
                     this.model.form[this.model.component] = info.file.response
                     this.uploadList = [{
                         status: 'done',
-                        thumbUrl: this.model.form[this.model.component],
+                        thumbUrl: this.url+this.model.form[this.model.component],
                         response: this.model.form[this.model.component],
                         name: info.file.name
                     }]
@@ -145,7 +151,7 @@ export default {
                     this.uploadList = this.uploadList.map(u => {
                         return {
                             status: 'done',
-                            thumbUrl: u.response,
+                            thumbUrl: this.url+u.response,
                             response: u.response,
                             name: u.name
                         }

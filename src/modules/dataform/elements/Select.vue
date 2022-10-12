@@ -230,10 +230,18 @@ export default {
                 this.value = null
                 this.clearAble = false
                 this.ignoreChange = false
+                this.setNull();
             } else {
 
             }
         },
+        itemValue(value, oldValue) {
+            if ((oldValue && !value) || (value && !oldValue)) {
+                if (!value) {
+                    this.setNull();
+                }
+            }
+        }
     },
 
 }
