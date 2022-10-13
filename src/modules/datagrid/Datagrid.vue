@@ -23,7 +23,7 @@
 
                 <ag-grid-vue
                     ref='agGrid'
-                    :class="`${$appState.colorScheme === 'dark' ? 'ag-theme-material' : 'ag-theme-material'} ag-data-grid ag-table ${header != null ? 'custom-header-table custom-table-template' + template  : 'template-'+template} ${sideBar ? '' : 'no-sidebar'} ${fullText ? 'full-text' : ''} ${colFilterButton ? '' : 'no-filter-btn'} ${showGrid ? 'has-grid' : ''} ${theme ? theme : 'normal'}`"
+                    :class="`${$appState.colorScheme === 'dark' ? agGridTheme : agGridTheme} ag-data-grid ag-table ${header != null ? 'custom-header-table custom-table-template' + template  : 'template-'+template} ${sideBar ? '' : 'no-sidebar'} ${fullText ? 'full-text' : ''} ${colFilterButton ? '' : 'no-filter-btn'} ${showGrid ? 'has-grid' : ''} ${theme ? theme : 'normal'}`"
                     :style="`width: ${tableWidth != null ? tableWidth + 'px' : 'auto'}`"
                     :gridOptions='gridOptions'
                     :columnDefs='columns'
@@ -34,7 +34,7 @@
                     :overlayLoadingTemplate='overlayLoadingTemplate'
                     :rowSelection='selectionMethod'
                     :defaultColDef='defaultColDef'
-
+                    :enableRangeSelection="true"
                     :singleClickEdit='singleClickEdit'
                     :editType='editType'
                     :stopEditingWhenCellsLoseFocus='true'
@@ -50,6 +50,7 @@
                     @rowEditingStopped='onRowEditingStopped'
                     @cellEditingStarted='onCellEditingStarted'
                     @cellEditingStopped='onCellEditingStopped'
+
                     @columnResized='columnResized'>
                 </ag-grid-vue>
             </div>
@@ -251,6 +252,13 @@ export default {
         },
         isMobile(){
             return isMobile.value
+        },
+        agGridTheme(){
+            if(this.gridTheme === "balham"){
+                return "ag-theme-balham"
+            } else {
+                return "ag-theme-material"
+            }
         }
     },
     components: {
@@ -385,6 +393,10 @@ export default {
             } else {
                 this.query.currentPage = 1;
             }
+            if(gridSchema.gridTheme){
+                this.gridTheme = gridSchema.gridTheme;
+            }
+
             this.hasContextMenu = gridSchema.isContextMenu;
             this.gridActions = gridSchema.actions;
             this.identity = gridSchema.identity;
@@ -495,6 +507,15 @@ export default {
                     this.gridApi.setHeaderHeight(22);
                     this.gridApi.setFloatingFiltersHeight(22);
                     this.gridOptions.rowHeight = 24;
+                } else {
+                    if(this.gridTheme === "balham"){
+                        this.gridApi.setHeaderHeight(30);
+                        this.gridApi.setFloatingFiltersHeight(30);
+                    } else {
+                        this.gridApi.setHeaderHeight(56);
+                        this.gridApi.setFloatingFiltersHeight(40);
+                    }
+
                 }
             }
 

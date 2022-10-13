@@ -14,12 +14,18 @@ $primary-color: #3471f6;
     --ag-data-color:#f5f5f5 !important;
     --ag-toggle-button-off-border-color:#f5f5f5;
     --ag-row-hover-color:rgba(0, 0, 0, 0.3) !important;
+
     //.ag-row-hover {
     //    background: rgba(0, 0, 0, 1) !important;
     //}
     .ag-checkbox-input-wrapper.ag-checked::after {
         color: $primary-color !important;;
     }
+    .ag-header-cell-label{
+        color: #f5f5f5;
+        font-weight: 400;
+    }
+
 
     .ag-toggle-button-input-wrapper.ag-checked::before {
         border-color: #fff !important;

@@ -138,6 +138,14 @@
                 .no-border.ag-cell:focus {
                     border-right: 1px solid rgba(189, 195, 199, 0.39);
                 }
+
+                .ag-cell-range-right, .ag-cell-focus {
+                    border-right: solid 1px #0091ea !important;
+
+                    &:focus {
+                        border-right: solid 1px #0091ea !important;
+                    }
+                }
             }
         }
     }
@@ -612,3 +620,9 @@ img.ag-grid-image {
      display: block !important;
  }
 }
+.ag-floating-filter{
+    .ant-select-selector{
+        border: none !important;
+    }
+}
+

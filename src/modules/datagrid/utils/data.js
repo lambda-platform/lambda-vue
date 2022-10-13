@@ -11,6 +11,7 @@ export const data = () => {
         model: null,
         template: 2,
         theme: 'normal',
+        gridTheme: 'material',
         isClient: false,
         isPrint: false,
         isNumbered: false,
