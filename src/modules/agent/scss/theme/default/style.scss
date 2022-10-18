@@ -17,21 +17,6 @@ $color-success: #1abc9c;
     background-position: center top;
 
 
-    * {
-        margin: 0;
-        padding: 0;
-    }
-
-
-
-    *,
-    *:before,
-    *:after {
-        margin: 0;
-        padding: 0;
-        box-sizing: inherit;
-    }
-
 }
 
 @media only screen and (min-width: 308px) {
