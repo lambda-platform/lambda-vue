@@ -2,26 +2,10 @@ $color-primary: $primary-color;
 $color-danger: #e74c3c;
 $color-success: #1abc9c;
 
-* {
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-}
 
 /* BODY */
 
-body {
+.default-theme {
     position: relative;
     color: #666;
     font: 16px/26px "Roboto", sans-serif;
@@ -31,6 +15,22 @@ body {
     background: url('/assets/lambda/images/login-bg.jpg') no-repeat;
     background-size: cover;
     background-position: center top;
+
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    *,
+    *:before,
+    *:after {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+    }
 
 }
 
