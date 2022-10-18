@@ -141,6 +141,7 @@ export default {
             this.hideSide()
         },
         handleChange(){
+
             let add = this.$route.query.add;
             let edit = this.$route.query.edit;
             let id = this.$route.query.id;
@@ -150,6 +151,10 @@ export default {
                 this.rowId = id;
                 this.editMode = true;
                 this.openSlidePanel = true;
+            } else {
+                this.rowId = 0;
+                this.editMode = false;
+                this.openSlidePanel = false;
             }
         },
         getQuery(){
