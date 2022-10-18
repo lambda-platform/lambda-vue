@@ -12,9 +12,9 @@
                             <component
                                 :is="element(item.filter.type)"
                                 :model="{form: model, component: item.model}"
-                                       :label="item.filter.label ? item.filter.label : item.label"
+                                :label="item.filter.label ? item.filter.label : item.label"
                                 :meta="setMeta(item)"
-                                :relation_data='getRelation'
+                                :relation_data="getRelation"
                             >
                             </component>
                         </a-form-item>

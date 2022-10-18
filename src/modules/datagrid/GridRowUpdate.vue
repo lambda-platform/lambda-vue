@@ -13,7 +13,7 @@
             </portal>
         </div>
 
-        <div class="dg-filter-widget" v-for="item in schema.filter(ii=>ii.updateable && ii.update && ii.filter.type && permissions.u === true && inFilter)">
+        <div class="dg-filter-widget" v-for="item in columns">
             <div class="dg-filter-widget-header">
                 <h3>{{ item.update.updateLabel }}</h3>
             </div>
@@ -23,7 +23,9 @@
                         <component :is="element(item.filter.type)"
                                    :model="{form: item.update.updateForm, component: item.model}"
                                    :label="item.update.label ? item.update.label : item.label"
-                                   :meta="setMeta(item)">
+                                   :meta="setMeta(item)"
+                                   :relation_data="getRelation"
+                        >
                         </component>
                     </a-form-item>
                     <a-form-item>
@@ -40,6 +42,10 @@
 
 <script>
 import {element} from "./elements";
+import {getRelationData} from "../dataform/utils/helpers";
+import {getOptionsData} from "../../utils/relation";
+import axios from "axios";
+import {notification} from 'ant-design-vue';
 export default {
 
     props: ["model", "schema", "schemaID", "permissions", "url", "inFilter"],
@@ -56,12 +62,24 @@ export default {
                 return obj;
             }, {});
         },
+        columns(){
+            return this.schema.filter(ii=>ii.updateable && ii.update && ii.filter.type && this.permissions.u === true && this.inFilter)
+        }
     },
-
+    async mounted() {
+        await this.getRelations();
+    },
+    data(){
+        return {
+            relations: {},
+        }
+    },
     methods: {
         element: element,
         setMeta(item) {
             item.schemaID = this.$props.schemaID;
+            item.relation = item.filter.relation
+            item.formType = item.filter.type
             return item;
         },
         preUpdate(value, updateForm, model, refresh){
@@ -89,23 +107,50 @@ export default {
                         if (refresh) {
                             this.inFilter ? this.$parent.$parent.refresh() : this.$parent.refresh();
                         }
-                        this.$Message.success(this.lang.updatedSuccessfully);
-                        // this.$Message.success(this.lang.updatedSuccessfully);
 
-                        // updateForm[model] = null;
-
+                        notification["success"]({
+                            message: this.lang.updatedSuccessfully,
+                        });
                     } else {
-                        this.$Message.error(this.lang.errorOccurredWhileUpdating);
+
+                        notification["error"]({
+                            message: this.lang.errorOccurredWhileUpdating,
+                        });
                     }
                 }).catch(e => {
-                    this.$Message.error(this.lang.errorOccurredWhileUpdating);
+                    notification["error"]({
+                        message: this.lang.errorOccurredWhileUpdating,
+                    });
                 });
 
             } else {
-                this.$Message.warning(this.lang.pleaseSelectUpdateLine);
+
+                notification["error"]({
+                    message: this.lang.pleaseSelectUpdateLine,
+                });
             }
 
         },
+        getRelation(item) {
+
+            let s_index = this.columns.findIndex(schema => schema.model === item.model)
+            let i = s_index >= 0 ? this.columns[s_index] : item
+
+            return getRelationData({...i, relation:i.filter.relation}, this.relations)
+        },
+        async getRelations(){
+            let schema = []
+            this.schema.forEach(s=>{
+                if(s.updateable){
+                    schema.push({
+                        ...s, formType: s.filter.type, relation:s.filter.relation
+                    })
+                }
+            });
+
+            this.relations = await getOptionsData(schema, undefined, '');
+
+        }
     }
 }
 </script>
