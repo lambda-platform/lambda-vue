@@ -8,10 +8,10 @@
                 <div id="slideshow">
                     <div class="one">
                         <h2>
-                            <span>{{ lang.title }}</span>
+                            <span>{{ title }}</span>
                         </h2>
                         <p>
-                            {{ lang.subtitle }}
+                            {{ subTitle}}
                         </p>
                     </div>
                 </div>
