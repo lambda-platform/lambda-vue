@@ -80,7 +80,7 @@ const checkLambdaaccount = (rule, value, callback, baseUrl) => {
     })
 };
 const englishAlphabet = (rule, value, callback) => {
-    var letterNumber = /^[a-zA-Z!@#\$%\^\&*\s*)\(+=._-]+$/;
+    var letterNumber = /^[a-zA-Z!@#\$%\^\&*\s*)\(+=._,-]+$/;
     if(value.match(letterNumber)){
         callback();
     } else {
@@ -89,7 +89,7 @@ const englishAlphabet = (rule, value, callback) => {
 };
 const mongolianCyrillic = (rule, value, callback) => {
     // var letterNumber = /^[\u0400-\u04FF\s*]+$/;
-    var letterNumber = /^[а-яөүёА-ЯӨҮЁ0-9!@#\$%\^\&*\s*)\(+=._-]+$/;
+    var letterNumber = /^[а-яөүёА-ЯӨҮЁ0-9!@#\$%\^\&*\s*)\(+=.,_-]+$/;
     if(value.match(letterNumber)){
         callback();
     } else {
