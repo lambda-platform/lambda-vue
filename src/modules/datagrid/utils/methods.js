@@ -6,7 +6,7 @@ export const idGenerator = (type) => {
 }
 
 export const isValid = (val) => {
-    if (typeof val == "undefined" || val == null || val == '') {
+    if (typeof val == "undefined" || val == null || val === '') {
         return false;
     }
     return true;

@@ -756,14 +756,19 @@ export default {
                 if (item.filterable) {
                     // item.floatingFilter = true;
                     // item.suppressMenu = true;
+                    // console.log(item.filter)
+                    // console.log(item.filter.param)
 
                     if (isValid(item.filter.param)) {
+                       // console.log(this.$route.query[item.filter.param])
                         if (isValid(this.$route.query[item.filter.param])) {
-                            this.filterModel[item.model] = {
-                                filter: this.$route.query[item.filter.param],
-                                filterType: "text",
-                                type: isValid(item.filter.paramCompareType) ? item.filter.paramCompareType : "contains"
-                            };
+                            // this.filterModel[item.model] = {
+                            //     filter: this.$route.query[item.filter.param],
+                            //     filterType: "text",
+                            //     type: isValid(item.filter.paramCompareType) ? item.filter.paramCompareType : "contains"
+                            // };
+
+                            this.filterModel[item.model] = this.$route.query[item.filter.param];
                         }
 
                         this.$watch('$route.query.' + item.filter.param, {
