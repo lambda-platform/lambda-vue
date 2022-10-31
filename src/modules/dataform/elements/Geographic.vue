@@ -118,6 +118,8 @@ import iconUrl from "leaflet/dist/images/marker-icon.png";
 import "leaflet-draw";
 import axios from "axios"
 
+
+
 const iconDefault = L.icon({
     iconRetinaUrl,
     iconUrl,
@@ -300,7 +302,16 @@ export default {
                         let url = `${this.featureLayerUrl}/query?returnGeometry=true&where=${this.searchField}=${res.data.object_id}&outFields=*&f=json&outSR=4326`;
 
 
-                        instance.get(url).then(res => {
+                        instance.get(url, {
+                            transformRequest: (data, headers) => {
+
+                                delete headers.common['X-CSRF-TOKEN']
+                                delete headers['X-CSRF-TOKEN']
+                                delete headers['Authorization']
+                                delete headers.common['X-Requested-With']
+                                delete headers.common['Authorization']
+                            }
+                        }).then(res => {
 
 
                             if (res.data.features.length >= 1) {
