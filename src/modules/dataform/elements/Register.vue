@@ -2,8 +2,10 @@
     <lambda-form-item :label=label :name="model.component" :meta="meta">
 
 
-        <a-input-number
+        <a-input
             :disabled="disabled"
+
+
             @change="registerChanged"
             class="register-field"
             v-model:value="registerNumber"
@@ -31,7 +33,7 @@
                 </a-select>
 
             </template>
-        </a-input-number>
+        </a-input>
 
     </lambda-form-item>
 </template>
@@ -206,6 +208,9 @@ export default {
         }
     },
     methods: {
+        onlyNumbers(str) {
+            return /^[0-9]+$/.test(str);
+        },
         init(value){
             if (value) {
                 let firstchar = value.charAt(0)
@@ -220,6 +225,7 @@ export default {
                 }
                 this.registerNumber = value.substring(2, 10)
             } else {
+
                 this.registerNumber = null
                 this.registerChar1 = 'А'
                 this.registerChar2 = 'А'
@@ -228,16 +234,23 @@ export default {
         registerChanged () {
             if (this.registerNumber && this.registerChar1 && this.registerChar2) {
                 let preFix = this.registerChar1 + this.registerChar2
-                let number = this.registerNumber.toString().substring(0, 8)
-                let fillRD = preFix + number
 
-                if (this.registerNumber.length > 8) {
-                    this.registerNumber = number
-                } else if (fillRD.length === 10) {
-                    this.model.form[this.model.component] = fillRD
+                if(this.onlyNumbers(this.registerNumber)){
+                    let number = this.registerNumber.substring(0, 8)
+                    let fillRD = preFix + number
+
+                    if (this.registerNumber.length > 8) {
+                        this.registerNumber = number
+                    } else if (fillRD.length === 10) {
+                        this.model.form[this.model.component] = fillRD
+                    } else {
+                        this.model.form[this.model.component] = null
+                    }
                 } else {
-                    this.model.form[this.model.component] = null
+                    this.model.form[this.model.component] = null;
+                    this.registerNumber = null;
                 }
+
             } else {
                 this.model.form[this.model.component] = null
             }
