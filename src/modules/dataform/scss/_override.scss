@@ -199,5 +199,16 @@ $white: #ffffff;
             color: #404040;
         }
     }
+    .ant-upload.ant-upload-select{
+        display: block;
+    }
+    .ant-upload.ant-upload-select-picture-card{
+        width: 100% !important;
+        height: auto !important;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        background-color: transparent !important;
+    }
+
 
 }

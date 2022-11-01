@@ -47,6 +47,27 @@
         .ivu-tabs {
             padding-bottom: 40px!important;
         }
+        .two-column-form-left{
+            padding-top: 10px;
+            height: calc(100vh - 180px) !important;
+            overflow-y: auto;
+        }
+        .two-column-form-right{
+
+            height: calc(100vh - 180px) !important;
+            width: 100%;
+            .two-column-form{
+                padding-top: 10px;
+                height: calc(100% - 60px);
+
+
+                overflow-y: auto;
+            }
+            .two-column-form-footer{
+                padding-top: 10px;
+                height: 60px;
+            }
+        }
     }
     &-footer {
         padding: 10px 20px 20px;

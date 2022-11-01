@@ -7,17 +7,18 @@
                 :disabled="disabled"
                 :multiple="this.isMultiple"
                 name="file"
-                list-type="picture-card"
+
                 :action="`${url ? url : ''}/lambda/krud/upload`"
                 @preview="handleView"
                 @change="handleChange"
                 @remove="handleRemove"
             >
-                <div>
+                <a-button type="dashed" block>
+                    <upload-outlined></upload-outlined>
                     <loading-outlined v-if="loading"></loading-outlined>
                     <i class="ti ti-file" v-else></i>
-                    <div class="ant-upload-text">{{ lang.pleaseSelectFile }}</div>
-                </div>
+                    {{ lang.pleaseSelectFile }}
+                </a-button>
             </a-upload>
 
         </div>

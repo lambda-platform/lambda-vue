@@ -7,6 +7,7 @@ import {getRelationData} from './utils/helpers.js'
 import {getOptionsData} from '../../utils/relation.js'
 import axios from 'axios'
 import {notification} from 'ant-design-vue';
+import fromFooter from './formFooter';
 
 export default {
     name: 'dataform',
@@ -29,10 +30,14 @@ export default {
         'close',
         'hideTitle'
     ],
+    components:{
+        fromFooter:fromFooter
+    },
     data() {
         return {
             formTitle: '',
             loadConfig: true,
+            use2ColumnLayout: false,
             viewMode: false,
             asyncMode: false,
             save_btn_text: '',
@@ -301,6 +306,9 @@ export default {
             }
             if (formSchema.withBackButton) {
                 this.withBackButton = formSchema.withBackButton
+            }
+            if (formSchema.use2ColumnLayout) {
+                this.use2ColumnLayout = formSchema.use2ColumnLayout
             }
 
 

@@ -8,11 +8,11 @@
                     <div class="" >
                         <div class="ant-drawer-content">
                             <div class="ant-drawer-wrapper-body">
-                                <div class="ant-drawer-header">
-                                    <div class="ant-drawer-header-title">
-                                        <div class="ant-drawer-title">{{ title }}</div>
-                                    </div>
-                                </div>
+<!--                                <div class="ant-drawer-header">-->
+<!--                                    <div class="ant-drawer-header-title">-->
+<!--                                        <div class="ant-drawer-title">{{ title }}</div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <div class="ant-drawer-body">
                                     <dataform
                                         ref="form"
@@ -90,6 +90,7 @@ export default {
         .crud-page-body {
             height: 100%;
             margin: 0 !important;
+            overflow-y: auto;
 
             .dg-flex {
                 flex: 1;
