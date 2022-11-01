@@ -131,8 +131,9 @@ const iconDefault = L.icon({
     shadowSize: [41, 41]
 });
 
-// import {point, polygon, inside} from '@turf/turf'
+import {point, polygon, inside} from '@turf/turf'
 import mixin from './_mixin'
+import {notification} from "ant-design-vue";
 export default {
     mixins: [mixin],
 
@@ -290,65 +291,71 @@ export default {
 
             let search_value = this.model.form[this.formValueField];
             if (search_value) {
-                this.searchLoading = true;
-                var instance = axios.create({
-                    headers: {
-                        common: {},
-                    },
-                });
+                if(this.do_render){
+                    this.searchLoading = true;
+                    var instance = axios.create({
+                        headers: {
+                            common: {},
+                        },
+                    });
 
-                instance.get(`/api/get-region/${search_value}`).then(res => {
-                    if (res.data.object_id >= 1) {
-                        let url = `${this.featureLayerUrl}/query?returnGeometry=true&where=${this.searchField}=${res.data.object_id}&outFields=*&f=json&outSR=4326`;
-
-
-                        instance.get(url, {
-                            transformRequest: (data, headers) => {
-
-                                delete headers.common['X-CSRF-TOKEN']
-                                delete headers['X-CSRF-TOKEN']
-                                delete headers['Authorization']
-                                delete headers.common['X-Requested-With']
-                                delete headers.common['Authorization']
-                            }
-                        }).then(res => {
+                    instance.get(`/api/get-region/${search_value}`).then(res => {
+                        if (res.data.object_id >= 1) {
+                            let url = `${this.featureLayerUrl}/query?returnGeometry=true&where=${this.searchField}=${res.data.object_id}&outFields=*&f=json&outSR=4326`;
 
 
-                            if (res.data.features.length >= 1) {
-                                var latlngs = res.data.features[0].geometry.rings[0];
-                                let rings = [];
+                            instance.get(url, {
+                                transformRequest: (data, headers) => {
+
+                                    delete headers.common['X-CSRF-TOKEN']
+                                    delete headers['X-CSRF-TOKEN']
+                                    delete headers['Authorization']
+                                    delete headers.common['X-Requested-With']
+                                    delete headers.common['Authorization']
+                                }
+                            }).then(res => {
 
 
-                                res.data.features[0].geometry.rings.forEach(ring => {
+                                if (res.data.features.length >= 1) {
+                                    var latlngs = res.data.features[0].geometry.rings[0];
+                                    let rings = [];
 
-                                    let newLl = [];
-                                    ring.forEach(ll => {
-                                        newLl.push([ll[1], ll[0]])
+
+                                    res.data.features[0].geometry.rings.forEach(ring => {
+
+                                        let newLl = [];
+                                        ring.forEach(ll => {
+                                            newLl.push([ll[1], ll[0]])
+                                        });
+
+                                        rings.push(newLl);
+                                    })
+
+
+                                    this.clearSearchLayer();
+
+                                    this.searchLayer = L.polygon(rings, {color: 'green'}).addTo(this.map);
+
+                                    this.searchLayer.bindPopup(L.Util.template(this.featureTitles, res.data.features[0].attributes));
+
+                                    let bounds = this.searchLayer.getBounds();
+                                    this.map.fitBounds(bounds);
+
+                                    this.searchLoading = false;
+                                } else {
+                                    this.searchLoading = false;
+                                    this.clearSearchLayer();
+
+                                    notification["error"]({
+                                        message: this.lang.noSiteFound,
                                     });
-
-                                    rings.push(newLl);
-                                })
-
-                                this.clearSearchLayer();
-
-                                this.searchLayer = L.polygon(rings, {color: 'green'}).addTo(this.map);
-
-                                this.searchLayer.bindPopup(L.Util.template(this.featureTitles, res.data.features[0].attributes));
-
-                                let bounds = this.searchLayer.getBounds();
-                                this.map.fitBounds(bounds);
-
-                                this.searchLoading = false;
-                            } else {
-                                this.searchLoading = false;
-                                this.clearSearchLayer();
-                                this.$Message.error(this.lang.noSiteFound);
-                            }
+                                }
 
 
-                        })
-                    }
-                });
+                            })
+                        }
+                    });
+                }
 
 
             }
@@ -393,11 +400,19 @@ export default {
                     if (!not_inside) {
 
                         this.model.form[this.model.component] = data;
-                        this.$Message.success(this.successMsg);
+                        notification["success"]({
+                            message: this.successMsg,
+
+                        });
+
                     } else {
 
                         this.model.form[this.model.component] = null;
-                        this.$Message.error(this.errorMsg);
+                        notification["error"]({
+                            message: this.errorMsg,
+
+                        });
+
                     }
 
 
@@ -408,7 +423,11 @@ export default {
 
                     });
                     this.model.form[this.model.component] = null;
-                    this.$Message.error(this.lang.theSiteHasNotBeenSelected);
+                    notification["error"]({
+                        message: this.lang.theSiteHasNotBeenSelected,
+
+                    });
+
                 }
             } else
                 this.model.form[this.model.component] = data;
@@ -640,7 +659,10 @@ export default {
             if (this.formValueField && this.checkByArea) {
 
                 if (this.model.form[this.formValueField]) {
-                    this.handleSubmit();
+                    if(this.do_render){
+                        this.handleSubmit();
+                    }
+
                 }
             }
         },
