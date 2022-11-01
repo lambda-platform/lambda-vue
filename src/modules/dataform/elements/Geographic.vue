@@ -108,7 +108,7 @@
     </lambda-form-item>
 </template>
 <script>
-
+import axios from "axios"
 import { LeftSquareOutlined, RightSquareOutlined } from '@ant-design/icons-vue';
 import "leaflet";
 import shadowUrl from  "leaflet/dist/images/marker-shadow.png";
@@ -116,7 +116,7 @@ import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 
 import "leaflet-draw";
-import axios from "axios"
+
 
 
 
