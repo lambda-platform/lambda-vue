@@ -13,8 +13,8 @@
                 @change="handleChange"
                 @remove="handleRemove"
             >
-                <a-button type="dashed" block>
-                    <upload-outlined></upload-outlined>
+                <a-button type="dashed" block v-if="!disabled">
+
                     <loading-outlined v-if="loading"></loading-outlined>
                     <i class="ti ti-file" v-else></i>
                     {{ lang.pleaseSelectFile }}
@@ -98,12 +98,19 @@ export default {
                         }
                     }
                 } else {
+                    let name = this.model.form[this.model.component].split("/")
+                    let fileName= "";
+                    if(name.length >= 1){
+                        fileName = name[name.length-1]
+                    }
+
                     if (this.uploadList.length >= 1) {
                         if (this.uploadList[0].response !== this.model.form[this.model.component]) {
                             this.uploadList = [{
                                 status: 'done',
                                 thumbUrl: this.model.form[this.model.component],
                                 response: this.model.form[this.model.component],
+                                name:fileName
                             }]
                         }
                     } else {
@@ -111,6 +118,7 @@ export default {
                             status: 'done',
                             thumbUrl: this.model.form[this.model.component],
                             response: this.model.form[this.model.component],
+                            name:fileName
                         }]
                     }
                 }

@@ -103,12 +103,19 @@ export default {
                         }
                     }
                 } else {
+                    let name = this.model.form[this.model.component].split("/")
+                    let fileName= "";
+                    if(name.length >= 1){
+                         fileName = name[name.length-1]
+                    }
+
                     if (this.uploadList.length >= 1) {
                         if (this.uploadList[0].response !== this.model.form[this.model.component]) {
                             this.uploadList = [{
                                 status: 'done',
                                 thumbUrl: this.url + this.model.form[this.model.component],
                                 response: this.model.form[this.model.component],
+                                name:fileName
                             }]
                         }
                     } else {
@@ -116,6 +123,7 @@ export default {
                             status: 'done',
                             thumbUrl: this.url + this.model.form[this.model.component],
                             response: this.model.form[this.model.component],
+                            name:fileName
                         }]
                     }
                 }

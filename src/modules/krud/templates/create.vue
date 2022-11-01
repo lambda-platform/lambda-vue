@@ -23,12 +23,12 @@
                                         :editMode="editMode"
                                         :onSuccess="onSuccess"
                                         :onReady="onReady"
-                                        :do_render="openSlidePanel"
+                                        :do_render="true"
                                         :permissions="permissions"
                                         :page_id="page_id"
                                         :user_condition="user_condition ? user_condition.formCondition : null"
                                         :onError="onError"
-                                        :close="hideSide"
+
                                     >
                                     </dataform>
                                 </div>
