@@ -53,47 +53,58 @@ export const rules = [{
     }
 ];
 
-const unique = (rule, value, callback, baseUrl) => {
-    axios.post(`${baseUrl}/lambda/krud/unique`, {
-        table: ruleModel,
-        identityColumn: identityColumn,
-        identity: identity,
-        field: rule.field,
-        val: value
-    }).then(o => {
-        if (o.data.status) {
-            callback();
+const unique = async (rule, value, baseUrl) => {
+
+    try {
+        const r = axios.post(`${baseUrl}/lambda/krud/unique`, {
+            table: ruleModel,
+            identityColumn: identityColumn,
+            identity: identity,
+            field: rule.field,
+            val: value
+        });
+        if (r.data.status) {
+            return Promise.resolve();
         } else {
-            callback(new Error(o.data.msg));
+
+            return Promise.reject(r.data.msg);
         }
-    })
+    } catch (err) {
+        return Promise.reject(err.response.data.msg);
+    }
+
 };
-const checkLambdaaccount = (rule, value, callback, baseUrl) => {
-    axios.post(`${baseUrl}/lambda/check`, {
-        value: value
-    }).then(o => {
-        if (o.data.status) {
-            callback();
+const checkLambdaaccount = async (rule, value, baseUrl) => {
+    try {
+        const r =axios.post(`${baseUrl}/lambda/check`, {
+            value: value
+        });
+        if (r.data.status) {
+            return Promise.resolve();
         } else {
-            callback(new Error(`'${value} Давхацсан утга оруулсан байна!'`));
+
+            return Promise.reject(`'${value} Давхацсан утга оруулсан байна!'`);
         }
-    })
+    } catch (err) {
+        return Promise.reject(`'${value} Давхацсан утга оруулсан байна!'`);
+    }
+
 };
-const englishAlphabet = (rule, value, callback) => {
+const englishAlphabet = async (rule, value, callback) => {
     var letterNumber = /^[a-zA-Z!@#\$%\^\&*\s*)\(+=._,-]+$/;
     if(value.match(letterNumber)){
-        callback();
+        return Promise.resolve();
     } else {
-        callback(new Error("Зөвхөн латин үсэг оруулна уу"));
+        return Promise.reject("Зөвхөн латин үсэг оруулна уу");
     }
 };
 const mongolianCyrillic = (rule, value, callback) => {
     // var letterNumber = /^[\u0400-\u04FF\s*]+$/;
     var letterNumber = /^[а-яөүёА-ЯӨҮЁ0-9!@#\$%\^\&*\s*)\(+=.,_-]+$/;
     if(value.match(letterNumber)){
-        callback();
+        return  Promise.resolve();
     } else {
-        callback(new Error("Зөвхөн кирилл үсэг оруулна уу!"));
+        return Promise.reject("Зөвхөн кирилл үсэг оруулна уу!");
     }
 };
 const mongolianMobileNumber = (rule, value, callback) => {
@@ -101,24 +112,29 @@ const mongolianMobileNumber = (rule, value, callback) => {
     var letterNumber = /^[0-9]{8}$/;
     if(value.toString().match(letterNumber)){
 
-        callback();
+        return   Promise.resolve();
     } else {
 
-        callback(new Error('8 оронтой утасны дугаар оруулна уу!'));
+        return Promise.reject('8 оронтой утасны дугаар оруулна уу!');
     }
 };
 
-const check_current_password = (rule, value, callback, baseUrl) => {
-    axios.post(`${baseUrl}/lambda/krud/check_current_password`, {
-        password: value
-    }).then(o => {
-        if (o.data.status) {
-            callback();
+const check_current_password = async (rule, value, baseUrl) => {
+    try {
+        const r = await axios.post(`${baseUrl}/lambda/krud/check_current_password`, {
+            password: value
+        });
+        if (r.data.status) {
+            return Promise.resolve();
         } else {
 
-            callback(new Error(o.data.msg));
+            return Promise.reject(r.data.msg);
         }
-    })
+    } catch (err) {
+        return Promise.reject(err.response.data.msg);
+    }
+
+
 };
 
 
@@ -169,13 +185,13 @@ export const getRule = (rule, baseUrl) => {
             }
         case 'unique':
             return {
-                validator: (rule, value, callback)=> unique(rule, value, callback, baseUrl),
+                validator: async (rule, value)=> await unique(rule, value, baseUrl),
                 trigger: 'blur',
                 // message: rule.msg
             }
         case 'lambda-account':
             return {
-                validator: (rule, value, callback)=> checkLambdaaccount(rule, value, callback, baseUrl),
+                validator: async (rule, value)=> await checkLambdaaccount(rule, value, baseUrl),
                 trigger: 'blur',
                 // message: rule.msg
             }
@@ -193,7 +209,7 @@ export const getRule = (rule, baseUrl) => {
             }
         case 'check_current_password':
             return {
-                validator: (rule, value, callback)=> check_current_password(rule, value, callback, baseUrl),
+                validator: async (rule, value)=> await check_current_password(rule, value, baseUrl),
                 trigger: 'blur',
                 // message: rule.msg
             }
