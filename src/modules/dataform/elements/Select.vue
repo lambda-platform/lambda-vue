@@ -179,7 +179,7 @@ export default {
         },
         showInfoModal () {
             if (this.model.form[this.model.component]) {
-                window.showInformationModal(`${this.meta.info_url}${this.model.form[this.model.component]}`, this.meta.placeHolder)
+                window.showInformationModal(`${this.meta.info_url}${this.model.form[this.model.component]}`, this.placeholder)
             }
         },
         search (v) {
