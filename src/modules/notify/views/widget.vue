@@ -1,98 +1,86 @@
 <template>
-    <Poptip placement="bottom-end" class="no-animation">
-        <a href="javascript:void(0)">
-            <Badge :count="count">
-                <i class="ti-bell"></i>
-            </Badge>
-        </a>
-        <div class="header-notifications" slot="content">
+    <a-popover placement="bottom" overlayClassName="header-notice-wrapper"  trigger="click"  :overlayStyle="{ width: isMobile?'250px':'300px', top: '50px' }">
+        <span class="header-notice">
+            <a-badge :count="count">
+                <span class="btn btn-icon">
+                 <span class="svg-icon">
+                     <inline-svg
+                          src="/assets/icons/duotune/general/gen007.svg"
+                      />
+                 </span>
+                </span>
+            </a-badge>
+        </span>
+        <template #content>
             <div class="header-notification-info">
                 <h3>{{ lang.notice }}</h3>
             </div>
-            <ul v-if="notifications.length > 0" v-slimscroll="scrollOptions">
-                <li v-for="(notif, index) in notifications" :class="notif.seen ? 'seen' : ''">
-                    <a class="notif-item" href="javascript:void(0)" @click="setSeen(notif.id, notif.link)">
-                        <h4 class="notif-title">{{ notif.title }} | {{ notif.body }}</h4>
-                        <div class="notif-content">
-                            <a href="javascript:void(0)">
-                                <i class="ti-user"></i> {{ notif.first_name != null ? notif.first_name : notif.login }}
-                            </a>
-                            <span>
-                                <i class="ti-time"></i> {{ notif.created_at }}
-                            </span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
+            <a-list v-if="notifications.length > 0" >
+                <a-list-item v-for="(notif, index) in notifications" :class="notif.seen ? 'seen' : ''">
+                    <a-list-item-meta :title="`${notif.title}, ${notif.first_name != null ? notif.first_name : notif.login}`" :description="`${notif.body} \n ${$date(notif.created_at)}`" @click="setSeen(notif.id, notif.link)">
+
+                    </a-list-item-meta>
+                </a-list-item>
+            </a-list>
             <div v-else class="no-notifs">
                 {{ lang.no_notice }}
             </div>
 
             <a class="all-notif" href="javascript:void(0)" @click="getAllNotification">
-                <span>{{ lang.view_all_notifications }}</span>
+                <span>{{ lang.view_all_notifications }}</span> &nbsp;
                 <i class="ti-arrow-right"></i>
             </a>
-        </div>
-    </Poptip>
+        </template>
+    </a-popover>
 </template>
 
 <script>
-import * as firebase from 'firebase/app';
-import '@firebase/messaging';
-import {loadLanguageAsync} from "../../../locale";
+import {
+    initializeApp,
+    getApps
+} from '@firebase/app'
+import {getMessaging, getToken, onMessage} from '@firebase/messaging'
 
-// import io from 'socket.io-client';
-// const socket = io.connect(window.config.socketServer, {
-//     'secure': true,
-//     'reconnect': true,
-//     'reconnection delay': 5000
-// });
-
+import axios from 'axios'
 export default {
-    props: ['user'],
-    data() {
+    props: ['userID', 'isMobile'],
+    data () {
         return {
             notifications: [],
             count: 0
         }
     },
 
-    mounted() {
-        console.log("Notify mounted");
-
-        if (!firebase.apps.length) {
-            this.initFirebase();
-            this.getNotificationGrant();
+    mounted () {
+        if(window.init.firebase_config.apiKey){
+            if (getApps().length === 0) {
+                this.initFirebase()
+                this.getNotificationGrant()
+            }
+            this.getUnseenNotification()
         }
-        this.getUnseenNotification();
+
     },
     computed: {
-        lang() {
-            const labels = ['notice', 'no_notice', 'view_all_notifications'];
+        lang () {
+            const labels = ['notice', 'no_notice', 'view_all_notifications']
             return labels.reduce((obj, key, i) => {
-                obj[key] = this.$t('notify.' + labels[i]);
-                return obj;
-            }, {});
+                obj[key] = this.$t('notify.' + labels[i])
+                return obj
+            }, {})
         },
     },
     methods: {
-        beforeMount() {
-            if (this.selectedLang != "mn") {
-                loadLanguageAsync(this.selectedLang);
-            }
-        },
-        switchLanguage(val) {
-            this.selectedLang = val;
-            loadLanguageAsync(val);
-        },
-        getNotificationGrant() {
+
+        getNotificationGrant () {
             Notification.requestPermission().then((permission) => {
                 if (permission !== 'granted') {
-                    console.log('Unable to get permission to notify.');
+                    console.log('Unable to get permission to notify.')
                 }
-            });
+            })
         },
-        initFirebase() {
+        initFirebase () {
+
             var firebaseConfig = {
                 apiKey: window.init.firebase_config.apiKey,
                 authDomain: window.init.firebase_config.authDomain,
@@ -102,65 +90,63 @@ export default {
                 messagingSenderId: window.init.firebase_config.messagingSenderId,
                 appId: window.init.firebase_config.appId,
                 measurementId: window.init.firebase_config.measurementId
-            };
+            }
             // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
+            const app = initializeApp(firebaseConfig)
 
-            const messaging = firebase.messaging();
-            messaging.usePublicVapidKey(window.init.firebase_config.publicKey);
+            const messaging = getMessaging(app);
 
-            messaging.getToken().then((currentToken) => {
+            getToken(messaging, window.init.firebase_config.publicKey).then((currentToken) => {
+
                 if (currentToken) {
-                    axios.get('/lambda/notify/token/' + window.init.user.id + '/' + currentToken).then(o => {
-                        if (o.status) {
-                            console.log('set token for user');
-                        }
-                    });
+                    axios.get('/lambda/notify/token/' + this.$props.userID + '/' + currentToken).then(o => {
+
+                    })
                 } else {
-                    console.log('No Instance ID token available. Request permission to generate one.');
+                    console.log('No Instance ID token available. Request permission to generate one.')
                 }
             }).catch((err) => {
-                console.log('An error occurred while retrieving token. ', err);
-            });
+                console.log('An error occurred while retrieving token. ', err)
+            })
 
-            messaging.onMessage((payload) => {
-                this.notify(payload.data);
-            });
+            onMessage(messaging, (payload) => {
+                this.notify(payload.data)
+            })
 
         },
 
-        getUnseenNotification() {
-            axios.get('/lambda/notify/new/' + this.$props.user).then(o => {
-                this.count = o.data.count;
-                this.notifications = o.data.notifications;
-            });
+        getUnseenNotification () {
+            axios.get('/lambda/notify/new/' + this.$props.userID).then(o => {
+                this.count = o.data.count
+                this.notifications = o.data.notifications
+            })
         },
-        getAllNotification() {
-            axios.get('/lambda/notify/all/' + this.$props.user).then(o => {
-                this.count = 0;
-                this.notifications = o.data.notifications;
-            });
+        getAllNotification () {
+            axios.get('/lambda/notify/all/' + this.$props.userID).then(o => {
+                this.count = 0
+                this.notifications = o.data.notifications
+            })
         },
 
-        setSeen(id, link) {
+        setSeen (id, link) {
             axios.get('/lambda/notify/seen/' + id).then(o => {
                 if (o.status) {
-                    this.count = this.count >= 1 ? this.count - 1 : 0;
-                    let currentNotif = this.notifications.find(item => item.id == id);
+                    this.count = this.count >= 1 ? this.count - 1 : 0
+                    let currentNotif = this.notifications.find(item => item.id == id)
                     if (currentNotif) {
-                        currentNotif.seen = true;
+                        currentNotif.seen = true
                     }
                     this.$router.push(link)
                 }
-            });
+            })
         },
 
-        notify(msg) {
+        notify (msg) {
             console.log(msg)
             // let parsedMsg = JSON.parse(msg.message);
             // console.log(parsedMsg);
 
-            let nIndex = this.notifications.findIndex(noti => noti.id == msg.id);
+            let nIndex = this.notifications.findIndex(noti => noti.id == msg.id)
 
             if (nIndex == -1) {
                 this.notifications.unshift({
@@ -170,17 +156,16 @@ export default {
                     first_name: msg.first_name,
                     created_at: msg.created_at,
                     id: msg.id,
-                });
-                this.count = this.count + 1;
+                })
+                this.count = this.count + 1
             }
-            let notificationAudio = new Audio(msg.sound);
+            let notificationAudio = new Audio(msg.sound)
             notificationAudio.play()
             new Notification(msg.title, {
                 title: msg.title,
                 body: msg.body,
                 icon: msg.icon,
-            });
-
+            })
 
         },
     }

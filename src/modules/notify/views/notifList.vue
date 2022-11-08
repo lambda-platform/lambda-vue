@@ -21,7 +21,7 @@
 </template>
 
 <script>
-    import {loadLanguageAsync} from "../../../locale";
+
 
     export default {
         props: ['user'],
@@ -50,15 +50,7 @@
                     this.notifications = o.data.notifications;
                 });
             },
-            beforeMount() {
-                if (this.selectedLang != "mn") {
-                    loadLanguageAsync(this.selectedLang);
-                }
-            },
-            switchLanguage(val) {
-                this.selectedLang = val;
-                loadLanguageAsync(val);
-            },
+
         }
     }
 </script>
