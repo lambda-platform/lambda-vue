@@ -1,7 +1,7 @@
 let ruleModel = null;
 let identityColumn = null;
 let identity = null;
-
+import RegexParser from "regex-parser";
 import axios from "axios"
 const isValid = (val) => {
     if (typeof val !== undefined && val != null && val != "") {
@@ -137,12 +137,24 @@ const check_current_password = async (rule, value, baseUrl) => {
 
 };
 
-
+const customRegexChecker = async (rule, value, regex) => {
+    if(value.match(new RegExp(RegexParser(regex)))){
+        return Promise.resolve();
+    } else {
+        return Promise.reject(rule.msg);
+    }
+};
 export const getRule = (rule, baseUrl) => {
     if(!baseUrl){
         baseUrl = ""
     }
     switch (rule.type) {
+        case 'custom':
+            return {
+                validator: async (r, value)=> await customRegexChecker(r, value, rule.regex),
+                trigger: 'blur',
+                message: rule.msg
+            }
         case 'required':
             return {
                 required: true,

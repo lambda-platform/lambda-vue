@@ -393,10 +393,17 @@ export default {
                         deep: true
                     })
 
-                    if (item.rules) {
 
-                        this.setRule(item.model, item.rules)
+                    if (!item.rules) {
+                        item.rules = [];
                     }
+
+
+                    if(item.custom_regex && item.custom_regex_msg){
+                        item.rules.push({type:"custom", regex:item.custom_regex, msg:item.custom_regex_msg})
+                    }
+                    this.setRule(item.model, item.rules)
+
                     if (item.formType == 'Password') {
                         if (item.passwordOption) {
                             if (item.passwordOption.confirm) {
@@ -503,6 +510,7 @@ export default {
         },
 
         setRule(name, rules) {
+
             this.$data.rule[name] = []
             rules.forEach(item => {
                 let r = getRule(item, this.url)
