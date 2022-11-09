@@ -1,7 +1,7 @@
 let ruleModel = null;
 let identityColumn = null;
 let identity = null;
-import RegexParser from "regex-parser";
+
 import axios from "axios"
 const isValid = (val) => {
     if (typeof val !== undefined && val != null && val != "") {
@@ -136,9 +136,28 @@ const check_current_password = async (rule, value, baseUrl) => {
 
 
 };
+const RegexParser =  (input)=> {
+
+    // Validate input
+    if (typeof input !== "string") {
+        throw new Error("Invalid input. Input must be a string");
+    }
+
+    // Parse input
+    var m = input.match(/(\/?)(.+)\1([a-z]*)/i);
+
+    // Invalid flags
+    if (m[3] && !/^(?!.*?(.).*?\1)[gmixXsuUAJ]+$/.test(m[3])) {
+        return RegExp(input);
+    }
+
+    // Create the regular expression
+    return new RegExp(m[2], m[3]);
+};
+
 
 const customRegexChecker = async (rule, value, regex) => {
-    if(value.match(new RegExp(RegexParser(regex)))){
+    if(value.match(RegexParser(regex))){
         return Promise.resolve();
     } else {
         return Promise.reject(rule.msg);

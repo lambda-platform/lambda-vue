@@ -1,6 +1,6 @@
 {
     "name": "@lambda-platform/lambda-vue",
-    "version": "3.0.70",
+    "version": "3.0.71",
     "description": "lambda builder",
     "main": "src/index.js",
     "repository": "git@github.com:lambda-platform/lambda-vue.git",
@@ -32,7 +32,7 @@
         "moment": "^2.29.4",
         "numeral": "^2.0.6",
         "portal-vue": "^3.0.0-beta.0",
-        "regex-parser": "^2.2.11",
+
         "turf": "^3.0.14",
         "vue": "^3.2.39",
         "vue-i18n": "^9.2.2",
