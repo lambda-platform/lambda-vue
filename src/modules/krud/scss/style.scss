@@ -1,7 +1,87 @@
 
-.layout-breadcrumb-left-items .divider {
-  background: #dedede;
-  height: 20px;
-  margin: 15px 10px;
-  width: 1px;
+@import "../scss/drawer";
+
+.offcanvas-template {
+    .crud-page {
+        height: calc(100vh - 110px) !important;
+
+        .crud-page-body {
+            height: 100%;
+            margin: 0 !important;
+            overflow-y: auto;
+
+            .dg-flex {
+                flex: 1;
+                width: 100%;
+                overflow: hidden !important;
+                height: 100%;
+            }
+
+        }
+    }
+}
+
+.drawer-wrappper {
+    width: 100%;
+    overflow: hidden;
+}
+
+
+.crud-log {
+    * {
+        font-size: 12px;
+    }
+}
+
+.with-crud-log {
+    height: 100%;
+    overflow-y: auto;
+
+    .dataform {
+        height: auto;
+        //overflow-y: hidden;
+    }
+
+    .crud-log {
+        padding: 15px 20px 10px;
+
+        .fieldset {
+            padding: 10px 8px;
+            margin-bottom: 20px;
+            border: 1px solid silver;
+
+            legend {
+                margin-top: -20px;
+                background: #ffffff;
+                padding: 0 10px;
+                font-size: 12px;
+                font-weight: 600;
+                margin-bottom: 10px;
+                width: auto;
+                display: table;
+            }
+        }
+
+        .ivu-table-small td {
+            height: 30px;
+        }
+    }
+}
+.crud-form{
+    height: 100%;
+}
+.dark {
+    .crud-log {
+
+
+        .fieldset {
+
+
+            legend {
+
+                background: #00152a;
+
+            }
+        }
+    }
 }

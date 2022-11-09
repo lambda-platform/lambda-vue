@@ -31,7 +31,7 @@
 
         </div>
 
-        <GridRowUpdate :permissions="permissions" :model="model" :schema="schema" :url="url" :inFilter="true" :schemaID="schemaID"  />
+        <GridRowUpdate :permissions="permissions" :model="model" :schema="schema" :url="url" :inFilter="true" :schemaID="schemaID" :refresh="refresh"  />
     </div>
 </template>
 
@@ -43,7 +43,7 @@
 
     import { SearchOutlined } from '@ant-design/icons-vue';
     export default {
-        props: ["model", "schema", "schemaID", "permissions", "url", 'hideTitle', 'filterData'],
+        props: ["model", "schema", "schemaID", "permissions", "url", 'hideTitle', 'filterData', "refresh"],
         components:{
             GridRowUpdate:GridRowUpdate,
             SearchOutlined

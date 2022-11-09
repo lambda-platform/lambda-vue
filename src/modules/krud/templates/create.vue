@@ -78,35 +78,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss" scoped>
-
-@import "../scss/drawer";
-
-.offcanvas-template {
-    .crud-page {
-        height: calc(100vh - 110px) !important;
-
-        .crud-page-body {
-            height: 100%;
-            margin: 0 !important;
-            overflow-y: auto;
-
-            .dg-flex {
-                flex: 1;
-                width: 100%;
-                overflow: hidden !important;
-                height: 100%;
-            }
-
-        }
-    }
-}
-
-.drawer-wrappper {
-    width: 100%;
-    overflow: hidden;
-}
-
-
-</style>

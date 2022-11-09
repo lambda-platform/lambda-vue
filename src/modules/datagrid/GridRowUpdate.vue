@@ -105,7 +105,11 @@ export default {
                 axios.post(`${baseUrl}/lambda/krud/update-row/${this.schemaID}`, updateData).then(res => {
                     if (res.data.status) {
                         if (refresh) {
-                            this.inFilter ? this.$parent.$parent.refresh() : this.$parent.refresh();
+                            if(this.refresh){
+                                this.refresh();
+                            } else {
+                                this.inFilter ? this.$parent.$parent.refresh() : this.$parent.refresh();
+                            }
                         }
 
                         notification["success"]({

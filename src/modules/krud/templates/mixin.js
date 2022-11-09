@@ -1,9 +1,9 @@
 
-
+import crudLog from "../components/crudLog";
 export default {
     props: ["title", "icon", "main_tab_title", "grid", "form","projects_id", "hideHeader", "hasSelection", "actions", "dbClickAction", "onRowSelect", "rowCurrentChange", "permissions", "user_condition", "custom_condition", "view_url", "mode", "onPropertySuccess", "onPropertyError", "page_id", "withoutHeader", "withCrudLog", "base_url", "parent"],
     components: {
-
+        crudLog
     },
     data() {
         return {

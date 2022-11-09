@@ -31,23 +31,27 @@
                                     </div>
                                 </div>
                                 <div class="ant-drawer-body">
-                                    <dataform
-                                        ref="form"
-                                        :hideTitle="true"
-                                        :schemaID="form"
-                                        :title="title"
-                                        :url="url"
-                                        :editMode="editMode"
-                                        :onSuccess="templateOnSuccess"
-                                        :onReady="onReady"
-                                        :do_render="openSlidePanel"
-                                        :permissions="permissions"
-                                        :page_id="page_id"
-                                        :user_condition="user_condition ? user_condition.formCondition : null"
-                                        :onError="onError"
-                                        :close="hideSide"
-                                    >
-                                    </dataform>
+
+                                    <div :class="withCrudLog && editMode ? 'with-crud-log' : 'crud-form'">
+                                        <dataform
+                                            ref="form"
+                                            :hideTitle="true"
+                                            :schemaID="form"
+                                            :title="title"
+                                            :url="url"
+                                            :editMode="editMode"
+                                            :onSuccess="templateOnSuccess"
+                                            :onReady="onReady"
+                                            :do_render="openSlidePanel"
+                                            :permissions="permissions"
+                                            :page_id="page_id"
+                                            :user_condition="user_condition ? user_condition.formCondition : null"
+                                            :onError="onError"
+                                            :close="hideSide"
+                                        >
+                                        </dataform>
+                                        <crud-log v-if="withCrudLog && editMode" :form="form" :rowId="rowId" :grid="grid"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -184,35 +188,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss" scoped>
-
-@import "../scss/drawer";
-
-.offcanvas-template {
-    .crud-page {
-        height: calc(100vh - 110px) !important;
-
-        .crud-page-body {
-            height: 100%;
-            margin: 0 !important;
-            overflow-y: auto;
-
-            .dg-flex {
-                flex: 1;
-                width: 100%;
-                overflow: hidden !important;
-                height: 100%;
-            }
-
-        }
-    }
-}
-
-.drawer-wrappper {
-    width: 100%;
-    overflow: hidden;
-}
-
-
-</style>

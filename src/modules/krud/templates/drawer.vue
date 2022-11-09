@@ -56,23 +56,27 @@
                       </div>
                     </div>
                     <div class="ant-drawer-body">
-                        <dataform
-                            ref="form"
-                            :hideTitle="true"
-                            :schemaID="form"
-                            :title="title"
-                            :url="url"
-                            :editMode="editMode"
-                            :onSuccess="onSuccess"
-                            :onReady="onReady"
-                            :do_render="openSlidePanel"
-                            :permissions="permissions"
-                            :page_id="page_id"
-                            :user_condition="user_condition ? user_condition.formCondition : null"
-                            :onError="onError"
-                            :close="hideSide"
-                        >
-                        </dataform>
+                        <div :class="withCrudLog && editMode ? 'with-crud-log' : 'crud-form'">
+                            <dataform
+                                ref="form"
+                                :hideTitle="true"
+                                :schemaID="form"
+                                :title="title"
+                                :url="url"
+                                :editMode="editMode"
+                                :onSuccess="onSuccess"
+                                :onReady="onReady"
+                                :do_render="openSlidePanel"
+                                :permissions="permissions"
+                                :page_id="page_id"
+                                :user_condition="user_condition ? user_condition.formCondition : null"
+                                :onError="onError"
+                                :close="hideSide"
+                            >
+                            </dataform>
+                            <crud-log v-if="withCrudLog && editMode" :form="form" :rowId="rowId" :grid="grid"/>
+                        </div>
+
                     </div>
                   </div>
                 </div>

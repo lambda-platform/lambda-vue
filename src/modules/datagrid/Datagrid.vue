@@ -99,6 +99,7 @@
                     :schemaID="schemaID" :schema="schema" :permissions="permissions"
                     :url="url"
                     :filterData="filterData"
+                    :refresh="refresh"
                     :model="filterModel" ></datafilter>
 
         <!--        <paper-modal-->
@@ -1470,12 +1471,13 @@ export default {
                         notification["success"]({
                             message: this.lang.infoDeleted,
                         });
-                        this.data.splice(index, 1);
-                        this.info.total--;
-                        setTimeout(() => {
-                            this.delLoading = false;
-                            this.deleteModal = false;
-                        }, 600);
+                        // this.data.splice(index, 1);
+                        // this.info.total--;
+                        // setTimeout(() => {
+                        //     this.delLoading = false;
+                        //     this.deleteModal = false;
+                        // }, 600);
+                        this.refresh();
                     } else {
                         notification["error"]({
                             message: this.lang.errorOccWhileDeleting + '!',
