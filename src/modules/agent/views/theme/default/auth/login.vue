@@ -2,7 +2,7 @@
     <div class="form-wrap">
         <div class="form-content">
             <h2>{{ lang.loginTitle }}</h2>
-            <form v-on:submit.prevent="onSubmit" id="authForm" method="post" class="login-form">
+            <form v-on:submit.prevent="onSubmit" id="authForm" method="post" class="login-form" @submit.prevent="onSubmit">
                 <div class="form-element input">
                     <input type="text" v-model="credentials.login" :disabled="loading"
                            :placeholder="lang.username">
@@ -18,7 +18,7 @@
                     <label for="remember_me">{{ lang.remember }}</label>
                 </div>
                 <div class="form-element action">
-                    <a-button type="primary" :loading="loading" @click="onSubmit">{{ lang.login }}</a-button>
+                    <a-button type="primary" :loading="loading" html-type="submit">{{ lang.login }}</a-button>
                     <p>
                         <router-link class="forgot" to="/auth/forgot">{{ lang.forgot }}</router-link>
                     </p>
