@@ -61,17 +61,39 @@ export default {
         Krudtools
     },
     methods: {
-
-
         templateOnSuccess () {
             this.editMode = true;
             this.$refs.form.editModel(this.actions);
         },
-        onReadyEdit(){
+        onReadyEdit(formSchema, schema){
+
             if(this.actions){
                 this.editMode = true;
                 this.$refs.form.editModel(this.actions);
+            } else {
+                this.checkEdit(formSchema);
             }
+        },
+        checkEdit(formSchema){
+            if(this.user_condition){
+                if(this.user_condition.formCondition){
+                    let formIdentity = formSchema["identity"];
+                    let editUserConditionIndex = this.user_condition.formCondition.findIndex(c=>c.form_field === formIdentity);
+                    if(editUserConditionIndex >= 0){
+                        let userField = this.user_condition.formCondition[editUserConditionIndex]["user_field"];
+
+                        if(window.init){
+                            if(window.init.user){
+                                if(window.init.user[userField]){
+                                    this.$refs.form.editModel(window.init.user[userField]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
         }
     },
     mounted () {
