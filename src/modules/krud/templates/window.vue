@@ -1,5 +1,5 @@
 <template>
-    <div class="card drawer-wrappper">
+    <div class="card drawer-wrappper window-crud">
         <common :parent="parent" :title="title" :addAction="openSide" :hide-action="openSlidePanel" :permissions="permissions"></common>
         <portal to="header-right" v-if="!openSlidePanel">
             <Krudtools :search="search"

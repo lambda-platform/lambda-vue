@@ -1,0 +1,16 @@
+.window-crud{
+    .two-column-form-left{
+
+        height: calc(100vh - 210px) !important;
+
+    }
+    .two-column-form-right{
+
+        height: calc(100vh - 210px) !important;
+
+    }
+
+    .offcanvas-template .crud-page {
+        height: calc(100vh - 80px) !important;
+    }
+}
