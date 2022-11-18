@@ -85,6 +85,7 @@ export default {
                         if(window.init){
                             if(window.init.user){
                                 if(window.init.user[userField]){
+                                    this.editMode = true;
                                     this.$refs.form.editModel(window.init.user[userField]);
                                 }
                             }
