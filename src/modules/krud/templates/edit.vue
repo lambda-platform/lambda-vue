@@ -17,7 +17,7 @@
                                         :title="title"
                                         :url="url"
                                         :editMode="editMode"
-                                        :onSuccess="onSuccess"
+                                        :onSuccess="templateOnSuccess"
                                         :onReady="onReadyEdit"
                                         :do_render="true"
                                         :permissions="permissions"
@@ -51,7 +51,7 @@ export default {
     data () {
         return {
             form_width: 800,
-
+            formIdentity:null,
             exportLoading: false,
         }
     },
@@ -62,8 +62,16 @@ export default {
     },
     methods: {
         templateOnSuccess () {
-            this.editMode = true;
-            this.$refs.form.editModel(this.actions);
+            if(this.actions) {
+                this.editMode = true;
+                this.$refs.form.editModel(this.actions);
+            } else {
+                if(this.formIdentity){
+                    this.editMode = true;
+                    this.$refs.form.editModel(this.formIdentity);
+                }
+
+            }
         },
         onReadyEdit(formSchema, schema){
 
@@ -86,7 +94,8 @@ export default {
                             if(window.init.user){
                                 if(window.init.user[userField]){
                                     this.editMode = true;
-                                    this.$refs.form.editModel(window.init.user[userField]);
+                                    this.formIdentity = window.init.user[userField]
+                                    this.$refs.form.editModel(this.formIdentity);
                                 }
                             }
                         }
