@@ -78,12 +78,12 @@
         }
     }
     .ant-form-item-label > label {
-        //font-size: 12px;
+        font-size: 12px;
         color: #515a6e;
     }
-    //input,
-    //input::placeholder, .ant-checkbox-wrapper-in-form-item {
-    //    font-size: 12px;
-    //}
+    input,
+    input::placeholder, .ant-checkbox-wrapper-in-form-item {
+        font-size: 12px;
+    }
 
 }

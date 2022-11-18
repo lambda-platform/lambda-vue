@@ -116,10 +116,6 @@ import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 
 import "leaflet-draw";
-
-
-
-
 const iconDefault = L.icon({
     iconRetinaUrl,
     iconUrl,
