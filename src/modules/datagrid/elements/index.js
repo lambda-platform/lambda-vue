@@ -100,17 +100,19 @@ export const elementList = [
 export const element = (type) => {
 
     if (type !== null && typeof type !== "undefined") {
-        try {
-            const elIndex = elementList.findIndex(el => el.element == type);
-            if (elIndex >= 0) {
-                return elementList[elIndex].component;
-            }
-        } catch (e) {
+        const elIndex = elementList.findIndex(el => el.element === type);
+
+        if (elIndex >= 0) {
+            return elementList[elIndex].component;
+        } else  {
             const customElementList = inject('customDataGridElementList')
+
             if(customElementList){
                 if(customElementList.length >= 1){
                     const elIndex = customElementList.findIndex(el => el.element === type);
+                    console.log(elIndex)
                     if (elIndex >= 0) {
+
                         return customElementList[elIndex].component
                     }
                 }

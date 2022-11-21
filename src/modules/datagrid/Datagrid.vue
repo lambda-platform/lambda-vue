@@ -178,6 +178,7 @@ import {AgGridVue} from 'ag-grid-vue3';
 
 
 import 'lodash';
+import { inject } from 'vue'
 import {data, tableToExcel} from './utils/data';
 import {dataFromTemplate, evil} from './utils/formula.js';
 import {compareObj, isValid} from './utils/methods';
@@ -417,6 +418,14 @@ export default {
             this.saveFilter = 'showGrid' in gridSchema ? gridSchema.saveFilter : false;
             this.autoSelect = 'autoSelect' in gridSchema ? gridSchema.autoSelect : false;
             this.autoSelectModel = 'autoSelectModel' in gridSchema ? gridSchema.autoSelectModel : false;
+
+            if(this.isNumbered){
+                this.columns.push({
+                    headerName: "#",
+                    valueGetter: "node.rowIndex + 1",
+                    width: 50,
+                })
+            }
 
             this.$parent.isSave = this.editableShouldSubmit = 'editableShouldSubmit' in gridSchema ? gridSchema.editableShouldSubmit : false;
 
@@ -1026,24 +1035,24 @@ export default {
                 }
 
                 // File column
-                if (isValid(item.gridType) && item.gridType == 'File') {
+                if (isValid(item.gridType) && item.gridType === 'File') {
                     colItem.cellRenderer = File;
                 }
 
                 // Select
-                if (isValid(item.gridType) && item.gridType == 'Select') {
+                if (isValid(item.gridType) && item.gridType === 'Select') {
                     // console.log('select element');
                     // colItem.keyCreator = colKeyCreator;
                     // colItem.cellRenderer = countryCellRenderer;
                 }
 
                 // Image column
-                if (isValid(item.gridType) && (item.gridType == 'Image' || item.gridType == 'SVG')) {
+                if (isValid(item.gridType) && (item.gridType === 'Image' || item.gridType === 'SVG')) {
                     colItem.cellRenderer = Image;
                 }
 
                 //Date only column
-                if (isValid(item.gridType) && item.gridType == 'Date') {
+                if (isValid(item.gridType) && item.gridType === 'Date') {
                     colItem.valueFormatter = (data) => {
                         let val = moment(data.value).format('YYYY-MM-DD');
                         if (val == 'Invalid date') {
@@ -1054,12 +1063,12 @@ export default {
                 }
 
                 //Number column
-                if (isValid(item.gridType) && item.gridType == 'Number') {
+                if (isValid(item.gridType) && item.gridType === 'Number') {
                     colItem.cellRenderer = Number;
                 }
 
                 //Radio column
-                if (isValid(item.gridType) && item.gridType == 'Radio') {
+                if (isValid(item.gridType) && item.gridType === 'Radio') {
                     colItem.cellRenderer = Radio;
                     colItem.cellRendererParams = {
                         valueOptions: item.options,
@@ -1067,12 +1076,12 @@ export default {
                 }
 
                 //Checkbox or switch column
-                if (isValid(item.gridType) && (item.gridType == 'Checkbox' || item.gridType == 'Switch')) {
+                if (isValid(item.gridType) && (item.gridType === 'Checkbox' || item.gridType === 'Switch')) {
                     colItem.cellRenderer = Check;
                 }
 
                 //HTML column
-                if (isValid(item.gridType) && item.gridType == 'Html') {
+                if (isValid(item.gridType) && item.gridType === 'Html') {
                     colItem.cellRenderer = Html;
                     colItem.cellRendererParams = {
                         customOptions: item.options,
@@ -1080,7 +1089,7 @@ export default {
                 }
 
                 //Custom column
-                if (isValid(item.gridType) && item.gridType == 'Custom') {
+                if (isValid(item.gridType) && item.gridType === 'Custom') {
                     colItem.cellRenderer = Custom;
                     colItem.cellRendererParams = {
                         customOptions: item.options,
@@ -1088,7 +1097,7 @@ export default {
                 }
 
                 //link
-                if (isValid(item.gridType) && item.gridType == 'Link') {
+                if (isValid(item.gridType) && item.gridType === 'Link') {
                     colItem.cellRenderer = Link;
                     colItem.cellRendererParams = {
                         customOptions: item.options,
@@ -1152,6 +1161,23 @@ export default {
                         }
                     }
                 }
+                //Custom column item as plugin
+                if (isValid(item.gridType)) {
+
+                    if(this.$customDataGridElementList){
+                        if(this.$customDataGridElementList.length >= 1){
+                            const elIndex = this.$customDataGridElementList.findIndex(el => el.element === item.gridType);
+
+                            if (elIndex >= 0) {
+                                colItem.cellRenderer = this.$customDataGridElementList[elIndex].component;
+                                colItem.cellRendererParams = {
+                                    customOptions: item.options,
+                                };
+                            }
+                        }
+                    }
+                }
+
 
                 this.$data.columns.push(colItem);
             }

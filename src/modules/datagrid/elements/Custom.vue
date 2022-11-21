@@ -8,7 +8,7 @@
 export default {
     computed: {
         customEl() {
-            if (this.params.value !== null) {
+            if (this.params.value !== null && this.params.value !== "") {
                 let render = this.params.customOptions.filter(item => item.compareVal.toString() == this.params.value.toString())[0];
                 if (render) {
                     let txt = render.label != null ? render.label : '';
