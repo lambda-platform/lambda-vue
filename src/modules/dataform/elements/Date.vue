@@ -6,6 +6,7 @@
             :placeholder="placeholder"
             :disabled="disabled"
             valueFormat="YYYY-MM-DD"
+
           ></a-date-picker>
     </lambda-form-item>
 </template>

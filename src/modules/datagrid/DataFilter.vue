@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import {element} from "./elements";
+    import {element} from "./elements/filterElements";
     import GridRowUpdate from "./GridRowUpdate";
     import {getRelationData} from "../dataform/utils/helpers";
     import {getOptionsData} from "../../utils/relation";

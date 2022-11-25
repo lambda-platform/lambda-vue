@@ -1,27 +1,17 @@
 <template>
-<!--    <FormItem :label=label>-->
-<!--        <DatePicker type="daterange" placement="bottom-end" @on-change="getDateValue"-->
-<!--                    :placeholder="meta && meta.placeHolder !== null ? meta.placeHolder : label"></DatePicker>-->
-<!--    </FormItem>-->
-    <Calendar v-model="$props.model.form[model.component]" />
-</template>
+    <lambda-form-item  :label=label  :name="model.component" :meta="meta">
+        <a-range-picker
+            v-model:value="model.form[model.component]"
 
+            :disabled="disabled"
+            style="width: 100%"
+            valueFormat="YYYY-MM-DD"
+        ></a-range-picker>
+    </lambda-form-item>
+</template>
 <script>
-import {getDate} from "../utils/date";
-import Calendar from 'primevue/calendar';
+import mixin from "./_mixin"
 export default {
-    props: ["model", "label", "meta"],
-    components:{
-        Calendar
-    },
-    methods: {
-        getDateValue(value) {
-            if (value) {
-                this.$props.model.form[this.model.component] = value.map(item => {
-                    return getDate(item);
-                });
-            }
-        }
-    }
+    mixins:[mixin],
 };
 </script>
