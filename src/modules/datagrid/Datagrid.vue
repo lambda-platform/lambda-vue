@@ -429,7 +429,7 @@ export default {
 
             this.$parent.isSave = this.editableShouldSubmit = 'editableShouldSubmit' in gridSchema ? gridSchema.editableShouldSubmit : false;
 
-            if (gridSchema.template == 2 || gridSchema.template == 3) {
+            if (gridSchema.template === 2 || gridSchema.template === 3) {
                 this.defaultColDef.floatingFilter = true;
             }
 
@@ -437,16 +437,16 @@ export default {
              * Custom part remove later
              */
             this.gridOptions.getRowStyle = (params) => {
-                if ((this.$props.schemaID == 220) && isValid(params.data.ubtirsenognoo)) {
+                if ((this.$props.schemaID === 220) && isValid(params.data.ubtirsenognoo)) {
                     return {'background-color': '#87cefa'};
                 }
 
-                if ((this.$props.schemaID == 224 && isValid(params.data.chw_status))) {
-                    if (params.data.chw_status == 9) {
+                if ((this.$props.schemaID === 224 && isValid(params.data.chw_status))) {
+                    if (params.data.chw_status === 9) {
                         return {'background-color': '#d7f9e2'};
-                    } else if (params.data.chw_status == 8) {
+                    } else if (params.data.chw_status === 8) {
                         return {'background-color': '#ffe4e4'};
-                    } else if (params.data.chw_status == 7) {
+                    } else if (params.data.chw_status === 7) {
                         return {'background-color': '#d5eaff'};
                     }
                 }
@@ -691,6 +691,7 @@ export default {
                     sortable: false,
                     filter: false,
                     cellRenderer: "GridActions",
+                    // pinned: 'right',
                     cellRendererParams: {
                         actions: grid_actions,
                         width: width,
