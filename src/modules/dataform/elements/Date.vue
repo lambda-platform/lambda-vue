@@ -4,7 +4,7 @@
             v-model:value="model.form[model.component]"
             mode="date"
             :placeholder="placeholder"
-            :disabled="disabled"
+            :disabled="disabled || autoFillCurrentDate"
             valueFormat="YYYY-MM-DD"
 
           ></a-date-picker>
@@ -12,7 +12,20 @@
 </template>
 <script>
 import mixin from "./_mixin"
+import axios from "axios"
 export default {
     mixins:[mixin],
+    computed:{
+        autoFillCurrentDate(){
+            return this.meta.autoFillCurrentDate === true
+        }
+    },
+    mounted () {
+        if(this.itemValue === null){
+            axios.get("/lambda/krud/today").then(({data})=>{
+                this.model.form[this.model.component] = data.today;
+            });
+        }
+    }
 };
 </script>
