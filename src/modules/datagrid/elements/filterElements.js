@@ -32,7 +32,7 @@ export const elementList = [
 // }
 
 
-export const element = (type) => {
+export const element = (type, customDataGridElementList) => {
 
     if (type !== null && typeof type !== "undefined") {
         const elIndex = elementList.findIndex(el => el.element === type);
@@ -40,6 +40,15 @@ export const element = (type) => {
         if (elIndex >= 0) {
             return elementList[elIndex].component;
         } else  {
+            if(customDataGridElementList){
+                if(customDataGridElementList.length >= 1){
+                    const elIndex = customDataGridElementList.findIndex(el => el.element === type);
+
+                    if (elIndex >= 0) {
+                        return customDataGridElementList[elIndex].component;
+                    }
+                }
+            }
             return elementList[0].component;
         }
     }

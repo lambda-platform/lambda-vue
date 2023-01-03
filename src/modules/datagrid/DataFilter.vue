@@ -67,7 +67,9 @@
         },
 
         methods: {
-            element: element,
+            element(type){
+                return element(type, this.$customDataGridElementList);
+            },
             setMeta(item) {
                 item.schemaID = this.$props.schemaID;
                 item.relation = item.filter.relation
