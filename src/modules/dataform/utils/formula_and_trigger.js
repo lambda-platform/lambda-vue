@@ -90,6 +90,7 @@ export function doTrigger(model, val, model_, schema_, refs, Message, editMode) 
                     clearTimeout(fieldTimeout);
                 }
                  fieldTimeout = setTimeout(() => {
+
                     callFieldTrigger(schema_[model_index]['trigger'], model_, schema_, refs, Message, editMode);
                  }, schema_[model_index]['triggerTimeout'] != undefined && schema_[model_index]['triggerTimeout'] !== null && schema_[model_index]['triggerTimeout'] != ''  ? schema_[model_index]['triggerTimeout'] : 0);
             }
@@ -98,7 +99,6 @@ export function doTrigger(model, val, model_, schema_, refs, Message, editMode) 
 }
 
 function setValueProps(field, model_, schema_, refs, is_sub) {
-
     if (is_sub) {
         let schema_sub_index = getSchemaIndex(schema_, is_sub);
         if (schema_sub_index >= 0) {
@@ -134,7 +134,6 @@ function setValueProps(field, model_, schema_, refs, is_sub) {
 }
 
 function callFieldTrigger(trigger_url, model_, schema_, refs, Message, editMode) {
-    // console.log('axios sent', trigger_url);
 
     let services = trigger_url.split(",");
 

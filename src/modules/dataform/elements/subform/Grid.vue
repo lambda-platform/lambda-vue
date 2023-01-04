@@ -342,13 +342,15 @@ export default {
             this.$nextTick(() => {
 
                 let listData = [];
-                data.forEach(item => {
+                if(data){
+                    data.forEach(item => {
 
-                    listData.push({
-                        form: _.cloneDeep(this.form),
-                        model: item
-                    })
-                });
+                        listData.push({
+                            form: _.cloneDeep(this.form),
+                            model: item
+                        })
+                    });
+                }
 
 
                 this.listData = listData;
