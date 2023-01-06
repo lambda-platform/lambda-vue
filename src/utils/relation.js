@@ -18,10 +18,17 @@ export const  getOptionsData = async (schema, setSchemaByModel, optionUrl) => {
     if (window.init) {
         if (window.init.microserviceSettings.length >= 1) {
 
-            window.init.microserviceSettings.forEach(async microserviceSetting => {
+            let relationData = {}
+            for (const microserviceSetting of window.init.microserviceSettings) {
                 let relations = getSelects(schema, microserviceSetting.project_id)
-               await getOptionsByRelations(microserviceSetting.production_url, relations, optionUrl)
-            })
+                let relationsDataCurrent = await getOptionsByRelations(microserviceSetting.production_url, relations, optionUrl);
+
+                relationData = {...relationData, ...relationsDataCurrent}
+
+            }
+
+
+            return relationData;
         } else {
             return  await getOptionsByRelations('', relationsData, optionUrl)
         }

@@ -39,7 +39,8 @@ export const getTableMeta = (table)=>{
 }
 
 export const getRelationData = (item, relations) =>{
-    if (item.relation.filter == '' || typeof item.relation.filter === "undefined") {
+
+    if (item.relation.filter === '' || typeof item.relation.filter === "undefined") {
         if (relations[item.relation.table])
             return relations[item.relation.table]['data']
         else if (item.relation.filterWithUser){

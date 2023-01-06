@@ -919,7 +919,7 @@ export default {
         },
 
         getRelation(item) {
-            let s_index = this.schema.findIndex(schema => schema.model == item.model)
+            let s_index = this.schema.findIndex(schema => schema.model === item.model)
             let i = s_index >= 0 ? this.schema[s_index] : item
             return getRelationData(i, this.relations)
         },
@@ -927,7 +927,7 @@ export default {
         getFooterButtons() {
             let buttons = []
             this.schema.forEach(item => {
-                if (item.formType == 'FooterButton') {
+                if (item.formType === 'FooterButton') {
                     if(item.options.length >= 1){
                         buttons.push({...item})
                     } else {
