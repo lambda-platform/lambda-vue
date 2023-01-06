@@ -35,22 +35,22 @@ export default {
             return !!this.$slots['left']
         },
         url(){
-            // if(this.projects_id !== null && this.projects_id != "" && this.projects_id != undefined){
-            //     if(window.init.microserviceSettings){
-            //         if(window.init.microserviceSettings.length >= 1){
-            //             let si = window.init.microserviceSettings.findIndex(set=>set.project_id == this.projects_id);
-            //             if(si >= 0){
-            //
-            //                 if(window.lambda.microservice_dev){
-            //                     return  window.init.microserviceSettings[si].dev_url;
-            //                 } else {
-            //                     return  window.init.microserviceSettings[si].production_url;
-            //                 }
-            //
-            //             }
-            //         }
-            //     }
-            // }
+            if(this.projects_id !== null && this.projects_id != "" && this.projects_id != undefined){
+                if(window.init.microserviceSettings){
+                    if(window.init.microserviceSettings.length >= 1){
+                        let si = window.init.microserviceSettings.findIndex(set=>set.project_id == this.projects_id);
+                        if(si >= 0){
+
+                            if(window.microservice_dev){
+                                return  window.init.microserviceSettings[si].dev_url;
+                            } else {
+                                return  window.init.microserviceSettings[si].production_url;
+                            }
+
+                        }
+                    }
+                }
+            }
             return this.base_url ? this.base_url : "";
         },
         lang() {
