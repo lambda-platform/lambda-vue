@@ -104,9 +104,9 @@ export default {
                     }
                 } else {
                     let name = this.model.form[this.model.component].split("/")
-                    let fileName= "";
-                    if(name.length >= 1){
-                         fileName = name[name.length-1]
+                    let fileName = "";
+                    if (name.length >= 1) {
+                        fileName = name[name.length - 1]
                     }
 
                     if (this.uploadList.length >= 1) {
@@ -115,7 +115,7 @@ export default {
                                 status: 'done',
                                 thumbUrl: this.url + this.model.form[this.model.component],
                                 response: this.model.form[this.model.component],
-                                name:fileName
+                                name: fileName
                             }]
                         }
                     } else {
@@ -123,7 +123,7 @@ export default {
                             status: 'done',
                             thumbUrl: this.url + this.model.form[this.model.component],
                             response: this.model.form[this.model.component],
-                            name:fileName
+                            name: fileName
                         }]
                     }
                 }
@@ -139,14 +139,41 @@ export default {
         },
         handleChange(info) {
 
-            if (info.file.status === 'uploading') {
-                this.loading = true
+            if (this.isMultiple) {
+                if (info.file.status === 'uploading') {
+                    this.loading = true
 
-                return
-            }
-            if (info.file.status === 'done') {
+                    return
+                }
 
-                if (!this.isMultiple) {
+                let uploadListPre = []
+                this.uploadList.forEach(u => {
+                    if (u.status === 'done') {
+                        uploadListPre.push({
+                            status: 'done',
+                            thumbUrl: this.url + u.response,
+                            response: u.response,
+                            name: u.name
+                        })
+                    }
+                });
+
+
+
+                if (uploadListPre.length === this.uploadList.length) {
+                    this.model.form[this.model.component] = JSON.stringify(uploadListPre);
+                    this.loading = false;
+                }
+            } else {
+                if (info.file.status === 'uploading') {
+                    this.loading = true
+
+                    return
+                }
+
+                if (info.file.status === 'done') {
+
+
                     this.model.form[this.model.component] = info.file.response
                     this.uploadList = [{
                         status: 'done',
@@ -154,24 +181,17 @@ export default {
                         response: this.model.form[this.model.component],
                         name: info.file.name
                     }]
-                } else {
-                    this.uploadList = this.uploadList.map(u => {
-                        return {
-                            status: 'done',
-                            thumbUrl: this.url + u.response,
-                            response: u.response,
-                            name: u.name
-                        }
-                    })
-                    this.model.form[this.model.component] = JSON.stringify(this.uploadList)
+                    this.loading = false;
                 }
-                this.loading = false
+
+                if (info.file.status === 'error') {
+                    this.uploadList = this.uploadList.filter(u => u.status === 'done');
+                    this.loading = false;
+                    message.error(this.$t("alertMessage.errorMsg"))
+                }
             }
-            if (info.file.status === 'error') {
-                this.uploadList = this.uploadList.filter(u => u.status === 'done');
-                this.loading = false;
-                message.error(this.$t("alertMessage.errorMsg"))
-            }
+
+
         },
 
         success(val) {
