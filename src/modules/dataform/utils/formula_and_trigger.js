@@ -117,8 +117,9 @@ function setValueProps(field, model_, schema_, refs, is_sub) {
                 model_[field.field] = field.value;
 
                 let current_schema = schema_[schema_index];
-                if (current_schema.formType == "SubForm") {
-                    refs[`sf${field.field}`][0].fillData();
+
+                if (current_schema.formType === "SubForm") {
+                    refs[`sf${field.field}`][0].fillData(field.value);
                 }
             }
             if (field.props) {

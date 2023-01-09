@@ -340,7 +340,6 @@ export default {
 
         fillData(data) {
             this.$nextTick(() => {
-
                 let listData = [];
                 if(data){
                     data.forEach(item => {
