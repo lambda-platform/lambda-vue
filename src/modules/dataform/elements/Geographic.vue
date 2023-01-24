@@ -130,6 +130,8 @@ const iconDefault = L.icon({
 import {point, polygon, inside} from '@turf/turf'
 import mixin from './_mixin'
 import {notification} from "ant-design-vue";
+
+window.type = true;
 export default {
     mixins: [mixin],
 
