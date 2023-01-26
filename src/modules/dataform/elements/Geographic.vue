@@ -1,7 +1,7 @@
 <template>
     <lambda-form-item :label=label :name="model.component" :meta="meta">
         <div class="geographic">
-            <div class="geographic-mapx"  :id="`geographic_${model.component}`" style="height: 100%; width: 100%">
+            <div class="geographic-mapx"  :id="`geographic_${model.component}`" style="height: 100%; width: 100%; border: 1px solid #ccc;">
 
 
 
@@ -225,6 +225,15 @@ export default {
                 0,
             baseMaps:
                 [
+                    {
+                        title: 'iMap',
+                        thumb: '/webgis/images/baseMaps/googleSatellite.jpg',
+                        baseMap: L.tileLayer('https://cloudgis.mn/map01/Tilemap/demo/{z}/{x}/{y}.png?mskey=12345', {
+                            name: 'imap',
+                            maxZoom: 20,
+                            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+                        }),
+                    },
                     {
                         title: 'Google Сансрын',
                         thumb: '/webgis/images/baseMaps/googleSatellite.jpg',
