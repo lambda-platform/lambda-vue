@@ -292,7 +292,7 @@
                                     </a-col>
                                 </a-row>
                             </div>
-                            <div class="two-column-form-footer">
+                            <div class="two-column-form-footer" v-if="!viewMode">
                                 <fromFooter
                                     :withBackButton="withBackButton"
                                     :save_btn_text="save_btn_text"
