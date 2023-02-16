@@ -5,7 +5,6 @@
             mode="date"
             :placeholder="placeholder"
             :disabled="disabled || autoFillCurrentDate"
-            valueFormat="YYYY-MM-DD"
 
           ></a-date-picker>
     </lambda-form-item>
@@ -13,6 +12,7 @@
 <script>
 import mixin from "./_mixin"
 import axios from "axios"
+import dayjs from 'dayjs';
 export default {
     mixins:[mixin],
     computed:{
@@ -23,7 +23,8 @@ export default {
     mounted () {
         if(this.itemValue === null){
             axios.get("/lambda/krud/today").then(({data})=>{
-                this.model.form[this.model.component] = data.today;
+                const dateFormat = 'YYYY-MM-DD';
+                this.model.form[this.model.component] = dayjs(data.today, dateFormat);
             });
         }
     }

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import {element} from './elements'
 import {getRule, setModel, setIdentity} from './rule'
 import {dataFromTemplate} from './utils/formula.js'
@@ -8,7 +9,19 @@ import {getOptionsData} from '../../utils/relation.js'
 import axios from 'axios'
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import localeData from 'dayjs/plugin/localeData'
+import weekday from 'dayjs/plugin/weekday'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
+import weekYear from 'dayjs/plugin/weekYear'
 
+dayjs.extend(customParseFormat)
+dayjs.extend(advancedFormat)
+dayjs.extend(weekday)
+dayjs.extend(localeData)
+dayjs.extend(weekOfYear)
+dayjs.extend(weekYear)
 export default {
     name: 'dataform',
     props: [
@@ -499,6 +512,16 @@ export default {
                         this.$data.model[name] = value * 1;
                     }
                     break
+                // case 'Date':
+                //     if (value !== null) {
+                //         this.$data.model[name] =   dayjs(value);
+                //     }
+                //     break
+                // case 'DateTime':
+                //     if (value !== null) {
+                //         this.$data.model[name] = dayjs(value);
+                //     }
+                //     break
                 case 'ISelect':
                     this.$data.model[name] = value;
                 case 'TreeSelect':
@@ -858,6 +881,16 @@ export default {
                                 this.model[item.model] = "";
                             }
                             break;
+                        case 'Date':
+                            if (this.model[item.model] !== null) {
+                                this.model[item.model] =   dayjs(this.model[item.model]);
+                            }
+                            break
+                        case 'DateTime':
+                            if (this.model[item.model] !== null) {
+                                this.model[item.model] = dayjs(this.model[item.model]);
+                            }
+                            break
                         case 'Password':
                             this.model[item.model] = ''
                             delete this.$data.rule[item.model]
@@ -868,6 +901,9 @@ export default {
                             break
                         default:
                             break
+
+
+
                     }
                 } else if (_.isArray(item.children)) {
                     this.setEditModel(item.children)

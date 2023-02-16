@@ -5,7 +5,7 @@
             show-time
             :placeholder="placeholder"
             :disabled="disabled"
-            valueFormat="YYYY-MM-DD HH:mm:ss"
+
             ></a-date-picker>
     </lambda-form-item>
 </template>
