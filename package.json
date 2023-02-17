@@ -1,6 +1,6 @@
 {
     "name": "@lambda-platform/lambda-vue",
-    "version": "3.0.96",
+    "version": "3.0.97",
     "description": "lambda builder",
     "main": "src/index.js",
     "repository": "git@github.com:lambda-platform/lambda-vue.git",
@@ -22,6 +22,7 @@
         "axios": "^0.27.2",
         "ckeditor5-build-classic-custom-es": "^22.0.3",
         "ckeditor5-custom-build": "^0.0.6",
+        "dayjs": "^1.11.7",
         "jquery": "^3.6.1",
         "json-logic-js": "^2.0.2",
         "leaflet": "^1.8.0",
@@ -32,7 +33,6 @@
         "moment": "^2.29.4",
         "numeral": "^2.0.6",
         "portal-vue": "^3.0.0-beta.0",
-
         "turf": "^3.0.14",
         "vue": "^3.2.39",
         "vue-i18n": "^9.2.2",
