@@ -10,16 +10,12 @@ import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
 
 
-import * as dayjs from 'dayjs';
-import * as localeData from 'dayjs/plugin/localeData'
-import * as weekday from 'dayjs/plugin/weekday'
-import * as weekOfYear from 'dayjs/plugin/weekOfYear'
-import * as weekYear from 'dayjs/plugin/weekYear'
-// // import advancedFormat from 'dayjs/plugin/advancedFormat'
-// // import customParseFormat from 'dayjs/plugin/customParseFormat'
-//
-// dayjs.extend(customParseFormat)
-// dayjs.extend(advancedFormat)
+import * as dayjs from 'dayjs/esm';
+import * as localeData from 'dayjs/esm/plugin/localeData'
+import * as weekday from 'dayjs/esm/plugin/weekday'
+import * as weekOfYear  from 'dayjs/esm/plugin/weekOfYear'
+import * as weekYear from 'dayjs/esm/plugin/weekYear'
+
 dayjs.extend(weekday)
 dayjs.extend(localeData)
 dayjs.extend(weekOfYear)
