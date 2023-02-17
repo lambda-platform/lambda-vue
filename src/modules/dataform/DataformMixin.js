@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import {element} from './elements'
 import {getRule, setModel, setIdentity} from './rule'
 import {dataFromTemplate} from './utils/formula.js'
@@ -9,12 +9,12 @@ import {getOptionsData} from '../../utils/relation.js'
 import axios from 'axios'
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
-import * as advancedFormat from 'dayjs/plugin/advancedFormat'
-import * as customParseFormat from 'dayjs/plugin/customParseFormat'
-import * as localeData from 'dayjs/plugin/localeData'
-import * as weekday from 'dayjs/plugin/weekday'
-import * as weekOfYear from 'dayjs/plugin/weekOfYear'
-import * as weekYear from 'dayjs/plugin/weekYear'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import localeData from 'dayjs/plugin/localeData'
+import weekday from 'dayjs/plugin/weekday'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
+import weekYear from 'dayjs/plugin/weekYear'
 import 'dayjs/locale/mn'
 
 dayjs.extend(customParseFormat)
