@@ -10,11 +10,11 @@ import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
 
 
-import * as dayjs from 'dayjs/esm';
-import * as localeData from 'dayjs/esm/plugin/localeData'
-import * as weekday from 'dayjs/esm/plugin/weekday'
-import * as weekOfYear  from 'dayjs/esm/plugin/weekOfYear'
-import * as weekYear from 'dayjs/esm/plugin/weekYear'
+import dayjs from 'dayjs/esm/index';
+import localeData from 'dayjs/esm/plugin/localeData'
+import weekday from 'dayjs/esm/plugin/weekday'
+import weekOfYear  from 'dayjs/esm/plugin/weekOfYear'
+import weekYear from 'dayjs/esm/plugin/weekYear'
 
 dayjs.extend(weekday)
 dayjs.extend(localeData)
