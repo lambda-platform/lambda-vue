@@ -8,17 +8,18 @@ import {getOptionsData} from '../../utils/relation.js'
 import axios from 'axios'
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
+
 
 import * as dayjs from 'dayjs';
 import * as localeData from 'dayjs/plugin/localeData'
 import * as weekday from 'dayjs/plugin/weekday'
 import * as weekOfYear from 'dayjs/plugin/weekOfYear'
 import * as weekYear from 'dayjs/plugin/weekYear'
-
-dayjs.extend(customParseFormat)
-dayjs.extend(advancedFormat)
+// // import advancedFormat from 'dayjs/plugin/advancedFormat'
+// // import customParseFormat from 'dayjs/plugin/customParseFormat'
+//
+// dayjs.extend(customParseFormat)
+// dayjs.extend(advancedFormat)
 dayjs.extend(weekday)
 dayjs.extend(localeData)
 dayjs.extend(weekOfYear)
