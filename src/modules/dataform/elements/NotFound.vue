@@ -1,6 +1,6 @@
 <template>
     <lambda-form-item  :label=label  :name="model.component" :meta="meta">
-        <div>{{ lang.notFound }}</div>
+        <div>{{ lang.notFound }} - {{meta.formType}}</div>
     </lambda-form-item>
 </template>
 
