@@ -20,7 +20,7 @@ export default {
     methods: {
         init() {
             if (this.model.form[this.model.component] !== null && this.model.form[this.model.component] !== "") {
-                this.value = atob(this.model.form[this.model.component]);
+                this.value = decodeURIComponent(escape(atob(this.model.form[this.model.component])));
             }
         },
         changeFormData() {
