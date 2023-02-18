@@ -45,6 +45,10 @@ export const elementList = [
         component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-ImageSubform" */'./ImageSubform.vue')),
     },
     {
+        element: 'TextareaByte',
+        component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-Textarea" */'./TextareaByte.vue')),
+    },
+    {
         element: 'HTML',
         component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-HTML" */'./HTML.vue')),
     },
@@ -60,6 +64,11 @@ export const elementList = [
         element: 'CK',
         // component: CK,
         component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-Textarea" */'./CK.vue')),
+    },
+    {
+        element: 'CKByte',
+        // component: CK,
+        component: defineAsyncComponent(() => import(/* webpackChunkName: "form-field-Textarea" */'./CKByte.vue')),
     },
     {
         element: 'File',
