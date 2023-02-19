@@ -552,7 +552,8 @@ export default {
                 i.schemaID = this.$props.schemaID
             }
 
-            return i
+            const disabled = this.viewMode ? true : i.disabled;
+            return { ...i, disabled };
         },
 
         getSchemaByModel(model) {
