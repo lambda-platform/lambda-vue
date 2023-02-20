@@ -1063,6 +1063,17 @@ export default {
                     };
                 }
 
+                //Date only column
+                if (isValid(item.gridType) && item.gridType === 'Datetime') {
+                    colItem.valueFormatter = (data) => {
+                        let val = moment(data.value).format('YYYY-MM-DD HH:mm:ss');
+                        if (val == 'Invalid date') {
+                            return '';
+                        }
+                        return val;
+                    };
+                }
+
                 //Number column
                 if (isValid(item.gridType) && item.gridType === 'Number') {
                     colItem.cellRenderer = Number;
