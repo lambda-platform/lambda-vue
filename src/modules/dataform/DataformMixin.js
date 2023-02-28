@@ -814,7 +814,9 @@ export default {
                 axios.post(this.page_id ? `${this.baseUrl}/lambda/krud/${this.$props.schemaID}/edit/${id}?page_id=${this.page_id}` : `${this.baseUrl}/lambda/krud/${this.$props.schemaID}/edit/${id}`)
                     .then(({data}) => {
                         if (data.status) {
-
+                            
+                            console.log(data.data);
+                            
                             this.model = {...this.model, ...data.data}
                             if (this.ui && this.ui.hasOwnProperty('schema')) {
                                 this.setEditModel(this.ui.schema)
