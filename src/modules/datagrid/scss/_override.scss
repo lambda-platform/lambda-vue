@@ -626,3 +626,28 @@ img.ag-grid-image {
     }
 }
 
+.ag-theme-material input[class^=ag-]:not([type]),
+.ag-theme-material input[class^=ag-][type=text],
+.ag-theme-material input[class^=ag-][type=number],
+.ag-theme-material input[class^=ag-][type=tel],
+.ag-theme-material input[class^=ag-][type=date],
+.ag-theme-material input[class^=ag-][type=datetime-local],
+.ag-theme-material textarea[class^=ag-] {
+    background: transparent;
+    color: var(--ag-foreground-color);
+    font-family: inherit;
+    font-size: inherit;
+    height: unset !important;
+    padding-bottom: unset !important;
+    border-width: unset !important;
+    border-bottom: none !important;
+    border-bottom-color: unset !important;
+    box-shadow: none !important;
+}
+.ag-theme-material .ag-cell-inline-editing {
+    padding: 0 !important;
+    padding-left: calc(var(--ag-cell-horizontal-padding) - 1px) !important;
+    padding-right: calc(var(--ag-cell-horizontal-padding) - 1px) !important;
+    height: var(--ag-row-height) !important;
+    border-color: var(--ag-border-color) !important;
+}

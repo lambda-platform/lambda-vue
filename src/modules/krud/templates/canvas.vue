@@ -23,6 +23,7 @@
                 <div class="crud-page-body">
                     <div id="drawer-container">
                         <div :class="openSlidePanel ? 'dg-flex open-drawer' : 'dg-flex'">
+
                             <datagrid v-if="permissions ? permissions.r : false" ref="grid"
                                       :url="url"
                                       :schemaID="grid"

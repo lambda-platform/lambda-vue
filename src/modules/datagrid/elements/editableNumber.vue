@@ -1,8 +1,11 @@
+<template>
+    <input :ref="'input'" class="ag-cell-input" type="text" @keydown="onKeyDown($event)" v-model="value"/>
+</template>
 <script>
 
 
 export default {
-    template: `<input :ref="'input'" @keypress="onKeyDown($event)" v-model="value"/>`,
+    // template: `<input :ref="'input'" @keydown="onKeyDown($event)" v-model="value"/>`,
     data() {
         return {
             value: '',
@@ -18,17 +21,15 @@ export default {
             return this.cancelBeforeStart;
         },
 
+        // will reject the number if it greater than 1,000,000
+        // not very practical, but demonstrates the method.
         isCancelAfterEnd() {
             return this.value > 1000000;
         },
 
         onKeyDown(event) {
-
             if (!this.isKeyPressedNumeric(event)) {
-                this.$refs.input.focus();
                 if (event.preventDefault) event.preventDefault();
-            } else if (this.isKeyPressedNavigation(event)) {
-                event.stopPropagation();
             }
         },
 
@@ -45,27 +46,13 @@ export default {
             const charCode = this.getCharCodeFromEvent(event);
             const charStr = String.fromCharCode(charCode);
             return this.isCharNumeric(charStr);
-        },
-        isKeyPressedNavigation(event) {
-            return event.keyCode === 39
-                || event.keyCode === 37;
         }
     },
     created() {
-        // this.value = this.params.value;
-
-        if (this.isCharNumeric(this.params.charPress)) {
-            this.value = this.params.charPress;
-        } else {
-            if (this.params.value !== undefined && this.params.value !== null) {
-                this.value = this.params.value;
-            }
-        }
+        this.value = this.params.value;
 
         // only start edit if key pressed is a number, not a letter
         this.cancelBeforeStart = this.params.charPress && ('1234567890'.indexOf(this.params.charPress) < 0);
-
-
     },
     mounted() {
         // Vue.nextTick(() => {

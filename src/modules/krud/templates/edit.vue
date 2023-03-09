@@ -74,7 +74,6 @@ export default {
             }
         },
         onReadyEdit(formSchema, schema){
-
             if(this.actions){
                 this.editMode = true;
                 this.$refs.form.editModel(this.actions);
@@ -94,7 +93,7 @@ export default {
                             if(window.init.user){
                                 if(window.init.user[userField]){
                                     this.editMode = true;
-                                    this.formIdentity = window.init.user[userField]
+                                    this.formIdentity = window.init.user[userField];
                                     this.$refs.form.editModel(this.formIdentity);
                                 }
                             }

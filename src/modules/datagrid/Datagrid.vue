@@ -213,9 +213,10 @@ import SetFilterDate from './elements/SetFilterDate';
 import SetFilterAltered from './elements/SetFilterAltered';
 import './elements/ExcelFilter.js';
 import GridRowUpdate from "./GridRowUpdate";
-import {notification} from 'ant-design-vue';
+import {notification, message} from 'ant-design-vue';
 import {isNumber} from "@vueuse/core";
 
+const messageKey = 'datagrid';
 export default {
     name: 'datagrid',
     props: [
@@ -311,6 +312,7 @@ export default {
         onGridReady(params) {
 
             this.gridApi = params.api;
+            this.gridColumnApi = params.columnApi;
             this.initGrid();
 
             setTimeout(() => {
@@ -347,7 +349,7 @@ export default {
             this.data = [];
             this.formula = [];
             this.pinnedBottomRowData = null;
-            this.$data.aggregations.columnAggregations = [];
+            this.aggregations.columnAggregations = [];
 
             let gridSchema = {};
             let baseUrl = this.$props.url ? this.$props.url : '';
@@ -506,7 +508,7 @@ export default {
                     this.$parent.excelUploadCustomTrigger = gridSchema.excelUploadCustomTrigger;
                 }
                 if (gridSchema.columnAggregationsFormula) {
-                    this.$data.aggregations.columnAggregationsFormula = gridSchema.columnAggregationsFormula;
+                    this.aggregations.columnAggregationsFormula = gridSchema.columnAggregationsFormula;
                 }
             }
 
@@ -559,7 +561,7 @@ export default {
 
             //Sidebar configuration
             if (gridSchema.isPivot) {
-                this.$data.sideBar = {
+                this.sideBar = {
                     toolPanels: [
                         {
                             id: 'columns',
@@ -596,7 +598,7 @@ export default {
                     headerCheckboxSelectionFilteredOnly: true,
                     filter: false,
                 };
-                this.$data.columns.push(selectionCol);
+                this.columns.push(selectionCol);
             }
 
             if (gridSchema.hasCheckbox || this.$props.hasSelection) {
@@ -621,7 +623,7 @@ export default {
 
                             if (schemaItem) {
                                 if (schemaItem.filterable) {
-                                    this.$data.filterModel[schemaItem.model] = null;
+                                    this.filterModel[schemaItem.model] = null;
                                     filter_not_found = false;
                                 }
                                 schemaItem.width = parseInt(td.width) + 1;
@@ -631,7 +633,7 @@ export default {
                         }
                     });
                 });
-                this.$data.init = true;
+                this.init = true;
 
                 if (gridSchema.hasCheckbox) {
                     this.tableWidth += 32;
@@ -642,16 +644,16 @@ export default {
                 if (item.filterable) {
                     if (isValid(item.filter.default)) {
 
-                        this.$data.filterModel[item.model] = item.filter.default;
+                        this.filterModel[item.model] = item.filter.default;
                     } else {
-                        this.$data.filterModel[item.model] = null;
+                        this.filterModel[item.model] = null;
                     }
                     filter_not_found = false;
                 }
                 this.setColumn(item);
             });
 
-            this.$data.init = true;
+            this.init = true;
 
             if (filter_not_found) {
                 this.defaultColDef.floatingFilter = false;
@@ -713,16 +715,16 @@ export default {
                 if (this.permissions) {
                     if (this.permissions.r || this.permissions.u || this.permissions.d) {
                         if (this.actionPosition == 0) {
-                            this.$data.columns.push(actions);
+                            this.columns.push(actions);
                         } else {
-                            this.$data.columns.unshift(actions);
+                            this.columns.unshift(actions);
                         }
                     }
                 } else {
                     if (this.actionPosition == 0) {
-                        this.$data.columns.push(actions);
+                        this.columns.push(actions);
                     } else {
-                        this.$data.columns.unshift(actions);
+                        this.columns.unshift(actions);
                     }
                 }
             }
@@ -745,8 +747,8 @@ export default {
                 let colItem = {
                     headerName: item.label === '' ? item.model : item.label,
                     field: item.model,
-                    suppressNavigable: true,
-                    cellClass: 'no-border',
+                    // suppressNavigable: true,
+                    // cellClass: 'no-border',
                     enableRowGroup: true,
                     enableValue: true,
                     enablePivot: true,
@@ -1163,7 +1165,7 @@ export default {
                                 colItem.cellEditor = 'editableDatePicker';
                                 break;
                             case 'number':
-                                colItem.cellEditor = 'editableNumber';
+                                colItem.cellEditor = 'agNumberCellEditor';
                                 break;
                             case 'select':
                                 colItem.cellEditor = 'editableSelect';
@@ -1191,7 +1193,7 @@ export default {
                 }
 
 
-                this.$data.columns.push(colItem);
+                this.columns.push(colItem);
             }
         },
 
@@ -1273,12 +1275,12 @@ export default {
             axios.post(url, filters).then(({data}) => {
                 if (this.isClient) {
                     if (Array.isArray(data)) {
-                        this.$data.data = data;
+                        this.data = data;
                         this.info.total = data.length;
                     }
 
                     if (typeof data === 'object' && ('data' in data)) {
-                        this.$data.data = data.data;
+                        this.data = data.data;
                     }
                 } else {
                     //for tuushin llc
@@ -1286,7 +1288,7 @@ export default {
                     //     this.info.total = data.data.total;
                     //     this.info.totalPage = data.data.last_page;
                     //     //getting data
-                    //     this.$data.data = data.data.data;
+                    //     this.data = data.data.data;
                     //     this.gridOptions.api.setRowData(data.data.data)
                     //
                     //     //after data has been rendered
@@ -1295,7 +1297,7 @@ export default {
                     this.info.total = data.total;
                     this.info.totalPage = data.last_page;
                     //getting data
-                    this.$data.data = data.data;
+                    this.data = data.data;
                     this.gridOptions.api.setRowData(data.data);
 
                     if (this.aggregations.columnAggregations.length >= 1) {
@@ -1304,11 +1306,11 @@ export default {
                     // }
                 }
 
-                if (this.$data.gridOptions.sizeColumnsToFit) {
+                if (this.gridOptions.sizeColumnsToFit) {
                     this.gridApi.sizeColumnsToFit();
                 }
 
-                if (this.$data.data.length <= 0) {
+                if (this.data.length <= 0) {
                     this.gridOptions.suppressNoRowsOverlay = false;
                     this.gridApi.showNoRowsOverlay();
                 } else {
@@ -1413,8 +1415,8 @@ export default {
                 this.gridApi.setPinnedBottomRowData([bottom_data]);
 
 
-                this.$data.aggregations['data'] = data;
-                this.$data.aggregations['loading'] = false;
+                this.aggregations['data'] = data;
+                this.aggregations['loading'] = false;
 
 
             }).catch(e => {
@@ -1448,8 +1450,8 @@ export default {
 
             this.gridApi.setPinnedBottomRowData([bottom_data]);
 
-            this.$data.aggregations['data'] = data;
-            this.$data.aggregations['loading'] = false;
+            this.aggregations['data'] = data;
+            this.aggregations['loading'] = false;
         },
 
         searchData(val, page) {
@@ -1757,13 +1759,13 @@ export default {
             return actions;
         },
 
-        onSortChanged(event) {
+        onSortChanged() {
             //when enable server side sort
             if (!this.isClient) {
-                let sortModel = event.api.getSortModel()[0];
-                if (typeof sortModel !== 'undefined') {
-                    this.query.sort = sortModel.colId;
-                    this.query.order = sortModel.sort;
+                let column = this.gridColumnApi.getColumnState().filter(c => c.sort != null);
+                if (typeof column !== "undefined" && column.length > 0) {
+                    this.query.sort = column[0].colId;
+                    this.query.order = column[0].sort;
                     this.fetchData();
                 }
             }
@@ -1881,8 +1883,7 @@ export default {
         },
 
         onCellEditingStopped(cell) {
-            if (this.editType == null && this.editableAction != null && this.editCellValue != cell.value) {
-
+            if (this.editType == null && this.editableAction != null && this.editCellValue !== cell.value) {
                 // Setting post data
                 let postData = {};
                 postData[cell.colDef.field] = cell.value;
@@ -1906,19 +1907,17 @@ export default {
                 axios.post(editUrl, postData)
                     .then(({data}) => {
                         if (data.status) {
-                            setTimeout(() => {
-                                let successValue = `<span class='success-cell'><span>${cell.value}</span><i class='ti-check'></i></span>`;
-                                cell.node.setDataValue(cell.colDef.field, successValue);
-                                if (isValid(data.data)) {
-                                    this.updateModels.forEach(item => {
-                                        cell.node.setDataValue(item, data.data[item]);
-                                    });
-                                }
+                            let successValue = `<span class='success-cell'><span>${cell.value}</span><i class='ti-check'></i></span>`;
+                            cell.node.setDataValue(cell.colDef.field, successValue);
+                            if (isValid(data.data)) {
+                                this.updateModels.forEach(item => {
+                                    cell.node.setDataValue(item, data.data[item]);
+                                });
+                            }
 
-                                setTimeout(() => {
-                                    cell.node.setDataValue(cell.colDef.field, cell.value);
-                                }, 1100);
-                            }, 1000);
+                            setTimeout(() => {
+                                cell.node.setDataValue(cell.colDef.field, cell.value);
+                            }, 1100);
                         } else {
                             setTimeout(() => {
                                 let errorValue = `<span class='error-cell'><span>${cell.value}</span><i class='ti-check'></i></span>`;
@@ -1961,21 +1960,23 @@ export default {
                 return;
             }
 
-            this.$Message.destroy();
-            this.$Message.loading({
+            message.destroy(messageKey);
+
+            message.loading({
                 content: this.lang.pleaseWaitForLoading,
-                duration: 0,
+                key: messageKey,
+                duration:0
             });
+
+
 
             let editUrl = convertLink(this.editableAction, row.data);
 
             axios.post(editUrl, row.data)
                 .then(({data}) => {
-                    this.$Message.destroy();
+
                     if (data.status) {
-                        this.$Message.success({
-                            content: this.lang.successfullySaved,
-                        });
+                        message.success({ content: this.lang.successfullySaved, key: messageKey, duration: 2 });
 
                         if (isValid(data.data)) {
                             this.updateModels.forEach(item => {
@@ -1984,15 +1985,12 @@ export default {
                         }
 
                     } else {
-                        this.$Message.error({
-                            content: 'msg' in data ? data.msg : this.lang.anErrorOccurredWhileSaving,
-                        });
+                        message.error({ content: 'msg' in data ? data.msg : this.lang.anErrorOccurredWhileSaving , key: messageKey, duration: 2 });
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    this.$Message.destroy();
-                    this.$Message.error(this.lang.anErrorOccurredWhileSaving);
+                    message.error({ content: this.lang.anErrorOccurredWhileSaving, key: messageKey, duration: 2 });
                 });
         },
 
@@ -2010,30 +2008,29 @@ export default {
         },
 
         saveGridData() {
-            if (this.changedRowsData.length == 0) {
-                this.$Message.info({
+            if (this.changedRowsData.length === 0) {
+                message.info({
                     content: this.lang.noChangesHaveBeenReported,
+                    key: messageKey
                 });
                 return;
             }
 
-            this.$Message.destroy();
-            this.$Message.loading({
-
+            message.destroy(messageKey);
+            message.loading({
                 content: this.lang.pleaseWaitForLoading,
-
+                key: messageKey,
+                duration:0
             });
 
+            console.log(this.editableAction)
             let editUrl = convertLink(this.editableAction, {});
 
             //Post with row index and data. Response should have row index and update model data
             axios.post(editUrl, this.changedRowsData)
                 .then(({data}) => {
-                    this.$Message.destroy();
                     if (data.status) {
-                        this.$Message.success({
-                            content: this.lang.successfullySaved,
-                        });
+                        message.success({ content: this.lang.successfullySaved, key: messageKey, duration: 2 });
                         if (isValid(data.data)) {
                             data.data.forEach(item => {
                                 this.updateModels.forEach(cellModel => {
@@ -2043,15 +2040,13 @@ export default {
                         }
                         this.changedRowsData = [];
                     } else {
-                        this.$Message.error({
-                            content: 'msg' in data ? data.msg : this.lang.anErrorOccurredWhileSaving,
-                        });
+
+                        message.error({ content: 'msg' in data ? data.msg : this.lang.anErrorOccurredWhileSaving , key: messageKey, duration: 2 });
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    this.$Message.destroy();
-                    this.$Message.error(this.lang.anErrorOccurredWhileSaving);
+                    message.error({ content: this.lang.anErrorOccurredWhileSaving, key: messageKey, duration: 2 });
                 });
         },
 

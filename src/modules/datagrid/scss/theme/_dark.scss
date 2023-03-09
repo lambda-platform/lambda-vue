@@ -1,19 +1,31 @@
-$primary-color: #3471f6;
+$primary-color:  var(--ant-primary-color);
 .dark{
 
-    --ag-border-color:rgba(255, 255, 255, 0.3) !important;
-    --ag-header-background-color:transparent !important;
-    --ag-row-border-color:rgba(255, 255, 255, 0.3) !important;
-    --ag-odd-row-background-color:rgba(0, 0, 0, 0.0) !important;
-    --ag-background-color:transparent !important;
-    --ag-control-panel-background-color:#2E323F !important;
-    --ag-header-foreground-color:#f5f5f5 !important;
-    --ag-secondary-foreground-color:#f5f5f5 !important;
-    --ag-foreground-color:#f5f5f5 !important;
-    --ag-disabled-foreground-color:#888888 !important;
-    --ag-data-color:#f5f5f5 !important;
-    --ag-toggle-button-off-border-color:#f5f5f5;
-    --ag-row-hover-color:rgba(0, 0, 0, 0.3) !important;
+    .ag-theme-balham, .ag-theme-material{
+        --ag-border-color:rgba(255, 255, 255, 0.3) !important;
+        --ag-header-background-color:rgba(15, 23, 42, 1) !important;
+        --ag-subheader-background-color: rgb(25, 34, 58) !important;
+        --ag-row-border-color:rgba(255, 255, 255, 0.3) !important;
+        --ag-odd-row-background-color:rgba(0, 0, 0, 0.0) !important;
+        --ag-background-color:rgba(15, 23, 42, 1) !important;
+        --ag-control-panel-background-color:#2E323F !important;
+        --ag-header-foreground-color:#f5f5f5 !important;
+        --ag-secondary-foreground-color:#f5f5f5 !important;
+        --ag-foreground-color:#f5f5f5 !important;
+        --ag-disabled-foreground-color:#888888 !important;
+        --ag-data-color:#f5f5f5 !important;
+        --ag-toggle-button-off-border-color:#f5f5f5;
+        --ag-row-hover-color:rgba(0, 0, 0, 0.3) !important;
+
+        --ag-popup-shadow: 1px 1px 3px rgba(255, 255, 255, 0.3);
+        --ag-modal-overlay-background-color: rgba(0, 0, 0, 0.4);
+
+    }
+
+
+    .ag-menu .ag-menu-list .ag-menu-option .ag-menu-option-icon, .ag-menu-option-text{
+        color: #f5f5f5 !important;
+    }
 
     //.ag-row-hover {
     //    background: rgba(0, 0, 0, 1) !important;
@@ -54,5 +66,19 @@ $primary-color: #3471f6;
 
     .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
         background-color: rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .ag-table.mini {
+        .ag-body-viewport {
+            .ag-row {
+                height: 24px !important;
+            }
+            .ag-row-odd {
+                background: rgba(15, 23, 42, 0.8) !important;
+                &.ag-row-selected {
+                    background: rgb(10, 15, 28) !important;
+                }
+            }
+        }
     }
 }

@@ -673,7 +673,7 @@ export default {
         "austDollar": "Австрали доллар",
         "rubli": "Рубль",
         "choosevalue": "Утга сонгох",
-        "pleaseWaitForLoading": "ачаалахыг хүлээнэ үү",
+        "pleaseWaitForLoading": "Түр хүлээнэ үү",
         "successfullySaved": "Амжилттай хадгалагдлаа.",
         "formInformationSavedSuccessfully": "Формын мэдээлэл амжилттай хадгалагдлаа.",
         "anErrorOccurredWhileSaving": "Хадгалах үед алдаа гарлаа!",

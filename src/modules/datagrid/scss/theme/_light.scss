@@ -1,6 +1,6 @@
-$ag-primary-color: null;
-$primary-color: #3471f6;
-@import 'ag-grid-community/src/styles/ag-grid';
+$ag-primary-color: var(--ant-primary-color);
+$primary-color: var(--ant-primary-color);
+@import 'ag-grid-community/styles/ag-grid';
 
 
 .ag-checkbox-input-wrapper.ag-checked::after {
@@ -15,7 +15,7 @@ $primary-color: #3471f6;
     background-color: $primary-color !important;
     border-color: $primary-color !important;
 }
-.ag-selected .ag-side-button-button, .ag-tool-panel-wrapper {
+.ag-selected .ag-side-button-button {
     background-color: $primary-color;
 }
 .ag-theme-material .ag-row {
@@ -25,4 +25,7 @@ $primary-color: #3471f6;
 .ag-header-cell-label{
     color: #000;
     font-weight: 400;
+}
+.ag-theme-balham, .ag-theme-material {
+    --ag-range-selection-border-color: var(--ant-primary-color) !important;
 }
