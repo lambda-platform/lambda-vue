@@ -772,6 +772,7 @@ export default {
                                 if (setFromUserData) {
                                     this.model[schemaItem.model] = window.init.user[user_condition['user_field']]
                                     schemaItem.default = window.init.user[user_condition['user_field']]
+                                    schemaItem.disabled = true
                                 } else {
                                     // this.model[schemaItem.model] = schemaItem.default;
                                     this.setModel(schemaItem.model, schemaItem.default, schemaItem.formType)
