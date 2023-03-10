@@ -5,8 +5,8 @@
 
     }
     .two-column-form-right{
-
-        height: calc(100vh - 210px) !important;
+        height: auto;
+        max-height: calc(100vh - 210px) !important;
 
     }
 

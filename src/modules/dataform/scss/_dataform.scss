@@ -52,12 +52,12 @@
             overflow-y: auto;
         }
         .two-column-form-right{
-
-            height: calc(100vh - 180px) !important;
+            height: auto;
+            max-height: calc(100vh - 180px) !important;
             width: 100%;
             .two-column-form{
                 padding-top: 10px;
-                height: calc(100% - 60px);
+                max-height: calc(100% - 60px);
 
 
                 overflow-y: auto;
