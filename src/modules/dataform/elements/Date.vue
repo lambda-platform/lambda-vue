@@ -12,7 +12,7 @@
 <script>
 import mixin from "./_mixin"
 import axios from "axios"
-import dayjs from 'dayjs';
+import dayjs from 'dayjs/esm/index'
 export default {
     mixins:[mixin],
     computed:{
