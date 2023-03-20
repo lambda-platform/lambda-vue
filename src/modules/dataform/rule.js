@@ -56,7 +56,7 @@ export const rules = [{
 const unique = async (rule, value, baseUrl) => {
 
     try {
-        const r = axios.post(`${baseUrl}/lambda/krud/unique`, {
+        const r = await axios.post(`${baseUrl}/lambda/krud/unique`, {
             table: ruleModel,
             identityColumn: identityColumn,
             identity: identity,
@@ -76,7 +76,7 @@ const unique = async (rule, value, baseUrl) => {
 };
 const checkLambdaaccount = async (rule, value, baseUrl) => {
     try {
-        const r =axios.post(`${baseUrl}/lambda/check`, {
+        const r = await axios.post(`${baseUrl}/lambda/check`, {
             value: value
         });
         if (r.data.status) {
