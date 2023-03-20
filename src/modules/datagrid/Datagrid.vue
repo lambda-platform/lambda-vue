@@ -1099,6 +1099,8 @@ export default {
                     colItem.cellRenderer = Html;
                     colItem.cellRendererParams = {
                         customOptions: item.options,
+                        fetchData: this.fetchData,
+
                     };
                 }
 
@@ -1107,6 +1109,7 @@ export default {
                     colItem.cellRenderer = Custom;
                     colItem.cellRendererParams = {
                         customOptions: item.options,
+                        fetchData: this.fetchData,
                     };
                 }
 
@@ -1115,6 +1118,7 @@ export default {
                     colItem.cellRenderer = Link;
                     colItem.cellRendererParams = {
                         customOptions: item.options,
+                        fetchData: this.fetchData,
                         link: item.link,
                         linkTarget: item.linkTarget,
                         icon: item.icon,
@@ -1186,6 +1190,7 @@ export default {
                                 colItem.cellRenderer = this.$customDataGridElementList[elIndex].component;
                                 colItem.cellRendererParams = {
                                     customOptions: item.options,
+                                    fetchData: this.fetchData,
                                 };
                             }
                         }
