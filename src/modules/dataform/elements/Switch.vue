@@ -1,5 +1,5 @@
 <template>
-    <LambdaFormItem :rule="rule" :label=label  :name="model.component" :meta="meta">
+    <LambdaFormItem :label=label  :name="model.component" :meta="meta">
         <a-switch v-model:checked="model.form[model.component]"  :disabled="disabled" />
     </LambdaFormItem>
 </template>

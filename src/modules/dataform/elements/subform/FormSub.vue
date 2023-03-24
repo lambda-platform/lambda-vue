@@ -1,6 +1,6 @@
 <template>
     <div class="subform-grid sub-modal-form" :style="subStyle">
-        <div class="subform-header" v-if="!form.min_height && !form.disableCreate">
+        <div class="subform-header" v-if="!form.min_height && !form.disableCreate && !viewMode">
             {{ form.name }}
             <a-button shape="circle" type="success" size="small" @click="add"
                       class="sub-form-add-btn">
@@ -180,7 +180,7 @@ import GridForm from "./GridForm";
 import subFormMix from "./subFormMix";
 import { Modal } from 'ant-design-vue'
 export default {
-    props: ["form", "model", "editMode", "relations", "formula", "url"],
+    props: ["form", "model", "editMode", "relations", "formula", "url", "viewMode"],
     mixins: [subFormMix],
     components: {
         "grid-form": GridForm,

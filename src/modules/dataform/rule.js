@@ -91,7 +91,7 @@ const checkLambdaaccount = async (rule, value, baseUrl) => {
 
 };
 const englishAlphabet = async (rule, value, callback) => {
-    var letterNumber = /^[a-zA-Z!@#\$%\^\&*\s*)\(+=._,-]+$/;
+    var letterNumber = /^[a-zA-Z0-9!@#\$%\^\&*\s*)\(+=._,-]+$/;
     if(value.match(letterNumber)){
         return Promise.resolve();
     } else {

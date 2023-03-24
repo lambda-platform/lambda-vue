@@ -23,6 +23,8 @@
                 {{ lang._add }}
             </a-button>
         </div>
+        <portal-target name="grid-left">
+        </portal-target>
     </portal>
     <portal to="mobile-page-title">
         <div class="page-title mb-3">

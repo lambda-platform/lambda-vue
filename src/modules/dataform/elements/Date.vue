@@ -20,12 +20,22 @@ export default {
             return this.meta.autoFillCurrentDate === true
         }
     },
+    beforeMount() {
+        if(this.model.form[this.model.component] !== null){
+            if(typeof this.model.form[this.model.component] === 'string') {
+                this.model.form[this.model.component] = dayjs(this.model.form[this.model.component]);
+            }
+        }
+    },
     mounted () {
         if(this.itemValue === null){
-            axios.get("/lambda/krud/today").then(({data})=>{
-                const dateFormat = 'YYYY-MM-DD';
-                this.model.form[this.model.component] = dayjs(data.today, dateFormat);
-            });
+            if(this.autoFillCurrentDate){
+                axios.get("/lambda/krud/today").then(({data})=>{
+                    const dateFormat = 'YYYY-MM-DD';
+                    this.model.form[this.model.component] = dayjs(data.today, dateFormat);
+                });
+            }
+
         }
     }
 };

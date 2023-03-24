@@ -6,6 +6,7 @@ import {doFormula, doTrigger} from './utils/formula_and_trigger.js'
 import {evalstr, isValid} from './utils/methods.js'
 import {getRelationData} from './utils/helpers.js'
 import {getOptionsData} from '../../utils/relation.js'
+import {isMobile} from '../../utils/device'
 import axios from 'axios'
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
@@ -323,7 +324,11 @@ export default {
                 this.withBackButton = formSchema.withBackButton
             }
             if (formSchema.use2ColumnLayout) {
-                this.use2ColumnLayout = formSchema.use2ColumnLayout
+
+                if(!isMobile.value){
+                    this.use2ColumnLayout = formSchema.use2ColumnLayout
+                }
+
             }
 
 
@@ -574,18 +579,18 @@ export default {
 
         setSchemaByModel(model, prop, value, subModel) {
 
-            if (prop == 'value') {
+            if (prop === 'value') {
                 this.$data.model[model] = value;
-            } else if (prop == 'sub-value') {
+            } else if (prop === 'sub-value') {
                 this.$data.model[model] = value;
                 this.subFormFillData(model)
             } else {
-                let index = this.schema.findIndex(item => item.model == model)
+                let index = this.schema.findIndex(item => item.model === model)
 
                 if (index >= 0) {
-                    if (subModel !== undefined) {
-                        if (this.schema[index].formType == 'SubForm') {
-                            let sindex = this.schema[index].schema.findIndex(sitem => sitem.model == subModel)
+                    if (subModel) {
+                        if (this.schema[index].formType === 'SubForm') {
+                            let sindex = this.schema[index].schema.findIndex(sitem => sitem.model === subModel)
                             if (sindex >= 0) {
                                 this.schema[index].schema[sindex][prop] = value;
                             }
@@ -998,7 +1003,7 @@ export default {
                     if (this.subFormValidations.length >= 1) {
                         this.validateWithSubForm()
                     } else {
-                        this.asyncMode = truel
+                        this.asyncMode = true;
                         this.postData()
                     }
 

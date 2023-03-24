@@ -1,7 +1,7 @@
 <template>
     <div class="subform-grid" :style="subStyle">
         <h3 style="display: none">{{ rowLength }}</h3>
-        <div class="subform-header" v-if="!form.min_height && !form.disableCreate">
+        <div class="subform-header" v-if="!form.min_height && !form.disableCreate && !viewMode">
             {{ form.name }}
             <a-button shape="circle" type="success" size="small" @click="add"
                       class="sub-form-add-btn">
@@ -63,7 +63,7 @@
             </tr>
             </tfoot>
         </table>
-        <a class="sub-grid-add" href="javascript:void(0)" @click="add" v-if="form.min_height && !form.disableCreate">
+        <a class="sub-grid-add" href="javascript:void(0)" @click="add" v-if="form.min_height && !form.disableCreate && !viewMode">
              <span class="svg-icon ">
                                  <inline-svg
                                      src="/assets/icons/duotune/general/gen041.svg"
@@ -145,7 +145,7 @@ import subFormMix from "./subFormMix";
 import {Modal} from 'ant-design-vue'
 
 export default {
-    props: ["form", "model", "editMode", "relations", "formula", "url"],
+    props: ["form", "model", "editMode", "relations", "formula", "url", "viewMode"],
     mixins: [subFormMix],
     components: {
         "grid-form": GridForm,

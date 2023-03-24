@@ -156,9 +156,9 @@
         <!--            </div>-->
         <!--        </Modal>-->
 
-        <!--                <GridRowUpdate v-if="template == 0 || template==2"-->
-        <!--                               :permissions="permissions" :model="filterModel" :schema="schema" :url="url" :inFilter="false" :schemaID="schemaID"-->
-        <!--                />-->
+                        <GridRowUpdate v-if="template == 0 || template==2"
+                                       :permissions="permissions" :model="filterModel" :schema="schema" :url="url" :inFilter="false" :schemaID="schemaID"
+                        />
 
     </div>
 </template>

@@ -1,10 +1,14 @@
 <template>
     <div v-if="permissions">
         <div v-if="!inFilter && permissions.u === true">
-            <portal to="drawer-left" >
-                <div  class="row-updater">
-                    <div class="row-update-item" v-for="item in schema" v-if="item.updateable && item.update && item.filter.type">
-                        <a-button type="success" @click="preUpdate(item.update.label, item.update.updateForm, item.model, item.update.refresh)" >
+            <portal to="grid-left" >
+
+                <div  class="row-updater float-left">
+                    <div class="row-update-item" v-for="item in actionColumns" >
+                        <a-button  type="primary" class="ml-3"  @click="preUpdate(item.update.label, item.update.updateForm, item.model, item.update.refresh)" >
+                            <template v-if="item.update.buttonIcon" #icon >
+                                <i :class="item.update.buttonIcon" class="mr-2"></i>
+                            </template>
                             {{ item.update.buttonLabel }}
                         </a-button>
                     </div>
@@ -64,6 +68,9 @@ export default {
         },
         columns(){
             return this.schema.filter(ii=>ii.updateable && ii.update && ii.filter.type && this.permissions.u === true && this.inFilter)
+        },
+        actionColumns(){
+            return this.schema.filter(ii=>ii.updateable && ii.update && ii.filter.type)
         }
     },
     async mounted() {

@@ -38,6 +38,7 @@
                                             :formula='formula'
                                             :relations='relations'
                                             :asyncMode='asyncMode'
+                                            :viewMode='viewMode'
                                             :editMode='editMode'
                                         />
                                         <component
@@ -267,6 +268,7 @@
                                 :asyncMode='asyncMode'
                                 :formula='formula'
                                 :schemaID='schemaID'
+                                :viewMode='viewMode'
                                 :url='url'
                                 :editMode='editMode'>
                             </component>
@@ -338,6 +340,7 @@
                                             :form='setMeta(item, true)'
                                             :formula='formula'
                                             :relations='relations'
+                                            :viewMode='viewMode'
                                             :asyncMode='asyncMode'
                                             :editMode='editMode'
                                         />
@@ -385,6 +388,7 @@
                                             :url='url'
                                             :relations='relations'
                                             :asyncMode='asyncMode'
+                                            :viewMode='viewMode'
                                             :editMode='editMode'>
                                         </component>
                                         <component
@@ -427,6 +431,7 @@
                                 :asyncMode='asyncMode'
                                 :formula='formula'
                                 :schemaID='schemaID'
+                                :viewMode='viewMode'
                                 :url='url'
                                 :editMode='editMode'>
                             </component>
