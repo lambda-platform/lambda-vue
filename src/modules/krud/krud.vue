@@ -3,10 +3,8 @@
 </template>
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from 'vue'
-import { useBreakpoints, breakpointsAntDesign } from '@vueuse/core';
-// { "xs": 480, "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1600 }
-const breakpoints = useBreakpoints(breakpointsAntDesign);
-export const isMobile = breakpoints.smaller('sm');
+
+import {isMobile} from "../../utils/device"
 const templates = {
     'canvas': defineAsyncComponent(() => import('./templates/canvas.vue')),
     'drawer': defineAsyncComponent(() => import('./templates/drawer.vue')),
@@ -34,7 +32,7 @@ export default defineComponent({
 
         const renderTemplate = (template) => {
             if(isMobile.value){
-                if(template === 'drawer' || template === 'popup'){
+                if(template !== 'canvas'){
                     template = "canvas"
                 }
             }

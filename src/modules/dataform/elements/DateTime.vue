@@ -3,7 +3,7 @@
         <a-date-picker
             v-model:value="model.form[model.component]"
             show-time
-            :placeholder="placeholder"
+
             :disabled="disabled"
 
             ></a-date-picker>
