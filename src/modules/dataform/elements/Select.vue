@@ -12,6 +12,7 @@
                 optionLabelProp="label"
                 :mode="meta.relation.multiple ? 'multiple' : undefined"
                 @change="changeValue"
+                :placeholder="placeholder"
                 :class="selectClass"
             >
             </a-select>

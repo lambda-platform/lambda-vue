@@ -1,8 +1,8 @@
 <template>
-    <lambda-form-item :label=label :name="model.component" :meta="meta">
+    <lambda-form-item :rule="rule" :label=label :name="model.component" :meta="meta">
         <a-time-picker
             v-model:value="model.form[model.component]"
-
+            :placeholder="placeholder"
             :disabled="disabled"
             valueFormat="HH:mm:ss"
         ></a-time-picker>

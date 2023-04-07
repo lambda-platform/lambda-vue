@@ -2,12 +2,12 @@
     <div>
         <a-form-item :label="lang.currentPassword" name="current_password" v-if="meta.passwordOption.edit_with_old_password">
             <a-input-password v-model:value="model.form['current_password']" password
-
+                              :placeholder="lang.currentPassword"
             />
         </a-form-item>
         <lambda-form-item  :label=label :name="model.component" :meta="meta">
             <a-input-password v-model:value="model.form[model.component]" password
-
+                :placeholder="placeholder"
                 :disabled="disabled">
                 <template #addonAfter>
                     <a-tooltip slot="append" v-if="meta.passwordOption.generate">
@@ -27,7 +27,7 @@
                      v-if="meta.passwordOption.confirm">
             <a-input-password :type="passwordGenerated ? 'text': 'password'"
                               v-model:value="model.form['password_confirm']"
-
+                              :placeholder="lang.confirmPassword"
             />
         </a-form-item>
     </div>

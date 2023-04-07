@@ -15,12 +15,10 @@
             <div>
                 <loading-outlined v-if="loading"></loading-outlined>
                 <i class="ti ti-camera" v-else></i>
-<!--                <div class="ant-upload-text">{{ label }}</div>-->
-<!--                <div class="ant-upload-text">Зураг сонгох</div>-->
+                <div class="ant-upload-text">{{ label }}</div>
             </div>
         </a-upload>
         <a-image
-            v-if="showImageUrl"
             :width="200"
             :style="{ display: 'none' }"
             :preview="{
