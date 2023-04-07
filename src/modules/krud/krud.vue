@@ -34,7 +34,7 @@ export default defineComponent({
 
         const renderTemplate = (template) => {
             if(isMobile.value){
-                if(template === 'drawer' || template === 'popup'){
+                if(template !== 'canvas'){
                     template = "canvas"
                 }
             }
