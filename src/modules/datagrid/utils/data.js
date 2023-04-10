@@ -5,6 +5,7 @@ export const data = () => {
     return {
         showMobileFilter:false,
         isLoading: true,
+        gridTitle: "",
         identity: "id",
         overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Түр хүлээнэ үү</span>',
         init: false,
@@ -100,6 +101,15 @@ export const data = () => {
         showGrid: false,
         saveFilter: false,
         selectInputModels: [],
+        showPrint:false,
+        triggers: {
+            namespace: '',
+            beforeFetch: '',
+            afterFetch: '',
+            beforeDelete: '',
+            afterDelete: '',
+            beforePrint: '',
+        },
 
     }
 }

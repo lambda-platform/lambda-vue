@@ -102,29 +102,30 @@
                     :refresh="refresh"
                     :model="filterModel" ></datafilter>
 
-        <!--        <paper-modal-->
-        <!--            name="print-modal"-->
-        <!--            class="print-modal"-->
-        <!--            :min-width="200"-->
-        <!--            :min-height="200"-->
-        <!--            :pivot-y="0.5"-->
-        <!--            :adaptive="true"-->
-        <!--            :reset="true"-->
-        <!--            :resizable="true"-->
-        <!--            draggable=".print-tools"-->
-        <!--            width="78%"-->
-        <!--            height="90%">-->
-        <!--            <print v-if="isPrint"-->
-        <!--                   :schemaID="$props.schemaID"-->
-        <!--                   :pageSize="printSize"-->
-        <!--                   :header="header"-->
-        <!--                   :schema="schema"-->
-        <!--                   :info="info"-->
-        <!--                   :query="query"-->
-        <!--                   :search="searchModel"-->
-        <!--                   :filter="filterModel"-->
-        <!--                   :isNumber="isNumbered"/>-->
-        <!--        </paper-modal>-->
+                <a-modal
+
+                    :min-width="200"
+                    :min-height="200"
+                    class="print-modal"
+                    :footer="null"
+                    width="78%"
+                    height="90%"
+
+                    v-model:visible="showPrint"
+                >
+                    <print v-if="showPrint"
+                           :schemaID="$props.schemaID"
+                           :gridTitle="gridTitle"
+                           :pageSize="printSize"
+                           :header="header"
+                           :schema="schema"
+                           :info="info"
+                           :query="query"
+                           :search="searchModel"
+                           :filter="filterModel"
+                           :aggregations="aggregations"
+                           :isNumber="isNumbered"/>
+                </a-modal>
 
         <!--        <paper-modal-->
         <!--            name="import-excel-modal"-->
@@ -183,7 +184,7 @@ import {data, tableToExcel} from './utils/data';
 import {dataFromTemplate, evil} from './utils/formula.js';
 import {compareObj, isValid} from './utils/methods';
 import {convertLink} from './utils/formula';
-// import Print from "./Print";
+import Print from "./Print";
 // import ExcelImport from "./ExcelImport";
 import DataFilter from "./DataFilter";
 import {getNumber, number, formatedNumber} from './utils/number.js';
@@ -285,7 +286,7 @@ export default {
         GridActions: GridActions,
         "datafilter": DataFilter,
         "GridRowUpdate": GridRowUpdate,
-        // "print": Print,
+        "print": Print,
         // "excel-import": ExcelImport
     },
 
@@ -334,6 +335,8 @@ export default {
 
             try {
                 let response = await axios.get(this.page_id ? `${baseUrl}/lambda/puzzle/schema/grid/${this.customShemaId ? this.customShemaId : this.$props.schemaID}?page_id=${this.page_id}` : `${baseUrl}/lambda/puzzle/schema/grid/${this.customShemaId ? this.customShemaId : this.$props.schemaID}`);
+
+                this.gridTitle = response.data.data.name;
                 let data = JSON.parse(response.data.data.schema);
                 data['grid_id'] = response.data.data.id;
                 return data;
@@ -364,6 +367,7 @@ export default {
             // }
 
             gridSchema = await this.initFromServerData(baseUrl, customSchemaId);
+
 
             this.model = gridSchema.model;
             this.template = gridSchema.template;
@@ -1652,7 +1656,8 @@ export default {
         },
 
         print() {
-            this.$modal.show('print-modal', {sid: this.customShemaId ? this.customShemaId : this.$props.schemaID});
+
+            this.showPrint = true;
         },
 
         importExcel() {

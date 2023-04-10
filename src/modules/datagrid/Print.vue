@@ -3,49 +3,50 @@
         <div class="print-tools no-print">
             <div class="print-tools-left">
                 <label>{{lang.paperSize}}</label>
-                <Select v-model="pageSize" @on-change="changeCss" size="small" style="width:160px">
-                    <Option disabled value="">{{lang.selectPaperSize}}</Option>
-                    <Option value="A3">A3</Option>
-                    <Option value="A3 landscape">A3 {{lang.landScape}}</Option>
-                    <Option value="A4" selected>A4</Option>
-                    <Option value="A4 landscape">A4 {{lang.landScape}}</Option>
-                    <Option value="A5">A5</Option>
-                    <Option value="A5 landscape">A5 {{lang.landScape}}</Option>
-                </Select>
+                <a-select v-model:value="selectedPageSize" @change="changeCss" size="small" style="max-width:160px">
+                    <a-select-option disabled :value="null">{{ lang.selectPaperSize }}</a-select-option>
+                    <a-select-option value="A3">A3</a-select-option>
+                    <a-select-option value="A3 landscape">A3 {{ lang.landScape }}</a-select-option>
+                    <a-select-option value="A4">A4</a-select-option>
+                    <a-select-option value="A4 landscape">A4 {{ lang.landScape }}</a-select-option>
+                    <a-select-option value="A5">A5</a-select-option>
+                    <a-select-option value="A5 landscape">A5 {{ lang.landScape }}</a-select-option>
+                </a-select>
             </div>
-            <div class="valut-chooser">
-                <Select v-model="valute" size="small" style="width:100px">
-                    <Option disabled value="" selected>{{lang.currencySelection}}</Option>
-                    <Option value="MNT">{{lang.tugrug}}</Option>
-                    <Option value="USD">{{lang.dollar}}</Option>
-                    <Option value="EUR">{{lang.euro}}</Option>
-                    <Option value="JPY">{{lang.yen}}</Option>
-                    <Option value="AUD">{{lang.austDollar}}</Option>
-                    <Option value="RUB">{{lang.rubli}}</Option>
-                </Select>
 
-                <Button icon="i-icon ti-printer" type="default"
-                        @click="refreshData" style="margin-right: 5px">{{lang.reboot}}
-                </Button>
-            </div>
             <div class="print-tools-right">
-                <Button v-shortkey="['ctrl', 'p']" @shortkey="printPage" icon="i-icon ti-printer" type="default"
-                        @click="printPage">{{lang.print}}
-                </Button>
+
+
+                <span class="link link-icon" v-shortkey="['ctrl', 'p']" @click="printPage" >
+                    <span class="svg-icon ">
+                              <inline-svg
+                                  src="/assets/icons/duotone/Devices/Printer.svg"
+                              />
+                    </span>
+                        Хэвлэх
+                </span>
             </div>
         </div>
 
         <div class="print-body" v-bind:class="[pageClass, printOnly]">
-            <Spin size="large" fix v-if="isLoading"></Spin>
 
+            <a-spin size="large" :spinning="true" v-if="isLoading" />
             <section id="printArea" class="sheet padding-5mm print-only">
+                <div class="print-title">
+                    <h2 class="align-center ">{{gridTitle}}</h2>
+
+                    <ul class="filter-info">
+                        <li v-for="filterInfo in filterInfos" :key="filterInfo.index"><span class="info-label">{{filterInfo.label}}:</span> {{filterInfo.value}}</li>
+                    </ul>
+                </div>
                 <table border="1" class="print-table">
                     <thead v-if="header != null">
-                    <tr v-for="tr in computedHeader.structure" :key="tr.index">
+                    <tr v-for="tr in computedHeader" :key="tr.index">
                         <td
                             v-for="td in tr.children"
                             :key="td.index"
                             :colspan="td.colspan"
+
                             :rowspan="td.rowspan">
                             <div :class="td.rotate ? 'vertical-column' : ''">
                                 <div>{{ td.label }}</div>
@@ -72,6 +73,7 @@
                     </tr>
                     </tbody>
                 </table>
+
             </section>
         </div>
     </section>
@@ -81,9 +83,12 @@
 import axios from "axios"
 import {Printd} from 'printd'
 import {getPrintStyles} from "./utils/printStyles"
+import {getOptionsData} from "../../utils/relation";
+import {dataFromTemplate, evil} from "./utils/formula";
+import {formatedNumber, getNumber, number} from "./utils/number";
 
 export default {
-    props: ["schemaID", "pageSize", "header", "schema", "info", "query", "filter", "search", "isNumber"],
+    props: ["schemaID", "pageSize", "header", "schema", "info", "query", "filter", "search", "isNumber", "gridTitle", "aggregations"],
 
     data() {
         return {
@@ -101,19 +106,25 @@ export default {
                 wheelStep: 5,
                 color: '#2C3A47'
             },
-            cssText: getPrintStyles,
+
             templatecss: " @media print{@page {size: A4}}",
-            valute: ''
+            valute: '',
+            selectedPageSize:"",
+            filterInfos:[]
         }
     },
 
     created() {
         this.d = new Printd();
         this.templatecss = " @media print{@page {size: " + this.pageSize + "}}";
+        this.selectedPageSize = this.pageSize;
         this.fetchPrintData();
+
+        this.getRelations();
     },
 
     computed: {
+
         lang() {
             const labels = ['type', 'selectPaperSize', 'paperSize', 'landScape', 'currencySelection', 'tugrug', 'dollar', 'euro', 'yen', 'austDollar', 'rubli',
                 'reboot', 'print', '', '', '', '', '', '',
@@ -125,7 +136,7 @@ export default {
             }, {});
         },
         pageClass() {
-            return this.pageSize;
+            return this.selectedPageSize;
         },
 
         computedSchema() {
@@ -143,7 +154,19 @@ export default {
         computedHeader(){
             if(this.header !== null){
                 return this.header.structure.map((tr) => {
-                    tr.children = tr.children.filter(td => td.label!=='#');
+                    tr.children = tr.children.filter(td => {
+                        if(td.label!=='#'){
+                            const tdIndex =  this.schema.findIndex(col => col.model === td.model)
+                            if(tdIndex >= 0) {
+                                return this.schema[tdIndex].printable
+                            } else {
+                                return true;
+                            }
+
+
+
+                        }
+                    });
                     return tr;
                 });
             }
@@ -152,6 +175,9 @@ export default {
     },
 
     methods: {
+        isPrintAble(td){
+            return true;
+        },
         cssPagedMedia: (function () {
             var style = document.createElement('style');
             document.head.appendChild(style);
@@ -165,7 +191,7 @@ export default {
         },
 
         printPage() {
-            this.d.print(document.getElementById('printArea'), [this.templatecss, this.cssText]);
+            this.d.print(document.getElementById('printArea'), [this.templatecss, getPrintStyles]);
         },
         refreshData() {
             alert(this.valute);
@@ -181,19 +207,61 @@ export default {
                     return o;
                 }, {});
 
-            axios
-                .post(url, filters)
+            axios.post(url, filters)
                 .then(({data}) => {
                     this.data = data;
                     this.isLoading = false;
+
+
+                    if(this.aggregations){
+                        if (this.aggregations.columnAggregations.length >= 1) {
+                            this.fetchAggregations(filters);
+                        }
+                    }
+
                 })
                 .catch(e => {
-                    console.log(e.message);
                     this.isLoading = false;
                 });
         },
+        fetchAggregations(filters) {
+            this.aggregations.loading = true;
+            this.aggregations.forumlaResult = '';
+            this.aggregations.data = [];
+            axios.post(`/lambda/puzzle/grid/aggergation/${this.$props.schemaID}`, filters).then(({data}) => {
+                let mirror_data = {};
+                let bottom_data = {};
+
+                this.aggregations.columnAggregations.map(columnAggregation => {
+                    let aggregation = columnAggregation.aggregation;
+                    let column = columnAggregation.column;
+                    if (data.length >= 1) {
+                        let colIndex = this.schema.findIndex(col => col.model === column);
+                        let data_key = aggregation + '_' + column;
+                        if (data[0][data_key] == undefined) {
+                            data_key = data_key.toLowerCase();
+                        }
+                        mirror_data[columnAggregation.column] = data[0][data_key];
+                        if (colIndex >= 0) {
+                            if (this.schema[colIndex].gridType == 'Number') {
+                                bottom_data[column] = formatedNumber(data[0][data_key])+ ' ' ;
+                            } else {
+                                bottom_data[column] = number(data[0][data_key]) + ' ' + columnAggregation.symbol;
+                            }
+                        }
+
+                    }
+                });
+                this.data.push(bottom_data)
+
+
+            }).catch(e => {
+                console.log(e.message);
+            });
+        },
 
         printCell(tr, td) {
+
             switch (td.gridType) {
                 case "Number":
                     return Number(tr[td.model]).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -206,6 +274,62 @@ export default {
                 default:
                     return tr[td.model]
             }
+        },
+        async getRelations(){
+            this.filterInfos = [];
+            let filterSchema = [];
+
+            const filteredKeys = Object.keys(this.filter).filter(k=>this.filter[k] !== null && this.filter[k] !== '');
+
+            if(filteredKeys && filteredKeys.length >= 1){
+                this.schema.forEach(s=>{
+                    let filterIndex = filteredKeys.findIndex(k=>k===s.model)
+                    if(s.filterable && filterIndex >= 0){
+                        filterSchema.push({
+                            ...s, formType: s.filter.type, relation:s.filter.relation
+                        })
+                    }
+                });
+
+                const relations = await getOptionsData(filterSchema, undefined, '');
+
+
+                this.filterInfos = filterSchema.map(field=>{
+                    if(field.filter.type === "Select"){
+                        if(relations[field.model]){
+                            let rIndex = relations[field.model].data.findIndex(r=>r.value === this.filter[field.model])
+                            return {
+                                "label":field.filter.label ? field.filter.label : field.label,
+                                "value":rIndex >= 0 ? relations[field.model].data[rIndex].label : this.filter[field.model]
+                            }
+                        } else {
+
+                            let rIndex = relations[field.relation.table].data.findIndex(r=>r.value === this.filter[field.model])
+                            return {
+                                "label":field.filter.label ? field.filter.label : field.label,
+                                "value":rIndex >= 0 ? relations[field.relation.table].data[rIndex].label : this.filter[field.model]
+                            }
+                        }
+
+                    } else  if(field.filter.type === "DateRange"){
+                        return {
+                            "label":field.filter.label ? field.filter.label : field.label,
+                            "value":(Array.isArray(this.filter[field.model])) ? this.filter[field.model].join(" - ") : this.filter
+                        }
+                    } else {
+                        return {
+                            "label":field.filter.label ? field.filter.label : field.label,
+                            "value":this.filter[field.model]
+                        }
+                    }
+
+                })
+
+            }
+
+
+
+
         }
     }
 };
