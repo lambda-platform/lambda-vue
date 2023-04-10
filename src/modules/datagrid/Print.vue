@@ -77,7 +77,7 @@
 
 <script>
 import axios from "axios"
-import { Printd } from 'printd'
+import * as Printd from 'printd/index'
 import {getPrintStyles} from "./utils/printStyles"
 import {getOptionsData} from "../../utils/relation";
 import {formatedNumber, number} from "./utils/number";
