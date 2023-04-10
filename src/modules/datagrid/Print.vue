@@ -77,7 +77,7 @@
 
 <script>
 import axios from "axios"
-import Printd from 'printd/index'
+import printd from 'printd'
 import {getPrintStyles} from "./utils/printStyles"
 import {getOptionsData} from "../../utils/relation";
 import {formatedNumber, number} from "./utils/number";
@@ -110,7 +110,7 @@ export default {
     },
 
     created() {
-        this.d = new Printd();
+        this.d = new printd();
         this.templatecss = " @media print{@page {size: " + this.pageSize + "}}";
         this.selectedPageSize = this.pageSize;
         this.fetchPrintData();
