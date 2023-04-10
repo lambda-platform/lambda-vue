@@ -1,6 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Printd = exports.createIFrame = exports.createLinkStyle = exports.createStyle = void 0;
+
 var URL_LONG = /^(((http[s]?)|file):)?(\/\/)+([0-9a-zA-Z-_.=?&].+)$/;
 var URL_SHORT = /^((\.|\.\.)?\/)([0-9a-zA-Z-_.=?&]+\/)*([0-9a-zA-Z-_.=?&]+)$/;
 var isValidURL = function (str) { return URL_LONG.test(str) || URL_SHORT.test(str); };
@@ -9,7 +8,7 @@ function createStyle(doc, cssText) {
     style.appendChild(doc.createTextNode(cssText));
     return style;
 }
-exports.createStyle = createStyle;
+
 function createLinkStyle(doc, url) {
     var style = doc.createElement("link");
     style.type = "text/css";
@@ -17,7 +16,7 @@ function createLinkStyle(doc, url) {
     style.href = url;
     return style;
 }
-exports.createLinkStyle = createLinkStyle;
+
 function createIFrame(parent) {
     var el = window.document.createElement("iframe");
     el.setAttribute("src", "about:blank");
@@ -28,7 +27,7 @@ function createIFrame(parent) {
     parent.appendChild(el);
     return el;
 }
-exports.createIFrame = createIFrame;
+
 var DEFAULT_OPTIONS = {
     parent: window.document.body,
     headElements: [],
