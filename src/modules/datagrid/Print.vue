@@ -13,10 +13,7 @@
                     <a-select-option value="A5 landscape">A5 {{ lang.landScape }}</a-select-option>
                 </a-select>
             </div>
-
             <div class="print-tools-right">
-
-
                 <span class="link link-icon" v-shortkey="['ctrl', 'p']" @click="printPage" >
                     <span class="svg-icon ">
                               <inline-svg
@@ -29,7 +26,6 @@
         </div>
 
         <div class="print-body" v-bind:class="[pageClass, printOnly]">
-
             <a-spin size="large" :spinning="true" v-if="isLoading" />
             <section id="printArea" class="sheet padding-5mm print-only">
                 <div class="print-title">
@@ -81,11 +77,10 @@
 
 <script>
 import axios from "axios"
-import Printd from 'printd'
+import { Printd } from 'printd'
 import {getPrintStyles} from "./utils/printStyles"
 import {getOptionsData} from "../../utils/relation";
-import {dataFromTemplate, evil} from "./utils/formula";
-import {formatedNumber, getNumber, number} from "./utils/number";
+import {formatedNumber, number} from "./utils/number";
 
 export default {
     props: ["schemaID", "pageSize", "header", "schema", "info", "query", "filter", "search", "isNumber", "gridTitle", "aggregations"],
@@ -119,10 +114,8 @@ export default {
         this.templatecss = " @media print{@page {size: " + this.pageSize + "}}";
         this.selectedPageSize = this.pageSize;
         this.fetchPrintData();
-
         this.getRelations();
     },
-
     computed: {
 
         lang() {
@@ -192,9 +185,6 @@ export default {
 
         printPage() {
             this.d.print(document.getElementById('printArea'), [this.templatecss, getPrintStyles]);
-        },
-        refreshData() {
-            alert(this.valute);
         },
 
         fetchPrintData() {
@@ -293,7 +283,6 @@ export default {
 
                 const relations = await getOptionsData(filterSchema, undefined, '');
 
-
                 this.filterInfos = filterSchema.map(field=>{
                     if(field.filter.type === "Select"){
                         if(relations[field.model]){
@@ -322,19 +311,12 @@ export default {
                             "value":this.filter[field.model]
                         }
                     }
-
                 })
-
             }
-
-
-
-
         }
     }
 };
 </script>
-
 <style lang="scss">
 @import "scss/print.scss";
 </style>
