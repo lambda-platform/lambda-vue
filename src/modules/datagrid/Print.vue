@@ -14,7 +14,7 @@
                 </a-select>
             </div>
             <div class="print-tools-right">
-                <span class="link link-icon" v-shortkey="['ctrl', 'p']" @click="printPage" >
+                <span class="link link-icon" @click="printPage" >
                     <span class="svg-icon ">
                               <inline-svg
                                   src="/assets/icons/duotone/Devices/Printer.svg"
