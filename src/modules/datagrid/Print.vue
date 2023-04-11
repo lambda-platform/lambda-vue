@@ -238,6 +238,7 @@ export default {
 
                     }
                 });
+
                 this.data.push(bottom_data)
 
 
@@ -250,7 +251,7 @@ export default {
 
             switch (td.gridType) {
                 case "Number":
-                    return Number(tr[td.model]).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                    return `<span class="align-right block">${(typeof tr[td.model] === 'number' || !isNaN(tr[td.model])) ? Number(tr[td.model]).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") : tr[td.model]}</span>`;
                 case "Image":
                     return `<img src="${tr[td.model]}"/>`
                 case "Html":

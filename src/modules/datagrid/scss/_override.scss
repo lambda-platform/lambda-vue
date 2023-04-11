@@ -305,6 +305,7 @@
             }
         }
 
+
         .ag-cell-focus,
         .ag-cell-no-focus {
             //border: none !important;
@@ -333,7 +334,10 @@
         }
     }
 }
-
+.ag-cell-range-right{
+    display: block !important;
+    text-align: right !important;
+}
 .ag-menu {
     .ag-menu-list {
         .ag-menu-option {

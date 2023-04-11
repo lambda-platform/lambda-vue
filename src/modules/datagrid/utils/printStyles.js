@@ -93,5 +93,7 @@ h2{
 .filter-info .info-label {
   color: #3f3fe7;
 }
-
-`;
+.align-right{
+    text-align: right;
+    display:block;
+}`;
