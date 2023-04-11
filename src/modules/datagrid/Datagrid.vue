@@ -1412,7 +1412,7 @@ export default {
                         mirror_data[columnAggregation.column] = data[0][data_key];
                         if (colIndex >= 0) {
                             if (this.schema[colIndex].gridType == 'Number') {
-                                bottom_data[column] = formatedNumber(data[0][data_key]);
+                                bottom_data[column] = formatedNumber(data[0][data_key])+ ' ' + columnAggregation.symbol;
                             } else {
                                 bottom_data[column] = number(data[0][data_key]) + ' ' + columnAggregation.symbol;
                             }
