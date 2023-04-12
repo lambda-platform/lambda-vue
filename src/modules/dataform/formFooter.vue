@@ -16,7 +16,7 @@
                         {{ lang.pleaseWait }}
                     </span>
     </a-button>
-    <a-button @click="handleReset(meta.model +'-'+ schemaID)" v-if='!editMode && !disableReset'
+    <a-button @click="handleReset" v-if='!editMode && !disableReset'
               style='margin-left: 8px'>
         {{ lang.fillInTheNewOne }}
     </a-button>

@@ -317,6 +317,7 @@ export default {
             if (formSchema.extraButtons) {
                 this.extraButtons = formSchema.extraButtons
             }
+
             if (formSchema.disableReset) {
                 this.disableReset = formSchema.disableReset
             }
@@ -740,9 +741,9 @@ export default {
             }
         },
 
-        handleReset(name) {
+        handleReset() {
             this.model = {}
-            this.$refs[name].resetFields()
+            this.$refs[this.meta.model+'-'+this.schemaID].resetFields()
             setIdentity(this.identity, null)
             this.schema.forEach(item => {
                 if (item.formType == 'SubForm' && typeof this.$refs[`sf${item.model}`] != 'undefined') {

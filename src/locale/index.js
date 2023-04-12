@@ -1,9 +1,11 @@
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
 import mn_MN from './locales/mn_MN.js'
+import en_US from './locales/en_US.js'
 
 const messages = {
     mn_MN,
+    en_US
 
 }
 

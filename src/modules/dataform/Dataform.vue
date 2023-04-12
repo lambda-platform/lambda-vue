@@ -305,6 +305,7 @@
                                     :editMode="editMode"
                                     :disableReset="disableReset"
                                     :handleReset="handleReset"
+
                                     :getFooterButtons="getFooterButtons"
                                     :setAndSend="setAndSend"
                                     :createWithTemplate="createWithTemplate"
@@ -471,6 +472,7 @@
                     :handleReset="handleReset"
                     :getFooterButtons="getFooterButtons"
                     :setAndSend="setAndSend"
+
                     :createWithTemplate="createWithTemplate"
 
                 />
