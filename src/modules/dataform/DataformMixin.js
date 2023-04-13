@@ -372,7 +372,7 @@ export default {
                         if (this.isValid(item.param)) {
                             if (item.param in this.$route.params) {
                                 let param = this.$route.params[item.param]
-                                if (param != 'null') {
+                                if (param !== 'null') {
                                     this.$data.model[item.model] = param;
                                 }
                             }
@@ -563,7 +563,7 @@ export default {
         },
 
         getSchemaByModel(model) {
-            let index = this.schema.findIndex(item => item.model == model)
+            let index = this.schema.findIndex(item => item.model === model)
             if (index >= 0)
                 return this.schema[index]
             else
@@ -746,7 +746,7 @@ export default {
             this.$refs[this.meta.model+'-'+this.schemaID].resetFields()
             setIdentity(this.identity, null)
             this.schema.forEach(item => {
-                if (item.formType == 'SubForm' && typeof this.$refs[`sf${item.model}`] != 'undefined') {
+                if (item.formType === 'SubForm' && typeof this.$refs[`sf${item.model}`] != 'undefined') {
                     if (this.$refs[`sf${item.model}`].length >= 1) {
                         this.$refs[`sf${item.model}`][0].reset()
                     }
@@ -758,8 +758,10 @@ export default {
                 item.hidden = item.source_hidden
                 item.disabled = item.source_disabled
             })
-            this.setHiddenItemModel(this.schema)
+            this.setHiddenItemModel(this.schema);
             this.setCustomData()
+
+
 
         },
         setIdentityManual() {
@@ -773,12 +775,13 @@ export default {
 
                     let schemaItem = this.getSchemaByModel(user_condition['form_field'])
                     if (schemaItem) {
-                        if ((schemaItem.default != '' && schemaItem.default !== null && schemaItem.default != 0) || setFromUserData) {
-                            if (this.model[schemaItem.model] == '' || this.model[schemaItem.model] === null || this.model[schemaItem.model] == 0) {
+                        if ((schemaItem.default !== '' && schemaItem.default !== null && schemaItem.default !== 0) || setFromUserData) {
+                            if (this.model[schemaItem.model] === '' || this.model[schemaItem.model] === null || this.model[schemaItem.model] === 0) {
                                 if (setFromUserData) {
                                     this.model[schemaItem.model] = window.init.user[user_condition['user_field']]
                                     schemaItem.default = window.init.user[user_condition['user_field']]
                                     schemaItem.disabled = true
+                                    schemaItem.source_disabled = true
                                 } else {
                                     // this.model[schemaItem.model] = schemaItem.default;
                                     this.setModel(schemaItem.model, schemaItem.default, schemaItem.formType)
@@ -797,7 +800,7 @@ export default {
         setCustomData() {
             if (this.formCustomData) {
                 Object.keys(this.formCustomData).forEach(model => {
-                    let index = this.schema.findIndex(item => item.model == model)
+                    let index = this.schema.findIndex(item => item.model === model)
                     if (index >= 0) {
                         this.schema[index]['disabled'] = true;
                         this.schema[index]['default'] = this.formCustomData[model];
