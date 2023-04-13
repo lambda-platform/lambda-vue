@@ -157,7 +157,7 @@ const RegexParser =  (input)=> {
 
 
 const customRegexChecker = async (rule, value, regex) => {
-    if(value.match(RegexParser(regex))){
+    if(value.toString().match(/^[0-9]{4}$/)){
         return Promise.resolve();
     } else {
         return Promise.reject(rule.msg);
@@ -169,6 +169,7 @@ export const getRule = (rule, baseUrl) => {
     }
     switch (rule.type) {
         case 'custom':
+            console.log(rule.regex)
             return {
                 validator: async (r, value)=> await customRegexChecker(r, value, rule.regex),
                 trigger: 'blur',
