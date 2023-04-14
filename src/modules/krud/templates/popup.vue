@@ -52,6 +52,7 @@
             :title="title"
             :forceRender="true"
             :width="this.form_width"
+            :footer="null"
             placement="right"
         >
             <dataform
@@ -71,8 +72,7 @@
                 :close="hideSide"
             >
             </dataform>
-            <template #footer>
-            </template>
+
         </a-modal>
     </div>
 </template>
