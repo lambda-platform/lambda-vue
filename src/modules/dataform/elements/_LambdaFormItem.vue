@@ -1,5 +1,5 @@
 <template>
-    <a-form-item :label=label :name="name">
+    <a-form-item :label=label :name="name" class="data-form-item">
         <slot  :disabled="meta && meta.disabled ? meta.disabled : false"></slot>
         <template #help v-if="meta.warn !== '' && meta.warn !== undefined">
             {{meta.warn}}

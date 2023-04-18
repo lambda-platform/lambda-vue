@@ -121,7 +121,10 @@ export default {
 
             if(window.init){
                 if (window.init.microserviceSettings) {
-                    let si = window.init.microserviceSettings.findIndex(set => set.project_id == this.meta.GSOption.sourceMicroserviceID)
+                    console.log(this.meta);
+                    console.log(this.meta);
+                    console.log(this.meta);
+                    let si = window.init.microserviceSettings.findIndex(set => set.project_id === this.form.sourceMicroserviceID)
 
                     if (si >= 0) {
                         return window.init.microserviceSettings[si].production_url
