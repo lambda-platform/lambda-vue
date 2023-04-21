@@ -9,8 +9,12 @@
                         :number="true" />
         <a-input-number
                         v-else
-               v-model:value="model.form[model.component]"
-                        :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                        v-model:value="model.form[model.component]"
+                        :formatter="value => {
+  const [integer, fractional] = `${value}`.split('.');
+  const formattedInteger = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return `${formattedInteger}${fractional ? '.'+fractional.slice(0, 3) : ''}`;
+}"
                         :parser="value => value.replace(/\$\s?|(,*)/g, '')"
                         :placeholder="placeholder"
                         :disabled="disabled"
