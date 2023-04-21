@@ -83,8 +83,8 @@
                         if (value == "true" || value == 1) {
                             val = true;
                         }
-                        this.model[name] = val_;
-                        this.f.data[name] = val_;
+                        this.model[name] = val;
+                        this.f.data[name] = val;
                         break;
                     case "Checkbox":
                         let val_ = 0;
