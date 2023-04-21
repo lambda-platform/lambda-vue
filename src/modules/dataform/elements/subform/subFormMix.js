@@ -66,25 +66,20 @@ export default {
 
 
             let clonedForm = _.cloneDeep(this.form);
-            let clonedFormModel = {};
+
+
+            let clonedFormModel = {
+
+            };
+
 
 
             clonedForm.schema.forEach(item => {
-                if (
-                    clonedForm.identity == item.model ||
-                    item.formType == null
-                ) {
-                    return;
+                if (clonedForm.identity !== item.model && item.formType !== null && item.model !== "created_at" && item.model !== "updated_at") {
+                   if(item.default !== null){
+                       clonedFormModel[item.model] = item.default;
+                   }
                 }
-
-                if (
-                    clonedForm.timestamp &&
-                    (item.model == "created_at" || item.model == "updated_at")
-                ) {
-                    return;
-                }
-
-
             });
 
             this.form.sourceGridTargetColumns.forEach(source => {
@@ -109,6 +104,7 @@ export default {
                     return
                 }
             }
+
             this.model.form[this.model.component].push(clonedFormModel);
             this.listData.push(listItem);
             this.rowLength = this.model.form[this.model.component].length;
