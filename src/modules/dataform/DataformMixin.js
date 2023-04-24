@@ -522,7 +522,7 @@ export default {
                     break
                 case 'Date':
                     if (value === null) {
-                        axios.get("/lambda/krud/now").then(({data})=>{
+                        axios.get("/lambda/krud/today").then(({data})=>{
                             const dateFormat = 'YYYY-MM-DD';
                             this.$data.model[name] = dayjs(data.today, dateFormat);
                         });
