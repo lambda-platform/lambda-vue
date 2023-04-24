@@ -520,16 +520,22 @@ export default {
                         this.$data.model[name] = value * 1;
                     }
                     break
-                // case 'Date':
-                //     if (value !== null) {
-                //         this.$data.model[name] =   dayjs(value);
-                //     }
-                //     break
-                // case 'DateTime':
-                //     if (value !== null) {
-                //         this.$data.model[name] = dayjs(value);
-                //     }
-                //     break
+                case 'Date':
+                    if (value === null) {
+                        axios.get("/lambda/krud/now").then(({data})=>{
+                            const dateFormat = 'YYYY-MM-DD';
+                            this.$data.model[name] = dayjs(data.today, dateFormat);
+                        });
+                    }
+                    break
+                case 'DateTime':
+                    if (value === null) {
+                        axios.get("/lambda/krud/now").then(({data})=>{
+                            const formatString = "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                            this.$data.model[name] = dayjs(data.today, formatString);
+                        });
+                    }
+                    break
                 case 'ISelect':
                     this.$data.model[name] = value;
                 case 'TreeSelect':
