@@ -44,7 +44,8 @@ export default {
         'public',
         'title',
         'close',
-        'hideTitle'
+        'hideTitle',
+        'hideSuccessDialog'
     ],
     components:{
         fromFooter:fromFooter
@@ -669,10 +670,12 @@ export default {
 
                         if (data.status) {
 
-                            notification["success"]({
-                                message: this.lang.successfullySaved,
-                                description: this.lang.successfullySaved
-                            });
+                            if(!this.hideSuccessDialog){
+                                notification["success"]({
+                                    message: this.lang.successfullySaved,
+                                    description: this.lang.successfullySaved
+                                });
+                            }
                             if (!this.editMode) {
 
                                 this.$data.model[this.identity] = data[this.identity]
