@@ -102,6 +102,7 @@ export const data = () => {
         saveFilter: false,
         selectInputModels: [],
         showPrint:false,
+        showExcelImport:false,
         triggers: {
             namespace: '',
             beforeFetch: '',
@@ -110,7 +111,7 @@ export const data = () => {
             afterDelete: '',
             beforePrint: '',
         },
-
+        baseUrl:""
     }
 }
 

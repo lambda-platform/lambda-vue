@@ -32,12 +32,20 @@
             <template #title>
                 {{lang.excelUpload}}
             </template>
-            <a v-if="$props.excelUploadCustomUrl" :href="$props.excelUploadCustomUrl" class="btnLine">
-                <i class="ti-layers"></i>
-            </a>
-            <a v-else @click="$props.excelUploadMethod" class="btnLine">
-                <i class="ti-layers"></i>
-            </a>
+            <span class="btn btn-icon" v-if="$props.excelUploadCustomUrl" :href="$props.excelUploadCustomUrl" >
+                 <span class="svg-icon ">
+                      <inline-svg
+                          src="/assets/icons/duotone/Files/Upload.svg"
+                      />
+                </span>
+            </span>
+            <span class="btn btn-icon" v-else @click="$props.excelUploadMethod" >
+                <span class="svg-icon ">
+                      <inline-svg
+                          src="/assets/icons/duotone/Files/Upload.svg"
+                      />
+                </span>
+            </span>
         </a-tooltip>
 
         <a-tooltip v-if="isExcel">

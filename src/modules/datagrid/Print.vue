@@ -83,7 +83,7 @@ import {getOptionsData} from "../../utils/relation";
 import {formatedNumber, number} from "./utils/number";
 
 export default {
-    props: ["schemaID", "pageSize", "header", "schema", "info", "query", "filter", "search", "isNumber", "gridTitle", "aggregations"],
+    props: ["schemaID", "pageSize", "header", "schema", "info", "query", "filter", "search", "isNumber", "gridTitle", "aggregations", "baseUrl", "user_condition"],
 
     data() {
         return {
@@ -189,13 +189,17 @@ export default {
 
         fetchPrintData() {
             this.isLoading = true;
-            let url = `/lambda/krud/print/${this.schemaID}`;
+            let url = `${this.baseUrl}/lambda/krud/print/${this.schemaID}`;
             let filters = Object.keys(this.filter)
                 .filter(e => this.filter[e] !== null)
                 .reduce((o, e) => {
                     o[e] = this.filter[e];
                     return o;
                 }, {});
+
+            if (this.user_condition) {
+                filters["user_condition"] = this.user_condition;
+            }
 
             axios.post(url, filters)
                 .then(({data}) => {
@@ -218,7 +222,7 @@ export default {
             this.aggregations.loading = true;
             this.aggregations.forumlaResult = '';
             this.aggregations.data = [];
-            axios.post(`/lambda/puzzle/grid/aggergation/${this.$props.schemaID}`, filters).then(({data}) => {
+            axios.post(`${this.baseUrl}/lambda/puzzle/grid/aggergation/${this.$props.schemaID}`, filters).then(({data}) => {
                 let mirror_data = {};
                 let bottom_data = {};
 

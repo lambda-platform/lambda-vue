@@ -1,22 +1,15 @@
 <template>
     <section class="excel-import-container">
-        <div class="excel-import-tools">
-            <div class="excel-import-tools-left">
-                <label>{{ lang.excelImportModalTitle }}</label>
-            </div>
 
-            <div class="excel-import-tools-right" style="display: flex">
-                <a v-if="options.excelUploadSample" class="ivu-btn ivu-btn-default" :href="options.excelUploadSample"
-                   download="Жишээ файл">Жишээ файл татах</a>
-            </div>
-        </div>
-
+        {{options.excelUploadSample}}
+        <a v-if="options.excelUploadSample" class="ivu-btn ivu-btn-default" :href="options.excelUploadSample"
+           download="Жишээ файл">Жишээ файл татах</a>
         <div class="print-body">
             <div style="display: flex;
     padding: 20px;
     border-bottom: 1px dashed #eee;   justify-content: end;
     flex-direction: row;">
-                <Upload action="/lambda/krud/upload"
+                <a-upload action="/lambda/krud/upload"
                         v-model="excelForm.excelFile"
                         :on-success="success"
                         class="ivu-btn ivu-btn-default"
@@ -25,10 +18,10 @@
                     <div class="file-upload-handler">
                         <span>Файл оруулах</span>
                     </div>
-                </Upload>
-                <Button icon="i-icon ti-printer" type="default"
+                </a-upload>
+                <a-button icon="i-icon ti-printer" type="default"
                         @click="excelImport">{{ lang.excelImportModalSaveBtn }}
-                </Button>
+                </a-button>
             </div>
 
             <div v-if="summary==null" class="notif" style="height: 100%;
@@ -66,9 +59,9 @@
 
 <script>
 
-
+import axios from "axios"
 export default {
-    props: ["schemaID", "schema", "options"],
+    props: ["schemaID", "schema", "options", "baseUrl"],
     data() {
         return {
             isLoading: true,
@@ -98,7 +91,7 @@ export default {
 
     methods: {
         excelImport() {
-            axios.post('/lambda/krud/import-excel', this.excelForm).then(res => {
+            axios.post(this.baseUrl+'/lambda/krud/import-excel', this.excelForm).then(res => {
                 console.log("excelImport:");
                 console.log(res.data);
                 if (res.data.status) {

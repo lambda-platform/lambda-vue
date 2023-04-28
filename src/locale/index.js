@@ -21,6 +21,10 @@ export function setI18nLanguage (i18n, locale) {
 }
 
 export function setupI18n (locale) {
+
+    if(!messages.hasOwnProperty(locale)){
+        locale = "mn_MN"
+    }
     const i18n = createI18n({
         legacy: false,
         globalInjection: true,

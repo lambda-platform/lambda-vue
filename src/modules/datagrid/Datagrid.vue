@@ -115,35 +115,37 @@
                 >
                     <print v-if="showPrint"
                            :schemaID="$props.schemaID"
+                           :user_condition="user_condition"
                            :gridTitle="gridTitle"
                            :pageSize="printSize"
                            :header="header"
                            :schema="schema"
                            :info="info"
                            :query="query"
+                           :baseUrl="baseUrl"
                            :search="searchModel"
                            :filter="filterModel"
                            :aggregations="aggregations"
                            :isNumber="isNumbered"/>
                 </a-modal>
+<!--                <a-modal-->
 
-        <!--        <paper-modal-->
-        <!--            name="import-excel-modal"-->
-        <!--            class="import-excel-modal"-->
-        <!--            :min-width="200"-->
-        <!--            :min-height="200"-->
-        <!--            :pivot-y="0.5"-->
-        <!--            :adaptive="true"-->
-        <!--            :reset="true"-->
-        <!--            :resizable="true"-->
-        <!--            draggable=".import-excel-tools"-->
-        <!--            width="78%"-->
-        <!--            height="90%">-->
-        <!--            <excel-import-->
-        <!--                :schemaID="$props.schemaID"-->
-        <!--                :schema="schema"-->
-        <!--                :options="$parent"/>-->
-        <!--        </paper-modal>-->
+<!--                    :min-width="200"-->
+<!--                    :min-height="200"-->
+<!--                    class="import-excel-modal"-->
+<!--                    :footer="null"-->
+<!--                    width="78%"-->
+<!--                    height="90%"-->
+<!--                    :title="lang.excelImportModalTitle"-->
+<!--                    v-model:visible="showExcelImport"-->
+<!--                >-->
+<!--                                <excel-import-->
+<!--                                    :schemaID="$props.schemaID"-->
+<!--                                    :schema="schema"-->
+<!--                                    :baseUrl="baseUrl"-->
+<!--                                    :options="$parent"/>-->
+<!--                </a-modal>-->
+
 
         <!--        <Modal v-model="deleteModal" :closable="false" width="360">-->
         <!--            <div style="color:#ed4014;text-align:center">-->
@@ -177,14 +179,14 @@ LicenseManager.prototype.validateLicense = () => {
 };
 import {AgGridVue} from 'ag-grid-vue3';
 
-
 import 'lodash';
-import { inject } from 'vue'
+
 import {data, tableToExcel} from './utils/data';
 import {dataFromTemplate, evil} from './utils/formula.js';
 import {compareObj, isValid} from './utils/methods';
 import {convertLink} from './utils/formula';
 import Print from "./Print";
+// import ExcelImport from "./ExcelImport.vue";
 // import ExcelImport from "./ExcelImport";
 import DataFilter from "./DataFilter";
 import {getNumber, number, formatedNumber} from './utils/number.js';
@@ -246,7 +248,7 @@ export default {
         // }),
         lang() {
             const labels = ['ruSureYouDeleteInfo', 'yes', 'no', 'total', 'infoDeleted', 'errorMsg', 'successfullySaved', 'noChangesHaveBeenReported',
-                'pleaseWaitForLoading', 'infoCourt'
+                'pleaseWaitForLoading', 'infoCourt', 'excelImportModalTitle'
             ];
 
             return labels.reduce((obj, key, i) => {
@@ -287,6 +289,7 @@ export default {
         "datafilter": DataFilter,
         "GridRowUpdate": GridRowUpdate,
         "print": Print,
+        // ExcelImport
         // "excel-import": ExcelImport
     },
 
@@ -324,7 +327,7 @@ export default {
             }, 150);
         },
 
-        async initFromServerData(baseUrl, customSchemaId) {
+        async initFromServerData(customSchemaId) {
 
             if (customSchemaId) {
                 this.customShemaId = customSchemaId;
@@ -334,7 +337,7 @@ export default {
 
 
             try {
-                let response = await axios.get(this.page_id ? `${baseUrl}/lambda/puzzle/schema/grid/${this.customShemaId ? this.customShemaId : this.$props.schemaID}?page_id=${this.page_id}` : `${baseUrl}/lambda/puzzle/schema/grid/${this.customShemaId ? this.customShemaId : this.$props.schemaID}`);
+                let response = await axios.get(this.page_id ? `${this.baseUrl}/lambda/puzzle/schema/grid/${this.customShemaId ? this.customShemaId : this.$props.schemaID}?page_id=${this.page_id}` : `${this.baseUrl}/lambda/puzzle/schema/grid/${this.customShemaId ? this.customShemaId : this.$props.schemaID}`);
 
                 this.gridTitle = response.data.data.name;
                 let data = JSON.parse(response.data.data.schema);
@@ -355,7 +358,7 @@ export default {
             this.aggregations.columnAggregations = [];
 
             let gridSchema = {};
-            let baseUrl = this.$props.url ? this.$props.url : '';
+            this.baseUrl = this.$props.url ? this.$props.url : '';
             // if (window.init.gridSchemas) {
             //     if (window.init.gridSchemas[this.$props.schemaID]) {
             //         gridSchema = window.init.gridSchemas[this.$props.schemaID];
@@ -366,7 +369,7 @@ export default {
             //     gridSchema = await this.initFromServerData(baseUrl, customSchemaId);
             // }
 
-            gridSchema = await this.initFromServerData(baseUrl, customSchemaId);
+            gridSchema = await this.initFromServerData(customSchemaId);
 
 
             this.model = gridSchema.model;
@@ -733,7 +736,7 @@ export default {
                 }
             }
             //Getting data
-            this.query.src = baseUrl + '/lambda/puzzle/grid/data/' + gridSchema['grid_id'];
+            this.query.src = this.baseUrl + '/lambda/puzzle/grid/data/' + gridSchema['grid_id'];
             if (this.saveFilter) {
                 this.restoreFilter();
             }
@@ -1273,8 +1276,11 @@ export default {
                 url = `${url}&search=${this.searchModel}`;
             }
 
+            // if (this.user_condition) {
+            //     filters = this.setUserConditionValues(filters);
+            // }
             if (this.user_condition) {
-                filters = this.setUserConditionValues(filters);
+                filters["user_condition"] = this.user_condition;
             }
 
             if (this.custom_condition) {
@@ -1364,7 +1370,7 @@ export default {
             this.aggregations.loading = true;
             this.aggregations.forumlaResult = '';
             this.aggregations.data = [];
-            axios.post(`/lambda/puzzle/grid/aggergation/${this.customShemaId ? this.customShemaId : this.$props.schemaID}`, filters).then(({data}) => {
+            axios.post(`${this.baseUrl}/lambda/puzzle/grid/aggergation/${this.customShemaId ? this.customShemaId : this.$props.schemaID}`, filters).then(({data}) => {
                 let mirror_data = {};
 
                 this.aggregations.columnAggregations.map(columnAggregation => {
@@ -1580,7 +1586,7 @@ export default {
             if (this.isClient) {
                 this.gridApi.exportDataAsExcel();
             } else {
-                let url = `/lambda/krud/excel/${this.schemaID}`;
+                let url = `${this.baseUrl}/lambda/krud/excel/${this.schemaID}`;
                 let filters = Object.keys(this.filterModel)
                     .filter(e => this.filterModel[e] !== null)
                     .reduce((o, e) => {
@@ -1657,7 +1663,8 @@ export default {
         },
 
         importExcel() {
-            this.$modal.show('import-excel-modal', {sid: this.customShemaId ? this.customShemaId : this.$props.schemaID});
+
+            this.showExcelImport = true;
         },
 
         //Default grid actions
