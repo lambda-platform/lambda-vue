@@ -128,23 +128,23 @@
                            :aggregations="aggregations"
                            :isNumber="isNumbered"/>
                 </a-modal>
-<!--                <a-modal-->
+                <a-modal
 
-<!--                    :min-width="200"-->
-<!--                    :min-height="200"-->
-<!--                    class="import-excel-modal"-->
-<!--                    :footer="null"-->
-<!--                    width="78%"-->
-<!--                    height="90%"-->
-<!--                    :title="lang.excelImportModalTitle"-->
-<!--                    v-model:visible="showExcelImport"-->
-<!--                >-->
-<!--                                <excel-import-->
-<!--                                    :schemaID="$props.schemaID"-->
-<!--                                    :schema="schema"-->
-<!--                                    :baseUrl="baseUrl"-->
-<!--                                    :options="$parent"/>-->
-<!--                </a-modal>-->
+                    :min-width="200"
+                    :min-height="200"
+                    class="import-excel-modal"
+                    :footer="null"
+                    width="78%"
+                    height="90%"
+                    :title="lang.excelImportModalTitle"
+                    v-model:visible="showExcelImport"
+                >
+                                <excel-import
+                                    :schemaID="$props.schemaID"
+                                    :schema="schema"
+                                    :baseUrl="baseUrl"
+                                    :options="$parent"/>
+                </a-modal>
 
 
         <!--        <Modal v-model="deleteModal" :closable="false" width="360">-->
@@ -186,7 +186,7 @@ import {dataFromTemplate, evil} from './utils/formula.js';
 import {compareObj, isValid} from './utils/methods';
 import {convertLink} from './utils/formula';
 import Print from "./Print";
-// import ExcelImport from "./ExcelImport.vue";
+import ExcelImport from "./ExcelImport.vue";
 // import ExcelImport from "./ExcelImport";
 import DataFilter from "./DataFilter";
 import {getNumber, number, formatedNumber} from './utils/number.js';
@@ -290,7 +290,7 @@ export default {
         "GridRowUpdate": GridRowUpdate,
         "print": Print,
         // ExcelImport
-        // "excel-import": ExcelImport
+        "excel-import": ExcelImport
     },
 
     data() {

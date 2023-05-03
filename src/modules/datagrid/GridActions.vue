@@ -84,9 +84,7 @@
         </span>
 
         <span v-for="item in params.customActions" :key="item.index">
-            <a-tooltip v-if="item.tooltip
-            && (!('condition' in item)
-            || params.data[item.condition.field]!==item.condition.value)"
+            <a-tooltip v-if="item.tooltip && (!('condition' in item) || params.data[item.condition.field]!==item.condition.value)"
                       placement="left">
                 <template #title>{{ item.tooltip }}</template>
                 <a-button shape="circle"  type="text" size="small" class="grid-action-btn"
