@@ -1255,6 +1255,7 @@ export default {
         },
         // Getting grid data
         fetchData() {
+            console.log("fetchData fetchDatafetchDatafetchDatafetchDatafetchDatafetchData")
             this.gridApi.showLoadingOverlay();
             this.isLoading = true;
 

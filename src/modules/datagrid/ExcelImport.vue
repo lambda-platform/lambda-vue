@@ -114,7 +114,7 @@ export default {
     methods: {
         excelImport() {
             this.isLoading = true;
-            axios.post(this.baseUrl+'/lambda/krud/import-excel', this.excelForm).then(res => {
+            axios.post(this.baseUrl+'/lambda/krud/import-excel/'+this.schemaID, this.excelForm).then(res => {
                 console.log("excelImport:");
                 console.log(res.data);
                 if (res.data.status) {
