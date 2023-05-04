@@ -1255,7 +1255,6 @@ export default {
         },
         // Getting grid data
         fetchData() {
-            console.log("fetchData fetchDatafetchDatafetchDatafetchDatafetchDatafetchData")
             this.gridApi.showLoadingOverlay();
             this.isLoading = true;
 
@@ -1288,11 +1287,7 @@ export default {
                 filters.custom_condition = this.custom_condition;
             }
 
-            axios.post(url, filters, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(({data}) => {
+            axios.post(url, filters).then(({data}) => {
                 if (this.isClient) {
                     if (Array.isArray(data)) {
                         this.data = data;
