@@ -1288,7 +1288,11 @@ export default {
                 filters.custom_condition = this.custom_condition;
             }
 
-            axios.post(url, filters).then(({data}) => {
+            axios.post(url, filters, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(({data}) => {
                 if (this.isClient) {
                     if (Array.isArray(data)) {
                         this.data = data;
