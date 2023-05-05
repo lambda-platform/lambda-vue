@@ -68,7 +68,7 @@
         </div>
 
 
-        <div class="fixed top-20 right-2"  v-if="isMobile && template == 1 || isMobile && template==3">
+        <div class="fixed top-20 right-2" v-if="isMobile && template == 1 || isMobile && template==3">
             <a-button type="outline" @click="showMobileFilter = true" shape="circle" size="large">
                 <template #icon>
                       <span class="settings-btn ant-btn-svg-icon">
@@ -88,63 +88,65 @@
             placement="right"
 
         >
-            <datafilter class="bg-white dark:bg-slate-900 rounded-md" v-if="isMobile && template == 1 || isMobile && template==3"
+            <datafilter class="bg-white dark:bg-slate-900 rounded-md"
+                        v-if="isMobile && template == 1 || isMobile && template==3"
                         :schemaID="schemaID" :schema="schema" :permissions="permissions"
                         :url="url"
                         :hideTitle="true"
                         :filterData="filterData"
-                        :model="filterModel" ></datafilter>
+                        :model="filterModel"></datafilter>
         </a-drawer>
-        <datafilter class="bg-white dark:bg-slate-900 rounded-md" v-if="!isMobile && template == 1 || !isMobile && template==3"
+        <datafilter class="bg-white dark:bg-slate-900 rounded-md"
+                    v-if="!isMobile && template == 1 || !isMobile && template==3"
                     :schemaID="schemaID" :schema="schema" :permissions="permissions"
                     :url="url"
                     :filterData="filterData"
                     :refresh="refresh"
-                    :model="filterModel" ></datafilter>
+                    :model="filterModel"></datafilter>
 
-                <a-modal
+        <a-modal
 
-                    :min-width="200"
-                    :min-height="200"
-                    class="print-modal"
-                    :footer="null"
-                    width="78%"
-                    height="90%"
+            :min-width="200"
+            :min-height="200"
+            class="print-modal"
+            :footer="null"
+            width="78%"
+            height="90%"
 
-                    v-model:visible="showPrint"
-                >
-                    <print v-if="showPrint"
-                           :schemaID="$props.schemaID"
-                           :user_condition="user_condition"
-                           :gridTitle="gridTitle"
-                           :pageSize="printSize"
-                           :header="header"
-                           :schema="schema"
-                           :info="info"
-                           :query="query"
-                           :baseUrl="baseUrl"
-                           :search="searchModel"
-                           :filter="filterModel"
-                           :aggregations="aggregations"
-                           :isNumber="isNumbered"/>
-                </a-modal>
-                <a-modal
+            v-model:visible="showPrint"
+        >
+            <print v-if="showPrint"
+                   :schemaID="$props.schemaID"
+                   :user_condition="user_condition"
+                   :gridTitle="gridTitle"
+                   :pageSize="printSize"
+                   :header="header"
+                   :schema="schema"
+                   :info="info"
+                   :query="query"
+                   :baseUrl="baseUrl"
+                   :search="searchModel"
+                   :filter="filterModel"
+                   :aggregations="aggregations"
+                   :isNumber="isNumbered"/>
+        </a-modal>
+        <a-modal
 
-                    :min-width="200"
-                    :min-height="200"
-                    class="import-excel-modal"
-                    :footer="null"
-                    width="78%"
-                    height="90%"
-                    :title="lang.excelImportModalTitle"
-                    v-model:visible="showExcelImport"
-                >
-                                <excel-import
-                                    :schemaID="$props.schemaID"
-                                    :schema="schema"
-                                    :baseUrl="baseUrl"
-                                    :options="$parent"/>
-                </a-modal>
+            :min-width="200"
+            :min-height="200"
+            class="import-excel-modal"
+            :footer="null"
+            width="78%"
+            height="90%"
+            :title="lang.excelImportModalTitle"
+            v-model:visible="showExcelImport"
+        >
+            <excel-import
+                :schemaID="$props.schemaID"
+                :schema="schema"
+                :baseUrl="baseUrl"
+                :options="$parent"/>
+        </a-modal>
 
 
         <!--        <Modal v-model="deleteModal" :closable="false" width="360">-->
@@ -159,9 +161,10 @@
         <!--            </div>-->
         <!--        </Modal>-->
 
-                        <GridRowUpdate v-if="template == 0 || template==2"
-                                       :permissions="permissions" :model="filterModel" :schema="schema" :url="url" :inFilter="false" :schemaID="schemaID"
-                        />
+        <GridRowUpdate v-if="template == 0 || template==2"
+                       :permissions="permissions" :model="filterModel" :schema="schema" :url="url" :inFilter="false"
+                       :schemaID="schemaID"
+        />
 
     </div>
 </template>
@@ -256,11 +259,11 @@ export default {
                 return obj;
             }, {});
         },
-        isMobile(){
+        isMobile() {
             return isMobile.value
         },
-        agGridTheme(){
-            if(this.gridTheme === "balham"){
+        agGridTheme() {
+            if (this.gridTheme === "balham") {
                 return "ag-theme-balham"
             } else {
                 return "ag-theme-material"
@@ -404,7 +407,7 @@ export default {
             } else {
                 this.query.currentPage = 1;
             }
-            if(gridSchema.gridTheme){
+            if (gridSchema.gridTheme) {
                 this.gridTheme = gridSchema.gridTheme;
             }
 
@@ -428,7 +431,7 @@ export default {
             this.autoSelect = 'autoSelect' in gridSchema ? gridSchema.autoSelect : false;
             this.autoSelectModel = 'autoSelectModel' in gridSchema ? gridSchema.autoSelectModel : false;
 
-            if(this.isNumbered){
+            if (this.isNumbered) {
                 this.columns.push({
                     headerName: "#",
                     valueGetter: "node.rowIndex + 1",
@@ -527,7 +530,7 @@ export default {
                     this.gridApi.setFloatingFiltersHeight(22);
                     this.gridOptions.rowHeight = 24;
                 } else {
-                    if(this.gridTheme === "balham"){
+                    if (this.gridTheme === "balham") {
                         this.gridApi.setHeaderHeight(30);
                         this.gridApi.setFloatingFiltersHeight(30);
                     } else {
@@ -780,7 +783,7 @@ export default {
                     // console.log(item.filter.param)
 
                     if (isValid(item.filter.param)) {
-                       // console.log(this.$route.query[item.filter.param])
+                        // console.log(this.$route.query[item.filter.param])
                         if (isValid(this.$route.query[item.filter.param])) {
                             // this.filterModel[item.model] = {
                             //     filter: this.$route.query[item.filter.param],
@@ -1189,8 +1192,8 @@ export default {
                 //Custom column item as plugin
                 if (isValid(item.gridType)) {
 
-                    if(this.$customDataGridElementList){
-                        if(this.$customDataGridElementList.length >= 1){
+                    if (this.$customDataGridElementList) {
+                        if (this.$customDataGridElementList.length >= 1) {
                             const elIndex = this.$customDataGridElementList.findIndex(el => el.element === item.gridType);
 
                             if (elIndex >= 0) {
@@ -1663,7 +1666,6 @@ export default {
         },
 
         importExcel() {
-
             this.showExcelImport = true;
         },
 
@@ -1978,9 +1980,8 @@ export default {
             message.loading({
                 content: this.lang.pleaseWaitForLoading,
                 key: messageKey,
-                duration:0
+                duration: 0
             });
-
 
 
             let editUrl = convertLink(this.editableAction, row.data);
@@ -1989,7 +1990,7 @@ export default {
                 .then(({data}) => {
 
                     if (data.status) {
-                        message.success({ content: this.lang.successfullySaved, key: messageKey, duration: 2 });
+                        message.success({content: this.lang.successfullySaved, key: messageKey, duration: 2});
 
                         if (isValid(data.data)) {
                             this.updateModels.forEach(item => {
@@ -1998,12 +1999,16 @@ export default {
                         }
 
                     } else {
-                        message.error({ content: 'msg' in data ? data.msg : this.lang.anErrorOccurredWhileSaving , key: messageKey, duration: 2 });
+                        message.error({
+                            content: 'msg' in data ? data.msg : this.lang.anErrorOccurredWhileSaving,
+                            key: messageKey,
+                            duration: 2
+                        });
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    message.error({ content: this.lang.anErrorOccurredWhileSaving, key: messageKey, duration: 2 });
+                    message.error({content: this.lang.anErrorOccurredWhileSaving, key: messageKey, duration: 2});
                 });
         },
 
@@ -2033,7 +2038,7 @@ export default {
             message.loading({
                 content: this.lang.pleaseWaitForLoading,
                 key: messageKey,
-                duration:0
+                duration: 0
             });
 
             console.log(this.editableAction)
@@ -2043,7 +2048,7 @@ export default {
             axios.post(editUrl, this.changedRowsData)
                 .then(({data}) => {
                     if (data.status) {
-                        message.success({ content: this.lang.successfullySaved, key: messageKey, duration: 2 });
+                        message.success({content: this.lang.successfullySaved, key: messageKey, duration: 2});
                         if (isValid(data.data)) {
                             data.data.forEach(item => {
                                 this.updateModels.forEach(cellModel => {
@@ -2054,12 +2059,16 @@ export default {
                         this.changedRowsData = [];
                     } else {
 
-                        message.error({ content: 'msg' in data ? data.msg : this.lang.anErrorOccurredWhileSaving , key: messageKey, duration: 2 });
+                        message.error({
+                            content: 'msg' in data ? data.msg : this.lang.anErrorOccurredWhileSaving,
+                            key: messageKey,
+                            duration: 2
+                        });
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    message.error({ content: this.lang.anErrorOccurredWhileSaving, key: messageKey, duration: 2 });
+                    message.error({content: this.lang.anErrorOccurredWhileSaving, key: messageKey, duration: 2});
                 });
         },
 

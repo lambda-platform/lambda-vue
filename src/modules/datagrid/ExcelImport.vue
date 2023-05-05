@@ -7,7 +7,8 @@
             </div>
 
             <div class="excel-import-tools-right" style="display: flex">
-                <a-button type="default" v-if="options.excelUploadSample" :href="baseUrl+options.excelUploadSample" shape="round" class="example-btn">
+                <a-button type="default" v-if="options.excelUploadSample" :href="baseUrl+options.excelUploadSample"
+                          shape="round" class="example-btn">
 
                     Жишээ файл татах
                 </a-button>
@@ -17,22 +18,22 @@
         <div class="excel-import-body">
             <div class="excel-import-btns">
                 <a-upload :action="`${baseUrl}/lambda/krud/upload`"
-                        v-model="excelForm.excelFile"
-                        @change="success"
-                        class="ant-btn-default"
-                        style="width: 200px"
-                        size="small">
+                          v-model="excelForm.excelFile"
+                          @change="success"
+                          class="ant-btn-default"
+                          style="width: 200px"
+                          size="small">
 
                     <div class="flex">
                         <inline-svg class="svg-icon"
-                            src="/assets/icons/duotone/Files/Upload.svg"
+                                    src="/assets/icons/duotone/Files/Upload.svg"
                         />
-                      Файл оруулах
+                        Файл оруулах
                     </div>
 
                 </a-upload>
 
-                <a-button  type="primary" v-if="excelForm.excelFile"
+                <a-button type="primary" v-if="excelForm.excelFile"
                           @click="excelImport">{{ lang.save }}
                 </a-button>
             </div>
@@ -41,7 +42,7 @@
                 Ачаалж байна түр хүлээнэ үү ...
             </div>
             <div v-else>
-                <div v-if="summary==null" class="notif" style="height: 100%;
+                <div v-if="summary===null" class="notif" style="height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,7 +51,7 @@
     color: #ccc;">
                     Эксел файлаа оруулаад өгөгдөл хадгалах товчийг дарна уу
                 </div>
-                <div v-else-if="summary==1" class="notif" style="height: 100%;
+                <div v-else-if="summary===1" class="notif" style="height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,6 +82,8 @@
 
 import axios from "axios"
 import {LoadingOutlined} from "@ant-design/icons-vue";
+import {notification} from "ant-design-vue";
+
 export default {
     components: {LoadingOutlined},
     props: ["schemaID", "schema", "options", "baseUrl"],
@@ -93,12 +96,6 @@ export default {
             },
             summary: null
         }
-    },
-
-    created() {
-        console.log("schema:");
-        console.log(this.schema);
-        console.log(this.options);
     },
 
     computed: {
@@ -114,21 +111,29 @@ export default {
     methods: {
         excelImport() {
             this.isLoading = true;
-            axios.post(this.baseUrl+'/lambda/krud/import-excel/'+this.schemaID, this.excelForm).then(res => {
+
+            axios.post(this.baseUrl + '/lambda/krud/import-excel/' + this.schemaID, this.excelForm).then(res => {
                 console.log("excelImport:");
                 console.log(res.data);
+                this.isLoading = false;
                 if (res.data.status) {
+
                     this.summary = 1;
                 } else {
                     this.summary = res.data.data;
                 }
             }).catch(e => {
-                console.log(e.message);
+
+                this.isLoading = false;
+                notification["error"]({
+                    message: "Алдаа",
+                    description: e.response.data.error,
+                });
             });
 
         },
         success(val) {
-            if(val.file.status === "done"){
+            if (val.file.status === "done") {
                 this.excelForm.excelFile = val.file.response;
             }
 
