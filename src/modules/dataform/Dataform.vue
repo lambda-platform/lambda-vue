@@ -67,7 +67,7 @@
 
                         <!-- Tab -->
                         <a-tabs v-model:activeKey='tabIndex' v-if='row.sectionRenderByTab'>
-                            <a-tab-pane :tab='col.name' :key='col.index' v-for='col in row.children.filter(c=>isVisibleSection(c))'
+                            <a-tab-pane :tab='col.name' :key='colIndex' v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
                             >
                                 <a-row v-for='srow in col.children' :key='srow.index' :gutter="10">
                                     <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
@@ -205,10 +205,9 @@
                                             </a-row>
                                         </div>
                                     </a-col>
-
                                     <!-- Tab -->
                                     <a-tabs v-model:activeKey='tabIndex' v-if='row.sectionRenderByTab'>
-                                        <a-tab-pane :tab='col.name' :key='col.index' v-for='col in row.children.filter(c=>isVisibleSection(c))'
+                                        <a-tab-pane :tab='col.name' :key='colIndex' v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
                                         >
                                             <a-row v-for='srow in col.children' :key='srow.index' :gutter="10">
                                                 <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
@@ -371,7 +370,7 @@
 
                     <!-- Tab -->
                     <a-tabs v-model:activeKey='tabIndex' v-if='row.sectionRenderByTab'>
-                        <a-tab-pane :tab='col.name' :key='col.index' v-for='col in row.children.filter(c=>isVisibleSection(c))'
+                        <a-tab-pane :tab='col.name' :key='colIndex' v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
                                 >
                             <a-row v-for='srow in col.children' :key='srow.index' :gutter="10">
                                 <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
