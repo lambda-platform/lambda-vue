@@ -29,3 +29,7 @@ $primary-color: var(--ant-primary-color);
 .ag-theme-balham, .ag-theme-material {
     --ag-range-selection-border-color: var(--ant-primary-color) !important;
 }
+
+.ag-header-cell{
+    background-color: #ffffff !important;
+}

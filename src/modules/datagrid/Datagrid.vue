@@ -1519,7 +1519,7 @@ export default {
 
         remove(id, index) {
             this.delLoading = true;
-            axios.delete(this.page_id ? `/lambda/krud/delete/${this.schemaID}/${id}?page_id=${this.page_id}` : `/lambda/krud/delete/${this.schemaID}/${id}`)
+            axios.delete(this.page_id ? `${this.baseUrl}/lambda/krud/delete/${this.schemaID}/${id}?page_id=${this.page_id}` : `${this.baseUrl}/lambda/krud/delete/${this.schemaID}/${id}`)
                 .then(o => {
                     if (o.status) {
                         notification["success"]({

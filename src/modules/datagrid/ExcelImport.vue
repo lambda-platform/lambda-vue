@@ -33,7 +33,7 @@
 
                 </a-upload>
 
-                <a-button type="primary" v-if="excelForm.excelFile"
+                <a-button type="primary" v-if="excelForm.excelFile" :loading="isLoading"
                           @click="excelImport">{{ lang.save }}
                 </a-button>
             </div>
@@ -51,23 +51,28 @@
     color: #ccc;">
                     Эксел файлаа оруулаад өгөгдөл хадгалах товчийг дарна уу
                 </div>
-                <div v-else-if="summary===1" class="notif" style="height: 100%;
+                <div v-else-if="summary.length ===0" class="notif" style="height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-transform: uppercase;
     color: #149755;">
-                    Амжилттай хадгалагдлаа, Хүснэгтээ дахин ачаалж мэдээллээ шалгана уу
+                    Амжилттай хадгалагдлаа. Хүснэгтээ дахин ачаалж мэдээллээ шалгана уу
 
                 </div>
-                <div v-else style="padding: 20px">
+                <div v-else style="padding: 20px" v-if="summary.length >= 1">
                     <div>
                         <h3> Эксел файл оруулах үеийн лог </h3></div>
                     <div>Доорх алдааг засаж дахин оруулна уу, алдаа гараагүй өгөгдлүүд баазад орсон</div>
                     <div style="border-top:1px dotted #eee; padding: 20px; overflow-y: auto">
                         <ul>
                             <li v-for="sum in summary" :key="sum">
-                                {{ sum.row }} - {{ sum.error }}
+                                Мөрийн дугаар:  {{sum.row_index}} <br>
+                                {{ sum.row.join(", ") }} - {{ sum.errors.join(", ") }}
+                                <br>
+                                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" v-for="error in sum.errors" :key="error.index">
+                                    <span>{{error}}</span>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -116,11 +121,9 @@ export default {
                 console.log("excelImport:");
                 console.log(res.data);
                 this.isLoading = false;
-                if (res.data.status) {
+                if (res.status) {
 
-                    this.summary = 1;
-                } else {
-                    this.summary = res.data.data;
+                    this.summary = res.data === null ? [] : res.data;
                 }
             }).catch(e => {
 
