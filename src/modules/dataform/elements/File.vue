@@ -130,12 +130,7 @@ export default {
             this.showImage = v
         },
         handleView (file) {
-            console.log(file)
-            console.log(this.url)
-
             this.showImageUrl = `${this.url ? this.url : ''}`+file.response;
-
-
 
             const a = document.createElement('a')
             a.href = `${this.url ? this.url : ''}`+file.response;
