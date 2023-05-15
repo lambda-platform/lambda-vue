@@ -130,13 +130,15 @@ export default {
             this.showImage = v
         },
         handleView (file) {
+            console.log(file)
+            console.log(this.url)
 
-            this.showImageUrl = this.url ? this.url : ''+file.response
+            this.showImageUrl = this.url ? this.url : ''+file.response;
 
 
 
             const a = document.createElement('a')
-            a.href = file.response;
+            a.href = this.url ? this.url : ''+file.response;
             a.target = "_blank";
             a.click()
         },
