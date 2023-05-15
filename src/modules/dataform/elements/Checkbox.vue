@@ -1,5 +1,5 @@
 <template>
-    <lambda-form-item  :label=label  :name="model.component" :meta="meta">
+    <lambda-form-item   :name="model.component" :meta="meta">
         <a-checkbox
             :checked="model.form[model.component] === 1"
             :disabled="disabled"

@@ -65,7 +65,7 @@ const getSelectItem = (item, selects, setSchemaByModel) =>{
 
 
             } else {
-                item.relation.filter = `(${item.relation.filter}) OR (${userConditions})`
+                item.relation.filter = `(${item.relation.filter}) AND (${userConditions})`
             }
         } else {
             let condition = `${item.relation.filterWithUser['tableField']} = '${window.init.user[item.relation.filterWithUser['userField']]}'`
