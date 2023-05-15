@@ -8,6 +8,7 @@
                 :multiple="this.isMultiple"
                 name="file"
 
+
                 :action="`${url ? url : ''}/lambda/krud/upload`"
                 @preview="handleView"
                 @change="handleChange"
@@ -130,7 +131,7 @@ export default {
         },
         handleView (file) {
 
-            this.showImageUrl = file.response
+            this.showImageUrl = this.url ? this.url : ''+file.response
 
 
 

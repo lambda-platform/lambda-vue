@@ -135,7 +135,7 @@ export default {
         },
         handleView(file) {
             this.showImage = true
-            this.showImageUrl = this.url + file.response
+            this.showImageUrl = this.url ? this.url : ''+ + file.response
         },
         handleChange(info) {
 
