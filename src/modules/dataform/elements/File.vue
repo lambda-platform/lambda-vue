@@ -133,12 +133,12 @@ export default {
             console.log(file)
             console.log(this.url)
 
-            this.showImageUrl = this.url ? this.url : ''+file.response;
+            this.showImageUrl = `${this.url ? this.url : ''}`+file.response;
 
 
 
             const a = document.createElement('a')
-            a.href = this.url ? this.url : ''+file.response;
+            a.href = `${this.url ? this.url : ''}`+file.response;
             a.target = "_blank";
             a.click()
         },
