@@ -23,7 +23,7 @@ export default {
     beforeMount() {
         if(this.model.form[this.model.component] !== null){
             if(typeof this.model.form[this.model.component] === 'string') {
-                this.model.form[this.model.component] = dayjs(this.model.form[this.model.component]);
+                this.model.form[this.model.component] = dayjs.utc(this.model.form[this.model.component]);
             }
         }
     },
@@ -32,7 +32,7 @@ export default {
             if(this.autoFillCurrentDate){
                 axios.get("/lambda/krud/today").then(({data})=>{
                     const dateFormat = 'YYYY-MM-DD';
-                    this.model.form[this.model.component] = dayjs(data.today, dateFormat);
+                    this.model.form[this.model.component] = dayjs.utc(data.today, dateFormat);
                 });
             }
 
