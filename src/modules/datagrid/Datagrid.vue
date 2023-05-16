@@ -1067,7 +1067,7 @@ export default {
                 //Date only column
                 if (isValid(item.gridType) && item.gridType === 'Date') {
                     colItem.valueFormatter = (data) => {
-                        let val = moment(data.value).format('YYYY-MM-DD');
+                        let val = moment.utc(data.value).format('YYYY-MM-DD');
                         if (val == 'Invalid date') {
                             return '';
                         }
@@ -1078,7 +1078,7 @@ export default {
                 //Date only column
                 if (isValid(item.gridType) && item.gridType === 'Datetime') {
                     colItem.valueFormatter = (data) => {
-                        let val = moment(data.value).format('YYYY-MM-DD HH:mm:ss');
+                        let val = moment.utc(data.value).format('YYYY-MM-DD HH:mm:ss');
                         if (val == 'Invalid date') {
                             return '';
                         }
