@@ -534,8 +534,9 @@ export default {
                 case 'DateTime':
                     if (value === null) {
                         axios.get("/lambda/krud/now").then(({data})=>{
-                            const formatString = "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                            const formatString = "YYYY-MM-DDTHH:mm:ss"
                             const datetime = data.today.split('T')[0] + ' ' + data.today.split('T')[1].split('+')[0];
+
                             this.$data.model[name] = dayjs.utc(datetime, formatString);
                         });
                     }
