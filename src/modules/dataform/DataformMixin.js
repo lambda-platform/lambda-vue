@@ -47,7 +47,8 @@ export default {
         'title',
         'close',
         'hideTitle',
-        'hideSuccessDialog'
+        'hideSuccessDialog',
+        'hideErrorDialog',
     ],
     components:{
         fromFooter:fromFooter
@@ -696,10 +697,12 @@ export default {
                             }
                         } else {
 
-                            notification["error"]({
-                                message: this.lang.errorSaving,
-                                description: this.lang.errorSaving,
-                            });
+                            if(!this.hideErrorDialog){
+                                notification["error"]({
+                                    message: this.lang.errorSaving,
+                                    description: this.lang.errorSaving,
+                                });
+                            }
                             if (this.$props.onError) {
                                 this.$props.onError()
                             }
