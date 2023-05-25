@@ -50,7 +50,7 @@
         >
             <section class="add-modal" v-if="modal_show">
                 <div class="add-body">
-                    <dataform ref="form" :schemaID="meta.relation.addFrom"
+                    <dataform ref="formAddAble" :schemaID="meta.relation.addFrom"
                               :editMode="false"
                               :onSuccess="onSuccess"
                               :url="addFromUrl()"

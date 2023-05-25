@@ -1,0 +1,83 @@
+
+.chart-element{
+    width: 100%;
+
+    position: relative;
+    text-align: center;
+   .chart{
+       width: 100%;
+       position: relative;
+       text-align: center;
+   }
+    .ant-spin{
+        padding-top: 20%;
+        margin: auto ;
+    }
+    .legend{
+        height: auto;
+        max-height: 100px;
+        overflow-y: auto;
+        cursor: pointer;
+        font-weight: 400;
+
+        .legend-container {
+            display: flex;
+            flex-direction: row;
+            .legend-color{
+                display: inline-block;
+                width: 20px; height: 13px;
+                border-radius: 3px;
+                margin-right: 5px;
+            }
+            .legend-title {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex: 1;
+                .legend-name{
+                    text-align: left;
+
+                }
+                .value-percent{
+                    text-align: right;
+                }
+            }
+        }
+
+        .hidden-legend{
+            .legend-title{
+                color: #cccccc;
+
+            }
+            .legend-color{
+                background-color: #cccccc !important;
+            }
+        }
+    }
+}
+
+.chart-element-wide{
+    width: 100%;
+    //height: 0;
+    //padding-bottom: 25%;
+
+    position: relative;
+    .ant-spin{
+        padding-top: 40%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .chart-element-wide{
+        width: 100%;
+        //height: 0;
+        //padding-bottom: 40%;
+        position: relative
+    }
+    .chart-element{
+        width: 100%;
+        height: 0;
+        padding-bottom: 65%;
+        position: relative
+    }
+}
