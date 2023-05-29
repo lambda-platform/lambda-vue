@@ -72,6 +72,8 @@ export default {
             this.isError = false;
             if (!this.loading) {
                 this.loading = true;
+                axios.defaults.headers.common['Authorization'] = "";
+                axios.defaults.withCredentials = true;
                 axios.post('/auth/login', this.credentials).then(({data}) => {
 
                     if (data.status) {
