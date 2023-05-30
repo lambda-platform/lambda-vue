@@ -43,7 +43,7 @@
 import axios from 'axios'
 
 export default {
-    props: ['lambda', 'onSuccess', 'selectedLang'],
+    props: ['lambda', 'onSuccess', 'selectedLang', 'onError'],
     name: "aside-login",
     data() {
         return {
@@ -85,6 +85,10 @@ export default {
                 }).catch(e => {
                     this.loading = false;
                     this.isError = true;
+
+                    if(this.onError){
+                        this.onError();
+                    }
                 })
             }
         },

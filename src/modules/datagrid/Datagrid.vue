@@ -244,6 +244,7 @@ export default {
         'actionvisibility',
         'gridSelector',
         'url',
+        'filter'
     ],
     computed: {
         // ...mapGetters({
@@ -1274,6 +1275,11 @@ export default {
                     return o;
                 }, {});
 
+            if(this.filter){
+
+                filters = {...filters, ...this.filter}
+            }
+
             //Setting search params
             if (this.searchModel) {
                 url = `${url}&search=${this.searchModel}`;
@@ -1869,6 +1875,7 @@ export default {
                     this.filterModel[key] = filters[key];
                 }
                 this.filterData(1);
+
             } else {
                 let filters = event.api.getFilterModel();
                 for (let key in filters) {
