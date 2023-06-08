@@ -74,11 +74,7 @@
 
                 <a-button type="success" @click="saveGraphic" v-if="points.length >= 1">{{lang.save}}</a-button>
                 <a-button type="warning" @click="cancelGraphic" v-if="points.length >= 1">{{lang.cancel}}</a-button>
-
-
                 <!--<Button type="success" @click="getData">Get data</Button>-->
-
-
             </div>
             <!--<div id="spatial_query" v-if="featureLayerUrl" >-->
             <!--ТЗ-н тайлбайгаар шалгах  <i-switch size="small" v-model="checkByArea" @on-change="removeEditeLauyer"></i-switch>-->

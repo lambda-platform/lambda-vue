@@ -320,8 +320,9 @@
                 <a-row v-for='row in ui.schema' :gutter="10">
                     <!-- Section -->
                     <a-col v-for='col in row.children.filter(c=>isVisibleSection(c))' v-if='!row.sectionRenderByTab'
-                          :xs='col.span.xs'
-                         :sm='col.span.sm' :md='col.span.md' :lg='col.span.lg'>
+
+                           :span='col.span.md'
+                           >
                         <div :class="col.name != '' ? 'fieldset' : ''">
                             <legend v-if="col.name != ''">{{ col.name }}</legend>
                             <a-row v-for='srow in col.children' :gutter="10">
@@ -415,8 +416,9 @@
                     </a-tabs>
 
                     <!-- Standart column -->
-                    <a-col v-for="col in row.children.filter(c=>c.type === 'col')" :xs='col.span.xs'
-                           :sm='col.span.sm' :md='col.span.md' :lg='col.span.lg'>
+                    <a-col v-for="col in row.children.filter(c=>c.type === 'col')"
+
+                           :span='col.span.md'>
                         <a-divider v-if='col.name' orientation='left' class='form-divider'>{{ col.name }}</a-divider>
                         <span v-for='item in col.children' :key='item.index'>
                             <component
