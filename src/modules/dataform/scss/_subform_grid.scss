@@ -3,6 +3,7 @@
     flex-direction: column;
     min-height: 30px;
     overflow-x:auto;
+    margin-bottom: 8px;
 
     background: transparent;
 
@@ -113,6 +114,9 @@
                                 box-shadow: none;
                                 outline: none;
                             }
+                        }
+                        textarea.ant-input{
+                            height: auto;
                         }
 
                         .ant-select-selection-search-input{
@@ -252,6 +256,9 @@
         }
     }
 
+    .ant-picker{
+        border: none;
+    }
 }
 
 .subform-image {
