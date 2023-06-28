@@ -355,7 +355,7 @@ export default {
             setModel(formSchema.model)
             this.setUserConditionValues(true)
             this.setCustomData()
-            this.loadConfig = false
+            this.loadConfig = false;
             if (this.$props.onReady) {
                 this.$props.onReady(formSchema, this.schema)
             }

@@ -55,27 +55,31 @@ function doFormula2(formula, model, model_, schema_, rule_, subFormModelName) {
 
 
         if (pre_formula) {
-            let calculated = evil(pre_formula);
+            try {
+                let calculated = evil(pre_formula);
 
-            formula.targets.map(target => {
-                let schema_index = getSchemaIndex(schema_, target.field);
-                if (schema_index >= 0) {
-                    if (target.prop == 'value') {
-                        model_[target.field] = calculated;
-                    } else {
-                        if (target.prop == 'hidden') {
-                            if (rule_) {
-                                if (rule_[target.field]) {
-                                    if (rule_[target.field].length > 0 && rule_[target.field][0].hasOwnProperty("required"))
-                                        rule_[target.field][0].required = calculated ? false : true;
+                formula.targets.map(target => {
+                    let schema_index = getSchemaIndex(schema_, target.field);
+                    if (schema_index >= 0) {
+                        if (target.prop == 'value') {
+                            model_[target.field] = calculated;
+                        } else {
+                            if (target.prop == 'hidden') {
+                                if (rule_) {
+                                    if (rule_[target.field]) {
+                                        if (rule_[target.field].length > 0 && rule_[target.field][0].hasOwnProperty("required"))
+                                            rule_[target.field][0].required = calculated ? false : true;
+                                    }
                                 }
                             }
-                        }
-                        schema_[schema_index][target.prop] = calculated;
+                            schema_[schema_index][target.prop] = calculated;
 
+                        }
                     }
-                }
-            })
+                })
+            } catch (e){
+                console.log(e)
+            }
         }
     }
 }

@@ -169,7 +169,6 @@ export const getRule = (rule, baseUrl) => {
     }
     switch (rule.type) {
         case 'custom':
-            console.log(rule.regex)
             return {
                 validator: async (r, value)=> await customRegexChecker(r, value, rule.regex),
                 trigger: 'blur',
