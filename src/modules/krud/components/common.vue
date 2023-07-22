@@ -1,30 +1,47 @@
 <template>
     <portal to="header-left">
-        <div class="page-title float-left">
-            <div class="float-left pt-3">
-                <h1 class="text-gray-700 dark:text-gray-200 text-base m-0 ">{{ title }}</h1>
-                <h2 class="text-gray-400 text-xs m-0">
+        <div class="flex">
+            <div class="page-title ">
+                <div class="float-left pt-3">
+                    <h1 class="text-gray-700 dark:text-gray-200 text-base m-0 ">{{ title }}</h1>
+                    <h2 class="text-gray-400 text-xs m-0">
                         <span v-for="(p, index) in parent" :key="p.index">
                             <span v-if="index >= 1"> / </span>{{ p.title }}
                         </span>
-                </h2>
+                    </h2>
+                </div>
             </div>
-        </div>
-        <div class="float-left ml-3 " v-if="!hideAction && permissions.c">
-            <span class="divider"></span>
-            <a-button type="primary" @click="addAction" shape="round">
-                <template #icon>
+            <div class=" ml-3 " v-if="!hideAction && permissions.c">
+                <span class="divider"></span>
+                <a-button type="primary" @click="addAction" shape="round">
+                    <template #icon>
                         <span class="anticon align-top ant-btn-svg-icon" style="vertical-align: top">
                             <inline-svg
                                 src="/assets/icons/duotune/general/gen041.svg"
                             />
                         </span>
-                </template>
-                {{ lang._add }}
-            </a-button>
+                    </template>
+                    {{ lang._add }}
+                </a-button>
+            </div>
+            <portal-target name="grid-left">
+            </portal-target>
+
+            <div class=" ml-3 " v-if="canGenerateSalary">
+                <span class="divider"></span>
+                <a-button type="primary" shape="round" @click="showSalaryGenerate">
+                    <template #icon>
+                        <span class="anticon align-top ant-btn-svg-icon" style="vertical-align: top">
+                            <inline-svg
+                                src="/assets/icons/duotone/Shopping/Money.svg"
+                            />
+                        </span>
+                    </template>
+                    Цалин үүсгэх
+                </a-button>
+            </div>
         </div>
-        <portal-target name="grid-left">
-        </portal-target>
+
     </portal>
     <portal to="mobile-page-title">
         <div class="page-title mb-3">

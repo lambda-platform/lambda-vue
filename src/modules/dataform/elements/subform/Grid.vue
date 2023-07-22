@@ -320,6 +320,25 @@ export default {
             this.listData.push(listItem);
             this.rowLength = this.model.form[this.model.component].length;
         },
+        addSubFormWithData(row) {
+            let clonedForm = _.cloneDeep(this.form);
+            let clonedFormModel = {...row};
+
+
+            let listItem = {
+                form: clonedForm,
+                model: clonedFormModel
+            };
+
+
+            if (this.model.form[this.model.component] == undefined) {
+                this.model.form[this.model.component] = [];
+            }
+            this.model.form[this.model.component].push(clonedFormModel);
+
+            this.listData.push(listItem);
+            this.rowLength = this.model.form[this.model.component].length;
+        },
 
         add() {
             if (this.form.addFromGrid && this.form.sourceGridID) {

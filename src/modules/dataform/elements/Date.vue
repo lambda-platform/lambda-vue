@@ -3,6 +3,7 @@
         <a-date-picker
             v-model:value="model.form[model.component]"
             mode="date"
+
             :placeholder="placeholder"
             :disabled="disabled || autoFillCurrentDate"
 
