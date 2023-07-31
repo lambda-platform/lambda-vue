@@ -51,8 +51,13 @@ export default {
             }
             var dom = this.$el;
             var wrapper = dom.parentElement;
-            dom.style.height = wrapper.offsetHeight + "px";
+            // dom.style.height = wrapper.offsetHeight + "px";
             // console.log(wrapper.offsetWidth);
+
+
+
+            dom.style.height = (wrapper.offsetWidth / 100)*35 + 'px';
+
             var myChart = echarts.init(dom, "light");
             this.instance = myChart;
 
@@ -111,6 +116,8 @@ export default {
                 }
             });
 
+            console.log(this.lines)
+            console.log(series)
             if (this.axis.length >= 1 && this.lines.length >= 1) {
 
                 myChart.setOption({
