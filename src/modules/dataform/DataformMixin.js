@@ -826,6 +826,9 @@ export default {
         },
 
         editModel(id, editData) {
+            console.log(this.$props.url)
+            console.log(this.$props.url)
+            console.log(this.$props.url)
             if (editData) {
                 this.model = {...this.model, ...editData}
                 if (this.ui && this.ui.hasOwnProperty('schema')) {

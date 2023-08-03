@@ -153,7 +153,7 @@ export default {
 
             axios.post(`${this.sourceGridUrl()}/lambda/puzzle/grid/data/${this.meta.GSOption.sourceGridID}?&paginate=1&page=1&sort=id&order=desc`, filter).then(({ data }) => {
 
-                if (data.data.length >= 1) {
+                if (data.data && data.data.length >= 1) {
                     this.selectedRow = data.data[0]
                 }
 

@@ -146,6 +146,7 @@
                                 :getSchemaByModel='getSchemaByModel'
                                 :getSchemaRelationByModel='getSchemaRelationByModel'
                                 :setSchemaByModel='setSchemaByModel'
+                                :url='url'
                                 :relation_data='getRelation'>
                             </component>
                             </span>
@@ -287,6 +288,7 @@
                                 :getSchemaByModel='getSchemaByModel'
                                 :getSchemaRelationByModel='getSchemaRelationByModel'
                                 :setSchemaByModel='setSchemaByModel'
+                                :url='url'
                                 :relation_data='getRelation'>
                             </component>
                             </span>
@@ -453,6 +455,7 @@
                                 :getSchemaByModel='getSchemaByModel'
                                 :getSchemaRelationByModel='getSchemaRelationByModel'
                                 :setSchemaByModel='setSchemaByModel'
+                                :url='url'
                                 :relation_data='getRelation'>
                             </component>
                             </span>
