@@ -238,4 +238,15 @@ export default {
 .dark .ck-button {
     color: white !important;
 }
+/* Style for bulleted lists */
+.ck-content ul {
+    list-style-type: square;  /* change bullet type */
+    padding-left: 20px;       /* increase padding */
+}
+
+/* Style for numbered lists */
+.ck-content ol {
+    list-style-type: decimal; /* default type, you may change it */
+    padding-left: 20px;       /* increase padding */
+}
 </style>
