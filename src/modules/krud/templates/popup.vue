@@ -50,7 +50,7 @@
             class="create"
             :maskClosable="false"
             :title="title"
-            :forceRender="false"
+            :forceRender="true"
             :width="this.form_width"
             :footer="null"
             placement="right"

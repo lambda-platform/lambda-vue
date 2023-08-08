@@ -1,4 +1,5 @@
 import axios from "axios"
+import dayjs from "../../../utils/dayjs";
 var templateRe = /\{ *([\w_-]+) *\}/g;
 var fieldTimeout = null;
 
@@ -103,6 +104,7 @@ export function doTrigger(model, val, model_, schema_, refs, Message, editMode) 
 }
 
 function setValueProps(field, model_, schema_, refs, is_sub) {
+
     if (is_sub) {
         let schema_sub_index = getSchemaIndex(schema_, is_sub);
         if (schema_sub_index >= 0) {
@@ -118,12 +120,18 @@ function setValueProps(field, model_, schema_, refs, is_sub) {
         let schema_index = getSchemaIndex(schema_, field.field);
         if (schema_index >= 0) {
             if ('value' in field) {
-                model_[field.field] = field.value;
 
                 let current_schema = schema_[schema_index];
+                if (current_schema.formType === "Date" || current_schema.formType === "DateTime") {
+                    const formatString = "YYYY-MM-DDTHH:mm:ss"
+                    const datetime = field.value.split('T')[0] + ' ' + field.value.split('T')[1].split('+')[0];
 
-                if (current_schema.formType === "SubForm") {
+                    model_[field.field] =  dayjs.utc(datetime, formatString);
+                } else if (current_schema.formType === "SubForm") {
+
                     refs[`sf${field.field}`][0].fillData(field.value);
+                } else {
+                    model_[field.field] = field.value;
                 }
             }
             if (field.props) {

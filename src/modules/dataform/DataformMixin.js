@@ -1,4 +1,4 @@
-import dayjs from 'dayjs/esm/index'
+
 import {element} from './elements'
 import {getRule, setModel, setIdentity} from './rule'
 import {dataFromTemplate} from './utils/formula.js'
@@ -10,22 +10,7 @@ import {isMobile} from '../../utils/device'
 import axios from 'axios'
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
-import advancedFormat from 'dayjs/esm/plugin/advancedFormat/index'
-import customParseFormat from 'dayjs/esm/plugin/customParseFormat/index'
-import localeData from 'dayjs/esm/plugin/localeData/index'
-import weekday from 'dayjs/esm/plugin/weekday/index'
-import weekOfYear from 'dayjs/esm/plugin/weekOfYear/index'
-import weekYear from 'dayjs/esm/plugin/weekYear/index'
-// import 'dayjs/locale/mn'
-import utc from 'dayjs/esm/plugin/utc/index'
-
-dayjs.extend(utc)
-dayjs.extend(customParseFormat)
-dayjs.extend(advancedFormat)
-dayjs.extend(weekday)
-dayjs.extend(localeData)
-dayjs.extend(weekOfYear)
-dayjs.extend(weekYear)
+import dayjs from "../../utils/dayjs";
 
 export default {
     name: 'dataform',
@@ -774,6 +759,7 @@ export default {
                 item.hidden = item.source_hidden
                 item.disabled = item.source_disabled
             })
+
             this.setHiddenItemModel(this.schema);
             this.setCustomData()
 
