@@ -901,12 +901,12 @@ export default {
                             break;
                         case 'Date':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] =   dayjs.utc(this.model[item.model]);
+                                this.model[item.model] =   dayjs.utc(new Date(this.model[item.model]));
                             }
                             break
                         case 'DateTime':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] = dayjs.utc(this.model[item.model]);
+                                this.model[item.model] = dayjs.utc(new Date(this.model[item.model]));
                             }
                             break
                         case 'Password':
