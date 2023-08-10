@@ -513,20 +513,15 @@ export default {
                     if (value === null) {
                         axios.get("/lambda/krud/today").then(({data})=>{
                             // const dateFormat = 'YYYY-MM-DD';
-                            this.$data.model[name] = dayjs.utc(new Date(data.today));
+                            this.$data.model[name] = dayjs(data.today);
                         });
                     }
                     break
                 case 'DateTime':
                     if (value === null) {
                         axios.get("/lambda/krud/now").then(({data})=>{
-                            // const formatString = "YYYY-MM-DDTHH:mm:ss"
-                            // const datetime = data.today.split('T')[0] + ' ' + data.today.split('T')[1].split('+')[0];
-                            //
 
-
-
-                            this.$data.model[name] = dayjs.utc(new Date(data.today));
+                            this.$data.model[name] = dayjs(data.today);
                         });
                     }
                     break
@@ -901,12 +896,12 @@ export default {
                             break;
                         case 'Date':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] =   dayjs.utc(new Date(this.model[item.model]));
+                                this.model[item.model] =   dayjs(this.model[item.model]);
                             }
                             break
                         case 'DateTime':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] = dayjs.utc(new Date(this.model[item.model]));
+                                this.model[item.model] = dayjs(this.model[item.model]);
                             }
                             break
                         case 'Password':
