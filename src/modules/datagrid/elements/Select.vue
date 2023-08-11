@@ -1,6 +1,5 @@
 <template>
     <lambda-form-item :label=label :name="model.component" :meta="meta">
-{{options}}
         <a-input-group compact >
             <a-select
                 v-model:value="selectValue"
