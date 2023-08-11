@@ -625,9 +625,25 @@ img.ag-grid-image {
  }
 }
 .ag-floating-filter{
-    .ant-select-selector{
-        border: none !important;
+
+    div[role="presentation"]  {
+        width: 100%;
     }
+
+    .ant-select{
+        width: 100%;
+        height: 16px;
+        .ant-select-selector{
+            border: none !important;
+            height: 16px !important;
+            box-shadow: none !important;
+        }
+        .ant-select-selection-search-input{
+            height: 16px !important;
+        }
+    }
+
+
 }
 
 .ag-theme-material input[class^=ag-]:not([type]),

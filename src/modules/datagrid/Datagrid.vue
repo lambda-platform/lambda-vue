@@ -437,6 +437,7 @@ export default {
                     headerName: "#",
                     valueGetter: "node.rowIndex + 1",
                     width: 50,
+                    filter: false,
                 })
             }
 
@@ -836,6 +837,32 @@ export default {
                                         return 0;
                                     }
                                 },
+                                inRangeInclusive: true,
+                                browserDatePicker: true,
+                                suppressAndOrCondition: true
+                            };
+                            break;
+                        case 'DateRange':
+                            colItem.filter = "agDateColumnFilter";
+                            colItem.filterParams = {
+                                newRowsAction: "keep",
+                                comparator: (filterLocalDateAtMidnight, cellValue) => {
+                                    let dateParts = cellValue.substr(0, 10).split("-");
+                                    let day = parseInt(dateParts[2]);
+                                    let month = parseInt(dateParts[1]) - 1;
+                                    let year = parseInt(dateParts[0]);
+                                    let cellDate = new Date(year, month, day);
+
+                                    if (cellDate < filterLocalDateAtMidnight) {
+                                        return -1;
+                                    } else if (cellDate > filterLocalDateAtMidnight) {
+                                        return 1;
+                                    } else {
+                                        return 0;
+                                    }
+                                },
+
+                                defaultOption: 'inRange',
                                 inRangeInclusive: true,
                                 browserDatePicker: true,
                                 suppressAndOrCondition: true
