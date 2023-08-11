@@ -13,11 +13,14 @@ export default {
 
             if (this.meta.formType === 'Radio' || this.meta.formType === 'Select' || this.meta.formType === 'ISelect' || this.meta.formType === 'TreeSelect') {
 
-                if (isValid(this.meta) && isValid(this.meta.options) && this.meta.options.length >= 1) {
-                    return this.filterOption(this.meta.options)
-                } else {
-                    return this.filterOption(this.relation_data(this.meta))
-                }
+                // if (isValid(this.meta) && isValid(this.meta.options) && this.meta.options.length >= 1) {
+                //     return this.filterOption(this.meta.options)
+                // } else {
+                //
+                //
+                // }
+
+                return this.filterOption(this.relation_data(this.meta))
             } else {
                 return []
             }

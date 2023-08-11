@@ -1,5 +1,6 @@
 <template>
     <lambda-form-item :label=label :name="model.component" :meta="meta">
+{{options}}
         <a-input-group compact >
             <a-select
                 v-model:value="selectValue"
@@ -114,7 +115,10 @@ export default {
     methods: {
 
         changeValue (val) {
-            // console.log(val)
+            console.log(val)
+            console.log(val)
+            console.log(val)
+
             if (val !== undefined && val !== null) {
                 if (this.meta.relation.multiple === true) {
                     this.model.form[this.model.component] = val.join(',')
