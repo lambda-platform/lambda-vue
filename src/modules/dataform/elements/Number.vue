@@ -13,7 +13,7 @@
                         :formatter="value => {
   const [integer, fractional] = `${value}`.split('.');
   const formattedInteger = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  return `${formattedInteger}${fractional ? '.'+fractional.slice(0, 3) : ''}`;
+  return `${formattedInteger}${fractional ? '.'+fractional.slice(0, meta.precision ? meta.precision * 1 : 3) : ''}`;
 }"
                         :parser="value => value.replace(/\$\s?|(,*)/g, '')"
                         :placeholder="placeholder"
@@ -25,6 +25,9 @@
 import mixin from "./_mixin"
 export default {
     mixins:[mixin],
+    mounted() {
+        console.log(this.meta.precision)
+    }
 
-    };
+};
 </script>
