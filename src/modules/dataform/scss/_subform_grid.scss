@@ -103,17 +103,21 @@
                         .ant-input, .ant-select-selector, .ant-input-number-input, .ant-input-number {
                             height: 24px;
                             margin: 0;
-                            border: 0;
-                            border-radius: 0;
+                            border: none !important;
+                            border-radius: 0 !important;
                             background: transparent;
 
                             &:hover,
                             &:active,
                             &:focus {
                                 //background: #ffffff !important;
-                                box-shadow: none;
-                                outline: none;
+                                box-shadow: none !important;
+                                outline: none !important;
                             }
+                        }
+                        .ant-input-group.ant-input-group-compact > *:first-child{
+                            border: none !important;
+                            border-radius: 0 !important;
                         }
                         textarea.ant-input{
                             height: auto;
@@ -132,7 +136,14 @@
                         }
 
 
-
+                        .ant-btn-icon-only{
+                            border: none;
+                            height: 24px;
+                            width: 24px;
+                            .svg-icon{
+                                margin: 0;
+                            }
+                        }
 
                         .ivu-upload {
                             img {
