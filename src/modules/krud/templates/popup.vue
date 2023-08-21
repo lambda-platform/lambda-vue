@@ -49,7 +49,7 @@
             v-model:visible="openSlidePanel"
             class="create"
             :maskClosable="false"
-            :title="title"
+            :title="withCrudLog ? `${title} : ${rowId}` : title"
             :forceRender="true"
             :width="this.form_width"
             :footer="null"

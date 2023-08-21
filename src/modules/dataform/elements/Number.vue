@@ -25,9 +25,7 @@
 import mixin from "./_mixin"
 export default {
     mixins:[mixin],
-    mounted() {
-        console.log(this.meta.precision)
-    }
+
 
 };
 </script>
