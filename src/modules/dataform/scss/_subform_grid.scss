@@ -121,6 +121,11 @@
                             line-height: 24px !important;
 
                         }
+                        .ant-select-multiple{
+                            .ant-select-selector{
+                                height: auto;
+                            }
+                        }
                         .ant-input-group.ant-input-group-compact > *:first-child{
                             border: none !important;
                             border-radius: 0 !important;
