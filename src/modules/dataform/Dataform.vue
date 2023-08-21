@@ -108,6 +108,25 @@
                                     </a-col>
                                 </a-row>
                             </a-tab-pane>
+                            <template #leftExtra>
+                                <a-button @click="moveByLeft(tabIndex)" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
+             <span class="svg-icon align-center">
+                            <inline-svg
+                                src="/assets/icons/duotone/Navigation/Angle-left.svg"
+                            />
+                        </span>
+                                </a-button>
+                            </template>
+                            <template #rightExtra>
+                                <a-button @click="moveByRight(tabIndex), row.children.filter(c=>isVisibleSection(c)).length" style="height: 36px; width: 36px" shape="circle">
+
+            <span class="svg-icon align-center" >
+                            <inline-svg
+                                src="/assets/icons/duotone/Navigation/Angle-right.svg"
+                            />
+                        </span>
+                                </a-button>
+                            </template>
                         </a-tabs>
 
                         <!-- Standart column -->
@@ -249,6 +268,25 @@
                                                 </a-col>
                                             </a-row>
                                         </a-tab-pane>
+                                        <template #leftExtra>
+                                            <a-button @click="moveByLeft(tabIndex)" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
+             <span class="svg-icon align-center">
+                            <inline-svg
+                                src="/assets/icons/duotone/Navigation/Angle-left.svg"
+                            />
+                        </span>
+                                            </a-button>
+                                        </template>
+                                        <template #rightExtra>
+                                            <a-button @click="moveByRight(tabIndex), row.children.filter(c=>isVisibleSection(c)).length" style="height: 36px; width: 36px" shape="circle">
+
+            <span class="svg-icon align-center" >
+                            <inline-svg
+                                src="/assets/icons/duotone/Navigation/Angle-right.svg"
+                            />
+                        </span>
+                                            </a-button>
+                                        </template>
                                     </a-tabs>
 
                                     <!-- Standart column -->
@@ -415,6 +453,25 @@
                                 </a-col>
                             </a-row>
                         </a-tab-pane>
+                        <template #leftExtra>
+                            <a-button @click="moveByLeft(tabIndex)" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
+             <span class="svg-icon align-center">
+                            <inline-svg
+                                src="/assets/icons/duotone/Navigation/Angle-left.svg"
+                            />
+                        </span>
+                            </a-button>
+                        </template>
+                        <template #rightExtra>
+                            <a-button @click="moveByRight(tabIndex), row.children.filter(c=>isVisibleSection(c)).length" style="height: 36px; width: 36px" shape="circle">
+
+            <span class="svg-icon align-center" >
+                            <inline-svg
+                                src="/assets/icons/duotone/Navigation/Angle-right.svg"
+                            />
+                        </span>
+                            </a-button>
+                        </template>
                     </a-tabs>
 
                     <!-- Standart column -->

@@ -5,10 +5,7 @@ import localeData from 'dayjs/esm/plugin/localeData/index'
 import weekday from 'dayjs/esm/plugin/weekday/index'
 import weekOfYear from 'dayjs/esm/plugin/weekOfYear/index'
 import weekYear from 'dayjs/esm/plugin/weekYear/index'
-// import 'dayjs/locale/mn'
-import utc from 'dayjs/esm/plugin/utc/index'
 
-dayjs.extend(utc)
 dayjs.extend(customParseFormat)
 dayjs.extend(advancedFormat)
 dayjs.extend(weekday)

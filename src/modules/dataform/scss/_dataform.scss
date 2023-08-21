@@ -89,4 +89,19 @@
         width: 100%;
     }
 
+    .tab-navigation {
+        margin-right: 15px;
+        .svg-icon{
+            margin-top: 2px;
+        }
+    }
+
+    .ant-row-rtl .tab-navigation {
+        margin-right: 0;
+        margin-left: 15px;
+        .svg-icon{
+            margin-top: 2px;
+        }
+    }
+
 }
