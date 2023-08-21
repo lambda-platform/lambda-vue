@@ -7,7 +7,7 @@ import weekOfYear from 'dayjs/esm/plugin/weekOfYear/index'
 import weekYear from 'dayjs/esm/plugin/weekYear/index'
 import isoWeek from 'dayjs/esm/plugin/isoWeek'
 import updateLocale from 'dayjs/esm/plugin/updateLocale'
-import 'dayjs/locale/mn';
+import 'dayjs/esm/locale/mn';
 dayjs.extend(customParseFormat)
 dayjs.extend(advancedFormat)
 dayjs.extend(weekday)
