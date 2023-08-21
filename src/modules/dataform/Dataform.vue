@@ -109,7 +109,7 @@
                                 </a-row>
                             </a-tab-pane>
                             <template #leftExtra>
-                                <a-button @click="moveByLeft(tabIndex)" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
+                                <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
              <span class="svg-icon align-center">
                             <inline-svg
                                 src="/assets/icons/duotone/Navigation/Angle-left.svg"
@@ -118,7 +118,7 @@
                                 </a-button>
                             </template>
                             <template #rightExtra>
-                                <a-button @click="moveByRight(tabIndex), row.children.filter(c=>isVisibleSection(c)).length" style="height: 36px; width: 36px" shape="circle">
+                                <a-button @click="moveByRight(tabIndex)" :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)" style="height: 36px; width: 36px" shape="circle">
 
             <span class="svg-icon align-center" >
                             <inline-svg
@@ -269,7 +269,7 @@
                                             </a-row>
                                         </a-tab-pane>
                                         <template #leftExtra>
-                                            <a-button @click="moveByLeft(tabIndex)" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
+                                            <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
              <span class="svg-icon align-center">
                             <inline-svg
                                 src="/assets/icons/duotone/Navigation/Angle-left.svg"
@@ -278,7 +278,7 @@
                                             </a-button>
                                         </template>
                                         <template #rightExtra>
-                                            <a-button @click="moveByRight(tabIndex), row.children.filter(c=>isVisibleSection(c)).length" style="height: 36px; width: 36px" shape="circle">
+                                            <a-button @click="moveByRight(tabIndex)" :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)" style="height: 36px; width: 36px" shape="circle">
 
             <span class="svg-icon align-center" >
                             <inline-svg
@@ -454,7 +454,7 @@
                             </a-row>
                         </a-tab-pane>
                         <template #leftExtra>
-                            <a-button @click="moveByLeft(tabIndex)" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
+                            <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
              <span class="svg-icon align-center">
                             <inline-svg
                                 src="/assets/icons/duotone/Navigation/Angle-left.svg"
@@ -463,7 +463,7 @@
                             </a-button>
                         </template>
                         <template #rightExtra>
-                            <a-button @click="moveByRight(tabIndex), row.children.filter(c=>isVisibleSection(c)).length" style="height: 36px; width: 36px" shape="circle">
+                            <a-button @click="moveByRight(tabIndex)" :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)" style="height: 36px; width: 36px" shape="circle">
 
             <span class="svg-icon align-center" >
                             <inline-svg

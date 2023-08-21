@@ -141,15 +141,11 @@ export default {
     },
 
     methods: {
-        moveByRight(value, length){
-            if(this.tabIndex < length - 1){
-                this.tabIndex = value + 1;
-            }
+        moveByRight(value){
+            this.tabIndex = value + 1;
         },
         moveByLeft(value){
-            if(this.tabIndex > 0){
-                this.tabIndex = value - 1;
-            }
+            this.tabIndex = value - 1;
         },
         createWithTemplate(template) {
             return dataFromTemplate(template, this.model)
