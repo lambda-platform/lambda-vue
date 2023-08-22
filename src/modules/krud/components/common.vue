@@ -27,19 +27,7 @@
             <portal-target name="grid-left">
             </portal-target>
 
-            <div class=" ml-3 " v-if="canGenerateSalary">
-                <span class="divider"></span>
-                <a-button type="primary" shape="round" @click="showSalaryGenerate">
-                    <template #icon>
-                        <span class="anticon align-top ant-btn-svg-icon" style="vertical-align: top">
-                            <inline-svg
-                                src="/assets/icons/duotone/Shopping/Money.svg"
-                            />
-                        </span>
-                    </template>
-                    Цалин үүсгэх
-                </a-button>
-            </div>
+
         </div>
 
     </portal>

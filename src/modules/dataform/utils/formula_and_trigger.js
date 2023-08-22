@@ -123,12 +123,9 @@ function setValueProps(field, model_, schema_, refs, is_sub) {
 
                 let current_schema = schema_[schema_index];
                 if (current_schema.formType === "Date" || current_schema.formType === "DateTime") {
-                    const formatString = "YYYY-MM-DDTHH:mm:ss"
-                    const datetime = field.value.split('T')[0] + ' ' + field.value.split('T')[1].split('+')[0];
-
-                    model_[field.field] =  dayjs.utc(datetime, formatString);
+                    model_[field.field] =  dayjs(field.value);
                 } else if (current_schema.formType === "SubForm") {
-
+                    model_[field.field] = field.value;
                     refs[`sf${field.field}`][0].fillData(field.value);
                 } else {
                     model_[field.field] = field.value;
