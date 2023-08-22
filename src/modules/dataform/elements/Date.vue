@@ -13,7 +13,7 @@
 <script>
 import mixin from "./_mixin"
 import axios from "axios"
-import dayjs from 'dayjs/esm/index'
+import dayjs from '../../../utils/dayjs'
 export default {
     mixins:[mixin],
     computed:{
@@ -32,8 +32,7 @@ export default {
         if(this.itemValue === null){
             if(this.autoFillCurrentDate){
                 axios.get("/lambda/krud/today").then(({data})=>{
-                    const dateFormat = 'YYYY-MM-DD';
-                    this.model.form[this.model.component] = dayjs(data.today, dateFormat);
+                    this.model.form[this.model.component] = dayjs(data.today);
                 });
             }
 
