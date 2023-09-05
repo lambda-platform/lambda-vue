@@ -90,7 +90,7 @@
             :title="form.name"
             width="85%"
             height="85%"
-            v-model:visible="modal_show"
+            v-model:open="modal_show"
         >
             <section class="form-modal">
 
@@ -112,7 +112,7 @@
 
         <a-modal
             :name="`grid-modal-${form.sourceGridID}`"
-            v-model:visible="modal_grid_show"
+            v-model:open="modal_grid_show"
             class="form-modal"
             :min-width="200"
             :min-height="100"

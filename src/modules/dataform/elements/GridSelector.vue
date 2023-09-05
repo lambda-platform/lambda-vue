@@ -37,7 +37,7 @@
 
             <a-modal
                 :name="`grid-modal-${meta.GSOption.sourceGridID}`"
-                v-model:visible="modal_grid_show"
+                v-model:open="modal_grid_show"
                 class="form-modal"
 
                 width="85%"

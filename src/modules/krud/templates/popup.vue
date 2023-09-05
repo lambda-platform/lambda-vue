@@ -46,7 +46,7 @@
             </div>
         </section>
         <a-modal
-            v-model:visible="openSlidePanel"
+            v-model:open="openSlidePanel"
             class="create"
             :maskClosable="false"
             :title="withCrudLog ? `${title} : ${rowId}` : title"

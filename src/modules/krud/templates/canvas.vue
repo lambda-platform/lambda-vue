@@ -47,7 +47,7 @@
             </div>
         </section>
         <a-drawer
-            v-model:visible="openSlidePanel"
+            v-model:open="openSlidePanel"
             class="canvas-drawer"
             :maskClosable="false"
             :forceRender="true"

@@ -81,7 +81,7 @@
         </div>
         <a-drawer
             v-if="isMobile && template == 1 || isMobile && template==3"
-            v-model:visible="showMobileFilter"
+            v-model:open="showMobileFilter"
             class="custom-class"
             style="color: red"
             :title="lang.infoCourt"
@@ -113,7 +113,7 @@
             width="78%"
             height="90%"
 
-            v-model:visible="showPrint"
+            v-model:open="showPrint"
         >
             <print v-if="showPrint"
                    :schemaID="$props.schemaID"
@@ -139,7 +139,7 @@
             width="78%"
             height="90%"
             :title="lang.excelImportModalTitle"
-            v-model:visible="showExcelImport"
+            v-model:open="showExcelImport"
         >
             <excel-import
                 :schemaID="$props.schemaID"

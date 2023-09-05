@@ -45,7 +45,7 @@
             :title="label"
             width="800"
             height="70%"
-            v-model:visible="modal_show"
+            v-model:open="modal_show"
             v-if="addAble"
         >
             <section class="add-modal" v-if="modal_show">

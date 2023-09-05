@@ -541,7 +541,7 @@
         </a-form>
         <a-drawer
             class='info-modal'
-            v-model:visible="showInfo"
+            v-model:open="showInfo"
             :title='infoTitle'
             width='860px'
         >
