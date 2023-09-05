@@ -318,7 +318,6 @@ export default {
 
         },
         onSuccess(data) {
-            console.log(data.hezee.toString())
 
             if (this.editIndex >= 0) {
                 Object.keys(data).forEach(itemKey => {

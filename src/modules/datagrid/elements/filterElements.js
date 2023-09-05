@@ -6,7 +6,7 @@ export const elementList = [
     },
     {
         element: "Number",
-         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Number" */'./Number.vue')),
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Number" */'./FilterNumber.vue')),
     },
     {
         element: "Date",

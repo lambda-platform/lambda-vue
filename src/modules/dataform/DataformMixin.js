@@ -1024,7 +1024,6 @@ export default {
             }
         },
         finishFailed() {
-
             notification["error"]({
                 message: this.lang.informationIsIncomplete,
                 description: this.formValidationCustomText != '' ? this.formValidationCustomText : this.lang.trRMandatoryFieldsFillInformationLookFormAFillRequiredFieldsWithRedBorder
