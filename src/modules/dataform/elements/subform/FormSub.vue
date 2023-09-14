@@ -38,7 +38,7 @@
                        :formula="formula"
                        :schema="form.schema"
             >
-                <template #action v-if="!form.disableDelete">
+                <template #action >
                     <a href="javascript:void(0);" class="btn btn-icon sub-edit" @click="edit(index)"   v-if="!form.disableEdit">
                         <span class="svg-icon ">
                                   <inline-svg
