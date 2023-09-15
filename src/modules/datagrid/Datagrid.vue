@@ -170,7 +170,7 @@
 </template>
 
 <script>
-
+import dayjs from "../../utils/dayjs";
 import axios from 'axios';
 import moment from 'moment';
 import 'ag-grid-enterprise';
@@ -1095,22 +1095,31 @@ export default {
                 //Date only column
                 if (isValid(item.gridType) && item.gridType === 'Date') {
                     colItem.valueFormatter = (data) => {
-                        let val = moment(data.value).format('YYYY-MM-DD');
-                        if (val == 'Invalid date') {
-                            return '';
+                        if(data.value){
+                            const withoutZ = data.value.toString().slice(0, -1);
+                            return dayjs(withoutZ).format('YYYY-MM-DD');
+                        } else {
+                            return ""
                         }
-                        return val;
                     };
                 }
 
                 //Date only column
                 if (isValid(item.gridType) && item.gridType === 'Datetime') {
                     colItem.valueFormatter = (data) => {
-                        let val = moment(data.value).format('YYYY-MM-DD HH:mm:ss');
-                        if (val == 'Invalid date') {
-                            return '';
+                        if(data.value){
+                            const withoutZ = data.value.toString().slice(0, -1);
+                            return dayjs(withoutZ).format('YYYY-MM-DD HH:mm:ss');
+                        } else {
+                            return ""
                         }
-                        return val;
+
+                        // console.log(data.value)
+                        // let val = moment(data.value).format('YYYY-MM-DD HH:mm:ss');
+                        // if (val == 'Invalid date') {
+                        //     return '';
+                        // }
+                        // return val;
                     };
                 }
 
