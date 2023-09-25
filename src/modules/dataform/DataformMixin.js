@@ -528,6 +528,7 @@ export default {
                         axios.get("/lambda/krud/now").then(({data})=>{
 
                             this.$data.model[name] = dayjs(data.today);
+
                         });
                     }
                     break
@@ -902,12 +903,13 @@ export default {
                             break;
                         case 'Date':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] =   dayjs(this.model[item.model]);
+                                this.model[item.model] =   dayjs(this.model[item.model]).tz('Asia/Ulaanbaatar');
+                                console.log(this.model[item.model])
                             }
                             break
                         case 'DateTime':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] = dayjs(this.model[item.model]);
+                                this.model[item.model] = dayjs(this.model[item.model]).tz('Asia/Ulaanbaatar');
                             }
                             break
                         case 'Password':

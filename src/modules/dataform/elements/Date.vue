@@ -3,7 +3,7 @@
         <a-date-picker
             v-model:value="model.form[model.component]"
             mode="date"
-
+            :locale="locale"
             :placeholder="placeholder"
             :disabled="disabled || autoFillCurrentDate"
 
@@ -14,8 +14,14 @@
 import mixin from "./_mixin"
 import axios from "axios"
 import dayjs from '../../../utils/dayjs'
+import mn_MN from "../../../antlocale/date_mn_MN";
 export default {
     mixins:[mixin],
+    data(){
+        return {
+            locale:mn_MN
+        }
+    },
     computed:{
         autoFillCurrentDate(){
             return this.meta.autoFillCurrentDate === true
