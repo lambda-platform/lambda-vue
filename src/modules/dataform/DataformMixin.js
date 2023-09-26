@@ -903,13 +903,12 @@ export default {
                             break;
                         case 'Date':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] =   dayjs(this.model[item.model]).tz('Asia/Ulaanbaatar');
-                                console.log(this.model[item.model])
+                                this.model[item.model] =   dayjs(this.model[item.model]);
                             }
                             break
                         case 'DateTime':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] = dayjs(this.model[item.model]).tz('Asia/Ulaanbaatar');
+                                this.model[item.model] = dayjs(this.model[item.model]);
                             }
                             break
                         case 'Password':
