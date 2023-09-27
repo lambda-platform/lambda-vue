@@ -2,10 +2,12 @@
     <lambda-form-item  :label=label  :name="model.component" :meta="meta">
         <a-date-picker
             v-model:value="model.form[model.component]"
-            mode="date"
+
             :locale="locale"
             :placeholder="placeholder"
             :disabled="disabled || autoFillCurrentDate"
+
+            value-format="YYYY-MM-DDTHH:mm:ss[Z]"
 
           ></a-date-picker>
     </lambda-form-item>
@@ -13,7 +15,7 @@
 <script>
 import mixin from "./_mixin"
 import axios from "axios"
-import dayjs from '../../../utils/dayjs'
+
 import mn_MN from "../../../antlocale/date_mn_MN";
 export default {
     mixins:[mixin],
@@ -21,6 +23,9 @@ export default {
         return {
             locale:mn_MN
         }
+    },
+    methods:{
+
     },
     computed:{
         autoFillCurrentDate(){
@@ -30,7 +35,7 @@ export default {
     beforeMount() {
         if(this.model.form[this.model.component] !== null){
             if(typeof this.model.form[this.model.component] === 'string') {
-                this.model.form[this.model.component] = dayjs(this.model.form[this.model.component]);
+                this.model.form[this.model.component] = this.model.form[this.model.component];
             }
         }
     },
@@ -38,7 +43,7 @@ export default {
         if(this.itemValue === null){
             if(this.autoFillCurrentDate){
                 axios.get("/lambda/krud/today").then(({data})=>{
-                    this.model.form[this.model.component] = dayjs(data.today);
+                    this.model.form[this.model.component] = data.today;
                 });
             }
 

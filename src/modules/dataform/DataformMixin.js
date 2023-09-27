@@ -10,7 +10,7 @@ import {isMobile} from '../../utils/device'
 import axios from 'axios'
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
-import dayjs from "../../utils/dayjs";
+
 
 export default {
     name: 'dataform',
@@ -518,8 +518,8 @@ export default {
                 case 'Date':
                     if (value === null) {
                         axios.get("/lambda/krud/today").then(({data})=>{
-                            // const dateFormat = 'YYYY-MM-DD';
-                            this.$data.model[name] = dayjs(data.today);
+
+                            this.$data.model[name] = data.today;
                         });
                     }
                     break
@@ -527,7 +527,8 @@ export default {
                     if (value === null) {
                         axios.get("/lambda/krud/now").then(({data})=>{
 
-                            this.$data.model[name] = dayjs(data.today);
+                            console.log(data.today)
+                            this.$data.model[name] = data.today;
 
                         });
                     }
@@ -903,12 +904,12 @@ export default {
                             break;
                         case 'Date':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] =   dayjs(this.model[item.model]);
+                                this.model[item.model] =   this.model[item.model];
                             }
                             break
                         case 'DateTime':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] = dayjs(this.model[item.model]);
+                                this.model[item.model] = this.model[item.model];
                             }
                             break
                         case 'Password':

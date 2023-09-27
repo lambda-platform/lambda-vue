@@ -1,5 +1,5 @@
 import axios from "axios"
-import dayjs from "../../../utils/dayjs";
+
 var templateRe = /\{ *([\w_-]+) *\}/g;
 var fieldTimeout = null;
 
@@ -123,7 +123,7 @@ function setValueProps(field, model_, schema_, refs, is_sub) {
 
                 let current_schema = schema_[schema_index];
                 if (current_schema.formType === "Date" || current_schema.formType === "DateTime") {
-                    model_[field.field] =  dayjs(field.value);
+                    model_[field.field] =  field.value;
                 } else if (current_schema.formType === "SubForm") {
                     model_[field.field] = field.value;
                     refs[`sf${field.field}`][0].fillData(field.value);

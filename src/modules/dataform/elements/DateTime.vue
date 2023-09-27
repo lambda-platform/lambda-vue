@@ -1,8 +1,6 @@
 <template>
     <lambda-form-item  :label=label  :name="model.component" :meta="meta">
-        <a-config-provider
 
-            :locale="locale">
         <a-date-picker
             v-model:value="model.form[model.component]"
             show-time
@@ -10,9 +8,8 @@
             :disabled="disabled"
 
             :locale="locale"
-
+            value-format="YYYY-MM-DDTHH:mm:ss[Z]"
             ></a-date-picker>
-        </a-config-provider>
 
     </lambda-form-item>
 </template>
@@ -26,6 +23,9 @@ export default {
             locale:mn_MN
 
         }
-    }
+    },
+    methods:{
+
+    },
 };
 </script>

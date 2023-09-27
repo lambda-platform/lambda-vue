@@ -172,7 +172,7 @@
 <script>
 import dayjs from "../../utils/dayjs";
 import axios from 'axios';
-import moment from 'moment';
+
 import 'ag-grid-enterprise';
 import {
     LicenseManager,
