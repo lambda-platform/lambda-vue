@@ -526,10 +526,7 @@ export default {
                 case 'DateTime':
                     if (value === null) {
                         axios.get("/lambda/krud/now").then(({data})=>{
-
-                            console.log(data.today)
                             this.$data.model[name] = data.today;
-
                         });
                     }
                     break
