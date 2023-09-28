@@ -222,14 +222,15 @@ export default {
             baseMaps:
                 [
                     {
-                        title: 'iMap',
-                        thumb: '/webgis/images/baseMaps/googleSatellite.jpg',
-                        baseMap: L.tileLayer('https://cloudgis.mn/map01/Tilemap/demo/{z}/{x}/{y}.png?mskey=12345', {
-                            name: 'imap',
+                        title: 'Google Гудамж',
+                        thumb: '/webgis/images/baseMaps/googleStreets.jpg',
+                        baseMap: L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                            name: 'googlei',
                             maxZoom: 20,
                             subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
                         }),
                     },
+
                     {
                         title: 'Google Сансрын',
                         thumb: '/webgis/images/baseMaps/googleSatellite.jpg',
@@ -240,10 +241,10 @@ export default {
                         }),
                     },
                     {
-                        title: 'Google Гудамж',
-                        thumb: '/webgis/images/baseMaps/googleStreets.jpg',
-                        baseMap: L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-                            name: 'googlei',
+                        title: 'iMap',
+                        thumb: '/webgis/images/baseMaps/googleSatellite.jpg',
+                        baseMap: L.tileLayer('https://cloudgis.mn/map01/Tilemap/demo/{z}/{x}/{y}.png?mskey=12345', {
+                            name: 'imap',
                             maxZoom: 20,
                             subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
                         }),

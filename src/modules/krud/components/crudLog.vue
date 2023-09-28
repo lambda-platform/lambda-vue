@@ -15,7 +15,7 @@
 
 <script>
 import axios from 'axios'
-import moment from 'moment'
+import dayjs from "../../../utils/dayjs";
 
 export default {
     name: 'crudLog',
@@ -76,17 +76,21 @@ export default {
                 rowId: this.rowId
             }).then(res => {
                 res.data.forEach(log => {
+                    const withoutZ = log.created_at.toString().slice(0, -1);
+                    let datetime = dayjs(withoutZ).format('YYYY-MM-DD HH:mm:ss')
                     if (log.action !== 'view') {
                         this.logs.push({
                             action: log.action == 'store' ? 'Бүртгэсэн' : 'Зассан',
                             user: log.last_name.charAt(0) + '.' + log.first_name,
-                            created_at:moment(log.created_at).format("YYYY-MM-DD HH:mm:ss")
+                            created_at:datetime
                         })
                     }
                     if (log.action === 'view') {
+
+
                         this.reads.push({
                             user: log.last_name.charAt(0) + '.' + log.first_name,
-                            created_at:moment(log.created_at).format("YYYY-MM-DD HH:mm:ss")
+                            created_at:datetime
                         })
                     }
 
