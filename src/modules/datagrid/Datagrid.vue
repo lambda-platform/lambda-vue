@@ -795,15 +795,17 @@ export default {
 
                             this.filterModel[item.model] = this.$route.query[item.filter.param];
                         }
-
                         this.$watch('$route.query.' + item.filter.param, {
                             handler: () => {
-                                this.filterModel[item.model] = {
-                                    filter: this.$route.query[item.filter.param] ? this.$route.query[item.filter.param] : '',
-                                    filterType: "text",
-                                    type: isValid(item.filter.paramCompareType) ? item.filter.paramCompareType : "contains"
-                                };
-                                this.fetchData();
+                                if(this.$route.query[item.filter.param]){
+                                    this.filterModel[item.model] = {
+                                        filter: this.$route.query[item.filter.param] ? this.$route.query[item.filter.param] : '',
+                                        filterType: "text",
+                                        type: isValid(item.filter.paramCompareType) ? item.filter.paramCompareType : "contains"
+                                    };
+                                    this.fetchData();
+                                }
+
                             },
                             deep: true
                         });
