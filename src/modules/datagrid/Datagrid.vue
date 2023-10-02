@@ -1094,12 +1094,14 @@ export default {
                     colItem.cellRenderer = Image;
                 }
 
+
+
                 //Date only column
                 if (isValid(item.gridType) && item.gridType === 'Date') {
                     colItem.valueFormatter = (data) => {
                         if(data.value){
-                            const withoutZ = data.value.toString().slice(0, -1);
-                            return dayjs(withoutZ).format('YYYY-MM-DD');
+                            const withoutZ = this.formatDateTime(data.value);
+                            return withoutZ ? dayjs(withoutZ).format('YYYY-MM-DD') : "";
                         } else {
                             return ""
                         }
@@ -1110,8 +1112,8 @@ export default {
                 if (isValid(item.gridType) && item.gridType === 'Datetime') {
                     colItem.valueFormatter = (data) => {
                         if(data.value){
-                            const withoutZ = data.value.toString().slice(0, -1);
-                            return dayjs(withoutZ).format('YYYY-MM-DD HH:mm:ss');
+                            const withoutZ = this.formatDateTime(data.value);
+                            return withoutZ ? dayjs(withoutZ).format('YYYY-MM-DD HH:mm:ss') : "";
                         } else {
                             return ""
                         }
@@ -1265,6 +1267,22 @@ export default {
                 // console.log(event)
                 // window.localStorage.setItem(this.$props.schemaID + '_column_width_' + event.column.colId, event.column.actualWidth);
             }
+        },
+        formatDateTime(dateTimeStr) {
+            if(dateTimeStr){
+                const date = new Date(dateTimeStr);
+                const YYYY = date.getUTCFullYear();
+                const MM = String(date.getUTCMonth() + 1).padStart(2, '0');
+                const DD = String(date.getUTCDate()).padStart(2, '0');
+                const HH = String(date.getUTCHours()).padStart(2, '0');
+                const mm = String(date.getUTCMinutes()).padStart(2, '0');
+                const ss = String(date.getUTCSeconds()).padStart(2, '0');
+
+                return `${YYYY}-${MM}-${DD} ${HH}:${mm}:${ss}`;
+            } else {
+                return  null
+            }
+
         },
 
         restoreFilter() {
