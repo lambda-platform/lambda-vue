@@ -8,16 +8,16 @@
 <!--            </div>-->
 <!--        </FormItem>-->
 <!--    </div>-->
-    <Calendar id="range" v-model="rangeValue" selectionMode="range" :manualInput="false" />
+
 </template>
 
 <script>
 // import { getDate } from "../utils/date";
-import Calendar from 'primevue/calendar';
+
 export default {
     props: ["model", "label", "meta"],
     components:{
-        Calendar
+
     },
     data() {
         return {

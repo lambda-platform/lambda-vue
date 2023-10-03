@@ -1,9 +1,11 @@
 <template>
-    <ColorPicker v-model="$props.model.form[model.component]"  style="float: right"  />
+  <input type="color"  :name="model.component" v-model="model.form[model.component]"
+         :disabled="disabled"
+  >
 </template>
 
 <script>
-import ColorPicker from 'primevue/colorpicker';
+
 export default {
     props: ["model", "label", "rule", "meta"],
     components:{

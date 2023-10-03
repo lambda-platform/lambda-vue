@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import expandOption from "./ExpandOption";
+
 import { elementList } from "./elements";
 import { getNumber } from "./utils/number.js";
 
