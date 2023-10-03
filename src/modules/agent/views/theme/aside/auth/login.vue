@@ -44,7 +44,7 @@
                     </a-form-item>
 
                     <div class="flex flex-row justify-between space-x-4">
-                        <a-checkbox v-model:checked="checkbox"><span class=" text-slate-700">{{ lang.remember }}</span></a-checkbox>
+                        <a-checkbox v-model:checked="rememberMe" id="remember_me"><span class=" text-slate-700">{{ lang.remember }}</span></a-checkbox>
                         <NuxtLink class="forgot" to="/auth/forgot">{{ lang.forgot }}</NuxtLink>
                     </div>
                 </div>
@@ -78,6 +78,7 @@ export default {
             loading: false,
             isSuccess: false,
             isError: false,
+            rememberMe: false,
             credentials: {
                 login: null,
                 password: null
