@@ -24,7 +24,7 @@
                     <div class="th-title">
                         {{ item.label }}<i class="ti-exchange-vertical"/></div>
                 </th>
-                <th class="action" v-if="!form.disableDelete">...11</th>
+                <th class="action" v-if="!form.disableDelete">...</th>
             </tr>
             </thead>
             <tbody>
