@@ -234,6 +234,7 @@ export default {
         },
 
         afterChange(model, val, oldValue) {
+
             doTrigger(model, val, this.model, this.schema, this.$refs, notification, this.editMode)
             if (this.do_render) {
                 if (val != oldValue) {
