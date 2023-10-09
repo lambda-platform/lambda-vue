@@ -10,6 +10,7 @@ import {isMobile} from '../../utils/device'
 import axios from 'axios'
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
+import dayjs from "../../utils/dayjs";
 
 
 export default {
@@ -519,15 +520,24 @@ export default {
                 case 'Date':
                     if (value === null) {
                         axios.get("/lambda/krud/today").then(({data})=>{
+                            if(window.withTimezone){
 
-                            this.$data.model[name] = data.today;
+                                this.$data.model[name] = dayjs(data.today);
+                            } else {
+                                this.$data.model[name] = this.formatToCustomISOString(data.today);
+                            }
+
                         });
                     }
                     break
                 case 'DateTime':
                     if (value === null) {
                         axios.get("/lambda/krud/now").then(({data})=>{
-                            this.$data.model[name] = data.today;
+                            if(window.withTimezone){
+                                this.$data.model[name] = dayjs(data.today);
+                            } else {
+                                this.$data.model[name] = this.formatToCustomISOString(data.today);
+                            }
                         });
                     }
                     break
@@ -539,6 +549,24 @@ export default {
                 default:
                     this.$data.model[name] = value;
             }
+        },
+        formatToCustomISOString(date) {
+            function pad(number, length) {
+                let str = String(number);
+                while (str.length < length) {
+                    str = '0' + str;
+                }
+                return str;
+            }
+
+            return date.getUTCFullYear() +
+                '-' + pad(date.getUTCMonth() + 1, 2) +
+                '-' + pad(date.getUTCDate(), 2) +
+                'T' + pad(date.getUTCHours(), 2) +
+                ':' + pad(date.getUTCMinutes(), 2) +
+                ':' + pad(date.getUTCSeconds(), 2) +
+                '.' + pad(date.getUTCMilliseconds(), 2).substring(0, 2) +
+                'Z';
         },
 
         setRule(name, rules) {
@@ -902,12 +930,21 @@ export default {
                             break;
                         case 'Date':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] =   this.model[item.model];
+
+                                if(window.withTimezone) {
+                                    this.model[item.model] = dayjs(this.model[item.model]);
+                                } else {
+                                    this.model[item.model] = this.model[item.model];
+                                }
                             }
                             break
                         case 'DateTime':
                             if (this.model[item.model] !== null) {
-                                this.model[item.model] = this.model[item.model];
+                                if(window.withTimezone) {
+                                    this.model[item.model] = dayjs(this.model[item.model]);
+                                } else {
+                                    this.model[item.model] = this.model[item.model];
+                                }
                             }
                             break
                         case 'Password':

@@ -6,10 +6,20 @@
             show-time
             :placeholder="placeholder"
             :disabled="disabled"
-
+            v-if="!withTimeZone"
             :locale="locale"
             value-format="YYYY-MM-DDTHH:mm:ss[Z]"
             ></a-date-picker>
+
+        <a-date-picker
+            v-model:value="model.form[model.component]"
+            show-time
+            :placeholder="placeholder"
+            :disabled="disabled"
+            v-if="withTimeZone"
+            :locale="locale"
+
+        ></a-date-picker>
 
     </lambda-form-item>
 </template>
@@ -22,6 +32,11 @@ export default {
         return {
             locale:mn_MN
 
+        }
+    },
+    computed:{
+        withTimeZone(){
+            return window.withTimezone ? true : false;
         }
     },
     methods:{
