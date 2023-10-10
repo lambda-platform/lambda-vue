@@ -28,6 +28,8 @@ import mixin from "./_mixin"
 import axios from "axios"
 
 import mn_MN from "../../../antlocale/date_mn_MN";
+import dayjs from "../../../utils/dayjs";
+import {formatToCustomISOString} from "../utils/date";
 
 export default {
     mixins: [mixin],
@@ -47,8 +49,8 @@ export default {
     },
     beforeMount() {
         if (this.model.form[this.model.component] !== null) {
-            if (typeof this.model.form[this.model.component] === 'string') {
-                this.model.form[this.model.component] = this.model.form[this.model.component];
+            if (typeof this.model.form[this.model.component] === 'string' && this.withTimeZone) {
+                this.model.form[this.model.component] = dayjs(this.model.form[this.model.component]);
             }
         }
     },
@@ -56,7 +58,11 @@ export default {
         if (this.itemValue === null) {
             if (this.autoFillCurrentDate) {
                 axios.get("/lambda/krud/today").then(({data}) => {
-                    this.model.form[this.model.component] = data.today;
+                    if(window.withTimezone){
+                        this.model.form[this.model.component] = dayjs(data.today);
+                    } else {
+                        this.model.form[this.model.component] = formatToCustomISOString(data.today);
+                    }
                 });
             }
 

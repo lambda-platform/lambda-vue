@@ -54,3 +54,28 @@ export function getTime(date) {
     }
 
 }
+function pad(number, length) {
+    let str = String(number);
+    while (str.length < length) {
+        str = '0' + str;
+    }
+    return str;
+}
+export function formatToCustomISOString(dateTimeStr) {
+    if(dateTimeStr) {
+
+        const date = new Date(dateTimeStr);
+
+
+        return date.getFullYear() +
+            '-' + pad(date.getMonth() + 1, 2) +
+            '-' + pad(date.getDate(), 2) +
+            'T' + pad(date.getHours(), 2) +
+            ':' + pad(date.getMinutes(), 2) +
+            ':' + pad(date.getSeconds(), 2) +
+            '.' + pad(date.getMilliseconds(), 3).substring(0, 3) +
+            'Z';
+    } else {
+        return null;
+    }
+}

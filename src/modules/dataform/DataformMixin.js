@@ -11,6 +11,7 @@ import axios from 'axios'
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
 import dayjs from "../../utils/dayjs";
+import {formatToCustomISOString} from "./utils/date";
 
 
 export default {
@@ -521,10 +522,9 @@ export default {
                     if (value === null) {
                         axios.get("/lambda/krud/today").then(({data})=>{
                             if(window.withTimezone){
-
                                 this.$data.model[name] = dayjs(data.today);
                             } else {
-                                this.$data.model[name] = this.formatToCustomISOString(data.today);
+                                this.$data.model[name] = formatToCustomISOString(data.today);
                             }
 
                         });
@@ -536,7 +536,7 @@ export default {
                             if(window.withTimezone){
                                 this.$data.model[name] = dayjs(data.today);
                             } else {
-                                this.$data.model[name] = this.formatToCustomISOString(data.today);
+                                this.$data.model[name] = formatToCustomISOString(data.today);
                             }
                         });
                     }
@@ -550,24 +550,7 @@ export default {
                     this.$data.model[name] = value;
             }
         },
-        formatToCustomISOString(date) {
-            function pad(number, length) {
-                let str = String(number);
-                while (str.length < length) {
-                    str = '0' + str;
-                }
-                return str;
-            }
 
-            return date.getUTCFullYear() +
-                '-' + pad(date.getUTCMonth() + 1, 2) +
-                '-' + pad(date.getUTCDate(), 2) +
-                'T' + pad(date.getUTCHours(), 2) +
-                ':' + pad(date.getUTCMinutes(), 2) +
-                ':' + pad(date.getUTCSeconds(), 2) +
-                '.' + pad(date.getUTCMilliseconds(), 2).substring(0, 2) +
-                'Z';
-        },
 
         setRule(name, rules) {
 
