@@ -220,7 +220,7 @@ import SetFilterAltered from './elements/SetFilterAltered';
 import './elements/ExcelFilter.js';
 import GridRowUpdate from "./GridRowUpdate";
 import {notification, message} from 'ant-design-vue';
-import {isNumber} from "@vueuse/core";
+import {formatDate, formatDateTime} from "../../utils/date";
 
 const messageKey = 'datagrid';
 export default {
@@ -1099,31 +1099,14 @@ export default {
                 //Date only column
                 if (isValid(item.gridType) && item.gridType === 'Date') {
                     colItem.valueFormatter = (data) => {
-                        if(data.value){
-                            const withoutZ = this.formatDateTime(data.value);
-                            return withoutZ ? dayjs(withoutZ).format('YYYY-MM-DD') : "";
-                        } else {
-                            return ""
-                        }
+                        return formatDate(data.value);
                     };
                 }
 
                 //Date only column
                 if (isValid(item.gridType) && item.gridType === 'Datetime') {
                     colItem.valueFormatter = (data) => {
-                        if(data.value){
-                            const withoutZ = this.formatDateTime(data.value);
-                            return withoutZ ? dayjs(withoutZ).format('YYYY-MM-DD HH:mm:ss') : "";
-                        } else {
-                            return ""
-                        }
-
-                        // console.log(data.value)
-                        // let val = moment(data.value).format('YYYY-MM-DD HH:mm:ss');
-                        // if (val == 'Invalid date') {
-                        //     return '';
-                        // }
-                        // return val;
+                        return formatDateTime(data.value);
                     };
                 }
 
@@ -1267,22 +1250,6 @@ export default {
                 // console.log(event)
                 // window.localStorage.setItem(this.$props.schemaID + '_column_width_' + event.column.colId, event.column.actualWidth);
             }
-        },
-        formatDateTime(dateTimeStr) {
-            if(dateTimeStr){
-                const date = new Date(dateTimeStr);
-                const YYYY = date.getUTCFullYear();
-                const MM = String(date.getUTCMonth() + 1).padStart(2, '0');
-                const DD = String(date.getUTCDate()).padStart(2, '0');
-                const HH = String(date.getUTCHours()).padStart(2, '0');
-                const mm = String(date.getUTCMinutes()).padStart(2, '0');
-                const ss = String(date.getUTCSeconds()).padStart(2, '0');
-
-                return `${YYYY}-${MM}-${DD} ${HH}:${mm}:${ss}`;
-            } else {
-                return  null
-            }
-
         },
 
         restoreFilter() {

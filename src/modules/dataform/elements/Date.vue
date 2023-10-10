@@ -29,7 +29,7 @@ import axios from "axios"
 
 import mn_MN from "../../../antlocale/date_mn_MN";
 import dayjs from "../../../utils/dayjs";
-import {formatToCustomISOString} from "../utils/date";
+import {getUTCValue} from "../../../utils/date";
 
 export default {
     mixins: [mixin],
@@ -61,7 +61,7 @@ export default {
                     if(window.withTimezone){
                         this.model.form[this.model.component] = dayjs(data.today);
                     } else {
-                        this.model.form[this.model.component] = formatToCustomISOString(data.today);
+                        this.model.form[this.model.component] = getUTCValue(data.today);
                     }
                 });
             }

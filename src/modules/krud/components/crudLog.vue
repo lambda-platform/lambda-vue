@@ -16,6 +16,7 @@
 <script>
 import axios from 'axios'
 import dayjs from "../../../utils/dayjs";
+import {formatDateTime} from "../../../utils/date";
 
 export default {
     name: 'crudLog',
@@ -76,8 +77,8 @@ export default {
                 rowId: this.rowId
             }).then(res => {
                 res.data.forEach(log => {
-                    const withoutZ = log.created_at.toString().slice(0, -1);
-                    let datetime = dayjs(withoutZ).format('YYYY-MM-DD HH:mm:ss')
+
+                    let datetime =formatDateTime(log.created_at)
                     if (log.action !== 'view') {
                         this.logs.push({
                             action: log.action == 'store' ? 'Бүртгэсэн' : 'Зассан',

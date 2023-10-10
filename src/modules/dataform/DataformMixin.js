@@ -11,7 +11,7 @@ import axios from 'axios'
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
 import dayjs from "../../utils/dayjs";
-import {formatToCustomISOString} from "./utils/date";
+import {getUTCValue} from "../../utils/date";
 
 
 export default {
@@ -524,7 +524,7 @@ export default {
                             if(window.withTimezone){
                                 this.$data.model[name] = dayjs(data.today);
                             } else {
-                                this.$data.model[name] = formatToCustomISOString(data.today);
+                                this.$data.model[name] = getUTCValue(data.today);
                             }
 
                         });
@@ -536,7 +536,7 @@ export default {
                             if(window.withTimezone){
                                 this.$data.model[name] = dayjs(data.today);
                             } else {
-                                this.$data.model[name] = formatToCustomISOString(data.today);
+                                this.$data.model[name] = getUTCValue(data.today);
                             }
                         });
                     }
