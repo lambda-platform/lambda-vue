@@ -51,7 +51,7 @@
             class="canvas-drawer"
             :maskClosable="false"
             :forceRender="true"
-            :title="withCrudLog && rowId ? `${title} : ${rowId}` : title"
+            :title="withCrudLog && rowId && showID ? `${title} : ${rowId}` : title"
             :width="form_width"
             placement="right"
             @close="hideSide"

@@ -22,6 +22,7 @@ export default {
             visibleDataForm:false,
             isExcelUpload: false,
             excelUploadCustomUrl: null,
+            showID: window.init ? window.init.showID ? window.init.showID : undefined : undefined,
         };
     },
     computed: {
