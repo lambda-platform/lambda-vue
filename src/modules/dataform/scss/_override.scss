@@ -196,7 +196,7 @@ $white: #ffffff;
             display: table;
             width: auto !important;
             border-bottom: none !important;
-            //color: #404040;
+            color: rgba(0, 0, 0, 0.8);
         }
     }
     .ant-upload.ant-upload-select{
@@ -214,4 +214,9 @@ $white: #ffffff;
         text-align: left;
     }
 
+}
+.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    color: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.03);
+    cursor: not-allowed;
 }

@@ -26,16 +26,50 @@ export default {
                 this.custom_condition = {}
                 let errorFound = false;
                 this.sourceGridParentBasedCondition.forEach(parentCondition => {
-                    if (this.model.form[parentCondition.parent_field] !== undefined && this.model.form[parentCondition.parent_field] !== null) {
-                        this.custom_condition[parentCondition.grid_field] = this.model.form[parentCondition.parent_field];
-                    } else {
-                        errorFound = true;
 
-                        notification["error"]({
-                            message:this.lang.informationIsIncomplete,
-                            description:  parentCondition.message,
-                        });
+                    if (parentCondition.hasOwnProperty("parent_sub") && parentCondition.hasOwnProperty("sub_filed") && parentCondition.hasOwnProperty("grid_field")) {
+
+
+
+                        if(this.model.form[parentCondition.parent_sub] && this.model.form[parentCondition.parent_sub].length >= 1){
+                           let parentValues = this.model.form[parentCondition.parent_sub].map(sub=>sub[parentCondition.sub_filed]);
+
+                           if (parentValues && parentValues.length >= 1){
+
+                               this.custom_condition[parentCondition.grid_field] = parentValues;
+
+
+                           } else {
+                               errorFound = true;
+
+                               notification["error"]({
+                                   message:this.lang.informationIsIncomplete,
+                                   description:  parentCondition.message,
+                               });
+                           }
+                        } else {
+                            errorFound = true;
+
+                            notification["error"]({
+                                message:this.lang.informationIsIncomplete,
+                                description:  parentCondition.message,
+                            });
+                        }
+
+
+                    } else if(parentCondition.hasOwnProperty("parent_field") && parentCondition.hasOwnProperty("grid_field")) {
+                        if (this.model.form[parentCondition.parent_field] !== undefined && this.model.form[parentCondition.parent_field] !== null) {
+                            this.custom_condition[parentCondition.grid_field] = this.model.form[parentCondition.parent_field];
+                        } else {
+                            errorFound = true;
+
+                            notification["error"]({
+                                message:this.lang.informationIsIncomplete,
+                                description:  parentCondition.message,
+                            });
+                        }
                     }
+
                 });
                 if (!errorFound) {
                     this.showAddSourceModalReal();
@@ -117,9 +151,7 @@ export default {
 
             if(window.init){
                 if (window.init.microserviceSettings) {
-                    console.log(this.meta);
-                    console.log(this.meta);
-                    console.log(this.meta);
+
                     let si = window.init.microserviceSettings.findIndex(set => set.project_id === this.form.sourceMicroserviceID)
 
                     if (si >= 0) {
