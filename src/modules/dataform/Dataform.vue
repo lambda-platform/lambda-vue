@@ -7,7 +7,7 @@
                 @finishFailed="finishFailed"
         >
             <div class='dataform-header' v-if="!hideTitle">
-                <h3>{{ title ? title : formTitle }}<b v-if='showID && model[identity]'><span v-if='model[identity]'>: {{model[identity]}}</span></b></h3>
+                <h3>{{ title ? title : formTitle }}{{showID}}<b v-if='showID && model[identity]'><span v-if='model[identity]'>: {{model[identity]}}</span></b></h3>
             </div>
 
             <div class="dataform-body" v-if='!loadConfig && use2ColumnLayout'>

@@ -23,7 +23,7 @@
                     <div class="th-title">
                         {{ item.label }} <i class="ti-exchange-vertical"/></div>
                 </th>
-                <th class="action">...</th>
+                <th class="action" v-if="!form.disableEdit || !form.disableDelete" >...</th>
             </tr>
             </thead>
 
@@ -37,6 +37,7 @@
                        :relations="relations"
                        :formula="formula"
                        :schema="form.schema"
+                       @edit="()=>edit(index)"
             >
                 <template #action >
                     <a href="javascript:void(0);" class="btn btn-icon sub-edit" @click="edit(index)"   v-if="!form.disableEdit">

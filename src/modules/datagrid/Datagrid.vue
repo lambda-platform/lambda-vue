@@ -1618,7 +1618,7 @@ export default {
             if (this.isClient) {
                 this.gridApi.exportDataAsExcel();
             } else {
-                let url = `${this.baseUrl}/lambda/krud/excel/${this.schemaID}`;
+                let url = `${this.baseUrl}/lambda/krud/excel/${this.schemaID}?sort=${this.query.sort}&order=${this.query.order}`;
                 let filters = Object.keys(this.filterModel)
                     .filter(e => this.filterModel[e] !== null)
                     .reduce((o, e) => {

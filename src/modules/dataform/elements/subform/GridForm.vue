@@ -17,6 +17,7 @@
                        :label="item.label !== '' ? item.label : `[${item.model}]`"
                        :meta="setMeta(item)"
                        :getSchemaRelationByModel="getSchemaRelationByModel"
+                       @edit="edit"
                        :relation_data="getRelation">
             </component>
         </td>
@@ -33,6 +34,7 @@
 
     export default {
         props: ["f", "model", "editMode", "relations", "formula", "schema", "url"],
+        emits:["edit"],
         created() {
 
             this.f.data = {};
@@ -128,6 +130,9 @@
             },
             getRelation(item) {
                 return getRelationData(item, this.relations)
+            },
+            edit(){
+                this.$emit("edit")
             }
         }
     };
