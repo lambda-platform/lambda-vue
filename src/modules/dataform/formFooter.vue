@@ -4,7 +4,10 @@
     </a-button>
     <a-button v-for='extraButton in extraButtons' :key='extraButton.index' :disabled='!editMode'
               :to='createWithTemplate(extraButton.url)' target='_blank'
-              :style='!editMode ? `margin-right: 8px;` : `margin-right: 8px; color:${extraButton.color}; border-color:${extraButton.color}`'>
+              :style='!editMode ? `margin-right: 8px;` : `margin-right: 8px; color:${extraButton.color}; border-color:${extraButton.color}`'
+
+              type="primary" ghost
+    >
         <i :class='extraButton.icon' :style='!editMode ? `` :`color:${extraButton.color}`'></i>
         {{ extraButton.title }}
     </a-button>
@@ -29,7 +32,8 @@
                         @confirm="setAndSend(button.model, option.value)"
                         :key='button.index'
                     >
-                        <a-button type='info' :loading='asyncMode'
+                        <a-button  :loading='asyncMode'
+                                  type="primary" ghost
                         >
                          {{ option.label }}
                         </a-button>
