@@ -65,6 +65,11 @@ function pad(number, length) {
 export function isUTC(dateString) {
     return dateString.endsWith('Z');
 }
+export function isTimestamp(timestampStr) {
+
+    const timestampRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}[+-]\d{2}:\d{2}$/;
+    return timestampRegex.test(timestampStr);
+}
 export function getUTCValue(dataString) {
     if(dataString) {
 

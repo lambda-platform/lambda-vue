@@ -1,108 +1,126 @@
 <template>
-    <lambda-form-item :label=label :name="model.component" :meta="meta">
-        <div class="subform-grid">
-
-            <table border="1">
-                <thead>
-                <tr>
-
-                    <th v-for="item in meta.GSOption.sourceGridTargetColumns"
-                        :key="item.index"
-                    >
-                        {{ item.label }}
-                    </th>
-                    <th class="action">...</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-
-                    <td v-for="item in meta.GSOption.sourceGridTargetColumns"
-                        :key="item.index"
-                    >
-                        {{ selectedRow[item.model] }}
-                    </td>
-                    <td class="action">
-                        <a href="javascript:void(0);" class="link link-icon" @click="showAddSourceModal"
-                           v-if="!meta.disabled"
-                        >
+    <div class="subform-grid">
+        <div v-if="meta.GSOption.infoTemplate" class="relative">
+            <a href="javascript:void(0);" class="link link-icon absolute right-0 top-0" @click="showAddSourceModal"
+               v-if="!meta.disabled"
+            >
                            <span class="svg-icon ">
                                <inline-svg src="/assets/icons/duotune/general/gen021.svg"/>
                            </span>
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            </a>
+            <div v-html="renderHtml">
 
-            <a-modal
-                :name="`grid-modal-${meta.GSOption.sourceGridID}`"
-                v-model:open="modal_grid_show"
-                class="form-modal"
+            </div>
+        </div>
 
-                width="85%"
-                height="85%"
-                :title="meta.GSOption.sourceGridModalTitle"
-            >
-                <section class="form-modal source-grid" style="height: calc(100vh - 300px)">
+        <lambda-form-item v-else :label=label :name="model.component" :meta="meta">
 
 
-                    <div class="form-body" v-if="modal_grid_show">
+                <table border="1">
+                    <thead>
+                    <tr>
 
-                        <div v-if="meta.GSOption.sourceGridTitle || meta.GSOption.sourceGridDescription"
-                             class="source-grid-description"
+                        <th v-for="item in meta.GSOption.sourceGridTargetColumns"
+                            :key="item.index"
                         >
-                            <h3 v-if="meta.GSOption.sourceGridTitle">
-                                {{ meta.GSOption.sourceGridTitle }}
-                            </h3>
-                            <p v-html="meta.GSOption.sourceGridDescription">
+                            {{ item.label }}
+                        </th>
+                        <th class="action">...</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
 
-                            </p>
-                        </div>
-                        <datagrid
-                            :schemaID="meta.GSOption.sourceGridID"
-                            :url="sourceGridUrl()"
-                            :onRowSelect="onRowSelect"
-                            :paginate="50"
-                            :hasSelection="true"
-                            :gridSelector="true"
-                            :user_condition="user_condition"
-                            :permissions="{
+                        <td v-for="item in meta.GSOption.sourceGridTargetColumns"
+                            :key="item.index"
+                        >
+                            {{ selectedRow[item.model] }}
+                        </td>
+                        <td class="action">
+                            <a href="javascript:void(0);" class="link link-icon" @click="showAddSourceModal"
+                               v-if="!meta.disabled"
+                            >
+                           <span class="svg-icon ">
+                               <inline-svg src="/assets/icons/duotune/general/gen021.svg"/>
+                           </span>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+
+        </lambda-form-item>
+        <a-modal
+            :name="`grid-modal-${meta.GSOption.sourceGridID}`"
+            v-model:open="modal_grid_show"
+            class="form-modal"
+
+            width="85%"
+            height="85%"
+            :title="meta.GSOption.sourceGridModalTitle"
+        >
+            <section class="form-modal source-grid" style="height: calc(100vh - 300px)">
+
+
+                <div class="form-body" v-if="modal_grid_show">
+
+                    <div v-if="meta.GSOption.sourceGridTitle || meta.GSOption.sourceGridDescription"
+                         class="source-grid-description"
+                    >
+                        <h3 v-if="meta.GSOption.sourceGridTitle">
+                            {{ meta.GSOption.sourceGridTitle }}
+                        </h3>
+                        <p v-html="meta.GSOption.sourceGridDescription">
+
+                        </p>
+                    </div>
+                    <datagrid
+                        :schemaID="meta.GSOption.sourceGridID"
+                        :url="sourceGridUrl()"
+                        :onRowSelect="onRowSelect"
+                        :paginate="50"
+                        :hasSelection="true"
+                        :gridSelector="true"
+                        :user_condition="user_condition"
+                        :permissions="{
                           c:false,
                           r:true,
                           u:false,
                           d:false,
                       }"
-                        />
+                    />
 
-                    </div>
-                </section>
-                <template #footer>
-                    <div class="add-from-pre-source">
-                        <a-button type="success" @click="addFromPreSource"
-                                  :disabled="preSource.length === 0"
-                                  class="sub-form-add-btn"
-                        >
-                            <template #icon>
+                </div>
+            </section>
+            <template #footer>
+                <div class="add-from-pre-source">
+                    <a-button type="success" @click="addFromPreSource"
+                              :disabled="preSource.length === 0"
+                              class="sub-form-add-btn"
+                    >
+                        <template #icon>
                                 <span class="svg-icon ">
                                              <inline-svg
                                                  src="/assets/icons/duotune/general/gen041.svg"
                                              />
                                     </span>
-                            </template>
-                            &nbsp;&nbsp;Сонгох
-                        </a-button>
-                    </div>
-                </template>
-            </a-modal>
-        </div>
-    </lambda-form-item>
+                        </template>
+                        &nbsp;&nbsp;Сонгох
+                    </a-button>
+                </div>
+            </template>
+        </a-modal>
+    </div>
+
 </template>
 
 <script>
 import axios from "axios";
 import mixin from './_mixin'
 import { Modal } from 'ant-design-vue'
+import { template } from '../../../utils/template'
 export default {
     mixins: [mixin],
     components:{
@@ -113,7 +131,8 @@ export default {
             preSource: [],
             modal_grid_show: false,
             user_condition: null,
-            selectedRow: {}
+            selectedRow: {},
+
         }
     },
 
@@ -121,6 +140,9 @@ export default {
         value () {
             return this.model.form[this.model.component]
 
+        },
+        renderHtml(){
+            return template(this.meta.GSOption.infoTemplate, this.selectedRow);
         },
     },
 
@@ -139,12 +161,16 @@ export default {
     },
 
     mounted () {
+        console.log(this.meta.GSOption)
         if (this.meta.GSOption.sourceGridUserCondition !== undefined && this.meta.GSOption.sourceGridUserCondition !== null && this.meta.GSOption.sourceGridUserCondition != '') {
             this.user_condition = JSON.parse(this.meta.GSOption.sourceGridUserCondition)
         }
+
+
     },
 
     methods: {
+
         callRowData () {
 
             let filter = {}
