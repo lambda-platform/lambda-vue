@@ -9,8 +9,10 @@ export function template(str, data) {
         } else if (typeof value === 'function') {
             value = value(data);
         } else {
-            if(isUTC(value) || isTimestamp(value)) {
-                return  formatDate(value)
+            if (typeof value === 'string' && value !== "") {
+                if (isUTC(value) || isTimestamp(value)) {
+                    return formatDate(value)
+                }
             }
         }
         return value;
