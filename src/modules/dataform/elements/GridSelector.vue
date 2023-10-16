@@ -161,7 +161,7 @@ export default {
     },
 
     mounted () {
-        console.log(this.meta.GSOption)
+
         if (this.meta.GSOption.sourceGridUserCondition !== undefined && this.meta.GSOption.sourceGridUserCondition !== null && this.meta.GSOption.sourceGridUserCondition != '') {
             this.user_condition = JSON.parse(this.meta.GSOption.sourceGridUserCondition)
         }
@@ -220,7 +220,6 @@ export default {
             if (this.preSource && this.meta.GSOption.sourceGridTargetColumns) {
                 if (this.preSource.length >= 1) {
                     this.selectedRow = this.preSource[0];
-
                     this.model.form[this.model.component] = this.selectedRow[this.meta.GSOption.sourceGridValueField]
                 }
 
