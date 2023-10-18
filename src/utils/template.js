@@ -1,5 +1,5 @@
 var templateRe = /\{ *([\w_-]+) *\}/g;
-import {isUTC, isTimestamp, formatDate,} from "./date"
+import {isUTC, isTimestamp, formatDateOrDateTime,} from "./date"
 export function template(str, data) {
     return str.replace(templateRe, function (str, key) {
         var value = data[key];
@@ -11,7 +11,7 @@ export function template(str, data) {
         } else {
             if (typeof value === 'string' && value !== "") {
                 if (isUTC(value) || isTimestamp(value)) {
-                    return formatDate(value)
+                    return formatDateOrDateTime(value)
                 }
             }
         }

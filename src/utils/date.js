@@ -92,6 +92,19 @@ export function getUTCValue(dataString) {
         return null;
     }
 }
+
+export function hasZeroTime(timestamp) {
+    const pattern = /T00:00:00Z$/;
+    return pattern.test(timestamp);
+}
+
+export function formatDateOrDateTime(dataString){
+   if(hasZeroTime(dataString)){
+       return formatDate(dataString)
+   } else {
+       return formatDateTime(dataString)
+   }
+}
 export function formatDate(dataString) {
     if(dataString){
         if(isUTC(dataString)) {
