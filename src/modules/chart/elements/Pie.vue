@@ -377,6 +377,7 @@ export default {
         if(!this.isRest){
             this.callData();
         } else {
+            this.elementData = [...this.chartData];
             this.initChart();
         }
 

@@ -116,8 +116,7 @@ export default {
                 }
             });
 
-            console.log(this.lines)
-            console.log(series)
+
             if (this.axis.length >= 1 && this.lines.length >= 1) {
 
                 myChart.setOption({
