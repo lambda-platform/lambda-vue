@@ -5,11 +5,11 @@
         Нийт: {{numberValue(total)}}
         <div class="legend">
 
-            <div style="display: flex; align-items: center; margin-bottom: 8px;"        @click="legendItemClick(index)" v-for="(legend, index) in legends" :key="legend.index" :class="`${legend.hide ? 'legend-container hidden-legend' : 'legend-container'}`">
-                <div :style="`background-color: ${legend.color};    `" class="legend-color"></div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"        @click="legendItemClick(index)" v-for="(legend, index) in legends" :key="legend.index" :class="`${legend.hide ? 'legend-container hidden-legend' : 'legend-container'}`">
+                <div :style="`background-color: ${legend.color};`" class="legend-color"></div>
                 <div class="legend-title">
                     <div class="legend-name">{{legend.title}}:</div>
-                    <div class="value-percent">{{legend.value}} {{legend.percent}}%</div>
+                    <div class="value-percent">{{legend.value}}&nbsp;&nbsp;{{legend.percent}}%</div>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@ import axios from 'axios'
 import {getNumber} from '../../../utils/number';
 import * as echarts from 'echarts';
 export default {
-    props: ['title', 'value', 'type', 'chart_title', 'id', 'chart_filter', 'filters', "hideTitle", "limit", "projectDomain", "isRest", "xData", "chartData","labels"],
+    props: ['title', 'value', 'type', 'chart_title', 'id', 'chart_filter', 'filters', "hideTitle", "limit", "projectDomain", "isRest", "xData", "chartData","labels", "colors"],
     methods: {
         numberValue(v){
             return getNumber(v)
@@ -65,7 +65,7 @@ export default {
 
 
                 return {
-                    color:this.chart.getOption().color[i],
+                    color:this.colors ? this.colors[i] : this.chart.getOption().color[i],
                     title:legend,
                     value:getNumber(value),
                     percent:getNumber(percentage),
@@ -128,7 +128,7 @@ export default {
             }
             var dom = this.$refs.chart;
             var wrapper = dom.parentElement;
-            dom.style.height = (wrapper.offsetWidth / 100)*75 + 'px';
+            dom.style.height = (wrapper.offsetWidth / 100)*80 + 'px';
 
             var myChart = echarts.init(dom, null, {
                 renderer: 'canvas',
@@ -140,8 +140,12 @@ export default {
             let seriesData = [];
             let totalValue = 0;
 
+
+
             let value_field = this.value[0].name;
             let title_field = this.title[0].name;
+
+
 
             this.elementData.map(sdata => {
 
@@ -176,15 +180,14 @@ export default {
                     type: 'pie',
 
                     center: ['50%', '50%'],
-                    radius: ['25%', '70%'],
-
+                    radius: ['25%', '80%'],
                     itemStyle: {
                         borderRadius: 3,
                         borderColor: '#fff',
                         borderWidth: 2
                     },
                     data: seriesData,
-                    // color: ["#FF9B05", "#3350D6", "#6CD0FF", "#6B2D90", "#FF78BE", "#FF6EF8", "#E070FC", "#FF78BE","#7AADFF"],
+                    color: this.colors ? this.colors : undefined,
 
                     label: {
                         show: false,
@@ -203,7 +206,7 @@ export default {
 
                             let percentage = getNumber((value / total * 100));
 
-                            return `${params.seriesName}<br/>${name}: ${getNumber(value)} ${percentage}%`;
+                            return `${params.seriesName}<br/>${name}: ${getNumber(value)}  ${percentage}%`;
                         }
                     },
                 });
@@ -303,6 +306,7 @@ export default {
                         saveAsImage: {
                             title: 'Татах'
                         },
+                        dataView: { show: true, readOnly: false,   title: 'Өгөгдөл', close:"Хаах" },
                     }
                 },
                 tooltip: this.type === 'TreeMapChart' ? {
@@ -374,6 +378,7 @@ export default {
     },
 
     mounted() {
+
         if(!this.isRest){
             this.callData();
         } else {
