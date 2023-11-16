@@ -1,6 +1,6 @@
 {
     "name": "@lambda-platform/lambda-vue",
-    "version": "3.2.34",
+    "version": "3.2.35",
     "description": "lambda builder",
     "main": "src/index.js",
     "repository": "git@github.com:lambda-platform/lambda-vue.git",
@@ -18,7 +18,7 @@
         "ag-grid-community": "29.1.0",
         "ag-grid-enterprise": "29.1.0",
         "ag-grid-vue3": "29.1.0",
-        "ant-design-vue": "^4.0.3",
+        "ant-design-vue": "^4.0.7",
         "axios": "^0.27.2",
         "ckeditor5-build-classic-custom-es": "^22.0.3",
         "ckeditor5-custom-build": "^0.0.6",
