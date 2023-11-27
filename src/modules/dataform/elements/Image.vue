@@ -86,6 +86,8 @@ export default {
                 } else {
                     this.uploadList = [];
                 }
+            } else if (value) {
+                this.init();
             }
         }
 
