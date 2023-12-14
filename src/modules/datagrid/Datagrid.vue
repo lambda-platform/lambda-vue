@@ -1344,7 +1344,7 @@ export default {
                     this.info.total = data.total;
                     this.info.totalPage = data.last_page;
                     //getting data
-                    this.data = data.data;
+                    this.data = data.data ?? [];
                     this.gridOptions.api.setRowData(data.data);
 
                     if (this.aggregations.columnAggregations.length >= 1) {
