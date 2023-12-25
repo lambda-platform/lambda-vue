@@ -67,6 +67,7 @@ export default {
 
         this.init()
     },
+
     data() {
         return {
             defaultList: [],
