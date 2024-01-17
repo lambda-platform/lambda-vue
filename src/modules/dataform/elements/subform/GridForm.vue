@@ -18,7 +18,10 @@
                        :meta="setMeta(item)"
                        :getSchemaRelationByModel="getSchemaRelationByModel"
                        @edit="edit"
-                       :relation_data="getRelation">
+                       :relation_data="getRelation"
+                       :rowIndex="rowIndex"
+
+            >
             </component>
         </td>
         <td class="action" >
@@ -33,7 +36,7 @@
     import {getRelationData} from "../../utils/helpers";
 
     export default {
-        props: ["f", "model", "editMode", "relations", "formula", "schema", "url"],
+        props: ["f", "model", "editMode", "relations", "formula", "schema", "url", "rowIndex"],
         emits:["edit"],
         created() {
 

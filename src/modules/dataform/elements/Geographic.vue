@@ -669,6 +669,7 @@ export default {
 
                 }
             }
+          window.dispatchEvent(new Event('resize'));
         },
         setElement(){
             if (this.itemValue) {

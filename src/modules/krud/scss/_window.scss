@@ -13,4 +13,16 @@
     .offcanvas-template .crud-page {
         height: calc(100vh - 110px) !important;
     }
+    .ant-drawer-content{
+        background: #fff;
+        border-radius: 0.375rem;
+    }
+}
+.dark{
+    .ant-drawer-content{
+        .window-crud {
+            background: #1a1a2b;
+        }
+    }
+
 }

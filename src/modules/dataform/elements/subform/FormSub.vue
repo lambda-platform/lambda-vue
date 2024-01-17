@@ -31,6 +31,7 @@
 
             <grid-form v-for="(item, index) in listData"
                        :key="index"
+                       :rowIndex="index"
                        :f="item.form"
                        :model="item.model"
                        :editMode="editMode"
