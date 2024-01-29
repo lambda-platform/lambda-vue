@@ -36,6 +36,7 @@ export default {
         'hideTitle',
         'hideSuccessDialog',
         'hideErrorDialog',
+        'hideFooter',
     ],
     components:{
         fromFooter:fromFooter

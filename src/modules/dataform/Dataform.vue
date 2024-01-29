@@ -5,6 +5,8 @@
                 :rules="rule"
                 @finish="handleSubmit"
                 @finishFailed="finishFailed"
+
+                id="data-form"
         >
             <div class='dataform-header' v-if="!hideTitle">
                 <h3>{{ title ? title : formTitle }}{{showID}}<b v-if='showID && model[identity]'><span v-if='model[identity]'>: {{model[identity]}}</span></b></h3>
@@ -40,6 +42,7 @@
                                             :asyncMode='asyncMode'
                                             :viewMode='viewMode'
                                             :editMode='editMode'
+                                            :validateWithSubForm='validateWithSubForm'
                                         />
                                         <component
                                             :key='item'
@@ -58,6 +61,7 @@
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
                                             :relation_data='getRelation'
+                                            :validateWithSubForm='validateWithSubForm'
                                         />
                                         </span>
                                     </a-col>
@@ -85,6 +89,7 @@
                                             :url='url'
                                             :relations='relations'
                                             :asyncMode='asyncMode'
+                                            :validateWithSubForm='validateWithSubForm'
                                             :editMode='editMode'>
                                         </component>
                                         <component
@@ -102,6 +107,7 @@
                                             :getSchemaByModel='getSchemaByModel'
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
+                                            :validateWithSubForm='validateWithSubForm'
                                             :relation_data='getRelation'>
                                         </component>
                                         </span>
@@ -147,6 +153,7 @@
                                 :formula='formula'
                                 :schemaID='schemaID'
                                 :url='url'
+                                :validateWithSubForm='validateWithSubForm'
                                 :editMode='editMode'>
                             </component>
                             <component
@@ -165,6 +172,7 @@
                                 :getSchemaByModel='getSchemaByModel'
                                 :getSchemaRelationByModel='getSchemaRelationByModel'
                                 :setSchemaByModel='setSchemaByModel'
+                                :validateWithSubForm='validateWithSubForm'
                                 :url='url'
                                 :relation_data='getRelation'>
                             </component>
@@ -201,6 +209,7 @@
                                             :relations='relations'
                                             :asyncMode='asyncMode'
                                             :editMode='editMode'
+                                            :validateWithSubForm='validateWithSubForm'
                                         />
                                         <component
                                             :key='item'
@@ -219,6 +228,7 @@
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
                                             :relation_data='getRelation'
+                                            :validateWithSubForm='validateWithSubForm'
                                         />
                                         </span>
                                                 </a-col>
@@ -245,6 +255,7 @@
                                             :url='url'
                                             :relations='relations'
                                             :asyncMode='asyncMode'
+                                            :validateWithSubForm='validateWithSubForm'
                                             :editMode='editMode'>
                                         </component>
                                         <component
@@ -262,6 +273,7 @@
                                             :getSchemaByModel='getSchemaByModel'
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
+                                            :validateWithSubForm='validateWithSubForm'
                                             :relation_data='getRelation'>
                                         </component>
                                         </span>
@@ -308,6 +320,7 @@
                                 :schemaID='schemaID'
                                 :viewMode='viewMode'
                                 :url='url'
+                                :validateWithSubForm='validateWithSubForm'
                                 :editMode='editMode'>
                             </component>
                             <component
@@ -326,6 +339,7 @@
                                 :getSchemaByModel='getSchemaByModel'
                                 :getSchemaRelationByModel='getSchemaRelationByModel'
                                 :setSchemaByModel='setSchemaByModel'
+                                :validateWithSubForm='validateWithSubForm'
                                 :url='url'
                                 :relation_data='getRelation'>
                             </component>
@@ -384,6 +398,7 @@
                                             :viewMode='viewMode'
                                             :asyncMode='asyncMode'
                                             :editMode='editMode'
+                                            :validateWithSubForm='validateWithSubForm'
                                         />
                                         <component
                                             :key='item'
@@ -402,6 +417,7 @@
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
                                             :relation_data='getRelation'
+                                            :validateWithSubForm='validateWithSubForm'
                                         />
                                         </span>
                                 </a-col>
@@ -430,6 +446,7 @@
                                             :relations='relations'
                                             :asyncMode='asyncMode'
                                             :viewMode='viewMode'
+                                            :validateWithSubForm='validateWithSubForm'
                                             :editMode='editMode'>
                                         </component>
                                         <component
@@ -447,6 +464,7 @@
                                             :getSchemaByModel='getSchemaByModel'
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
+                                            :validateWithSubForm='validateWithSubForm'
                                             :relation_data='getRelation'>
                                         </component>
                                         </span>
@@ -494,6 +512,7 @@
                                 :schemaID='schemaID'
                                 :viewMode='viewMode'
                                 :url='url'
+                                :validateWithSubForm='validateWithSubForm'
                                 :editMode='editMode'>
                             </component>
                             <component
@@ -512,6 +531,7 @@
                                 :getSchemaByModel='getSchemaByModel'
                                 :getSchemaRelationByModel='getSchemaRelationByModel'
                                 :setSchemaByModel='setSchemaByModel'
+                                :validateWithSubForm='validateWithSubForm'
                                 :url='url'
                                 :relation_data='getRelation'>
                             </component>
@@ -520,7 +540,7 @@
                 </a-row>
             </div>
             <a-spin v-if='loadConfig' fix></a-spin>
-            <div class='dataform-footer' v-if='!viewMode  && !use2ColumnLayout'>
+            <div class='dataform-footer' v-if='!viewMode  && !use2ColumnLayout && !hideFooter'>
                 <fromFooter
                     :withBackButton="withBackButton"
                     :save_btn_text="save_btn_text"
