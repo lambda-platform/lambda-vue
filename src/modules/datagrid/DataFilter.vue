@@ -15,6 +15,7 @@
                                 :label="item.filter.label ? item.filter.label : item.label"
                                 :meta="setMeta(item)"
                                 :relation_data="getRelation"
+                                :filterData="filterData"
                             >
                             </component>
                         </a-form-item>
