@@ -107,6 +107,15 @@ const mongolianCyrillic = (rule, value, callback) => {
         return Promise.reject("Зөвхөн кирилл үсэг оруулна уу!");
     }
 };
+function mongolianRegisterNumber(rule, value, callback) {
+    const regex = /^[а-яөүёА-ЯӨҮЁ0]{2}\d{8}$/;
+
+    if(value.match(regex)){
+        return  Promise.resolve();
+    } else {
+        return Promise.reject(rule.msg);
+    }
+}
 const mongolianMobileNumber = (rule, value, callback) => {
 
     var letterNumber = /^[0-9]{8}$/;
@@ -237,6 +246,13 @@ export const getRule = (rule, baseUrl) => {
                 validator: mongolianCyrillic,
                 trigger: 'blur',
                 // message: rule.msg
+            }
+        case 'register':
+            console.log( rule.msg)
+            return {
+                validator: mongolianRegisterNumber,
+                trigger: 'blur',
+                message: rule.msg
             }
         case 'check_current_password':
             return {
