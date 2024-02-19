@@ -67,6 +67,10 @@
                 height: 60px;
             }
         }
+        .tab-section{
+            width: calc(100% - 50px);
+            padding-right: 30px;
+        }
     }
     &-footer {
         padding: 10px 20px 20px;
