@@ -369,7 +369,7 @@
                     </a-col>
                 </a-row>
             </div>
-            <div class='dataform-body' v-if='!loadConfig && !use2ColumnLayout'>
+            <div class='dataform-body' v-if='!loadConfig && !use2ColumnLayout' >
                 <!-- Tab Section -->
                 <a-row v-for='row in ui.schema' :gutter="10">
                     <!-- Section -->
@@ -425,16 +425,33 @@
                         </div>
                     </a-col>
 
-                    <!-- Tab -->
-                    <a-tabs v-model:activeKey='tabIndex' v-if='row.sectionRenderByTab'>
-                        <a-tab-pane :tab='col.name' :key='colIndex' v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
-                                >
-                            <a-row v-for='srow in col.children' :key='srow.index' :gutter="10">
-                                <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
-                                     :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
-                                    <a-divider v-if='scol.name' orientation='left' class='form-divider'>{{ scol.name }}
-                                    </a-divider>
-                                    <span v-for='item in scol.children' :key='item.index'>
+                    <a-col v-if='row.sectionRenderByTab'>
+                        <div class="flex w-full pr-2" >
+
+                            <div class="pt-3 flex  items-center">
+                                <div>
+                                    <a-steps
+                                        direction="vertical"
+                                        size="small"
+                                        v-model:current="tabIndex"
+                                        :items="row.children.filter(c=>isVisibleSection(c))"
+                                    ></a-steps>
+                                </div>
+                            </div>
+
+
+                            <div class="flex-grow tab-section" >
+
+                                <a-tabs v-model:activeKey='tabIndex' >
+                                    <a-tab-pane class="max-w-full" :tab='col.name' :key='colIndex' v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
+                                    >
+
+                                        <a-row v-for='srow in col.children' :key='srow.index' :gutter="10">
+                                            <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
+                                                   :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
+                                                <a-divider v-if='scol.name' orientation='left' class='form-divider'>{{ scol.name }}
+                                                </a-divider>
+                                                <span v-for='item in scol.children' :key='item.index'>
                                         <component
                                             :ref="'sf'+item.model"
                                             v-if="isShow(item.model) && item.formType == 'SubForm' && item.subtype"
@@ -468,29 +485,40 @@
                                             :relation_data='getRelation'>
                                         </component>
                                         </span>
-                                </a-col>
-                            </a-row>
-                        </a-tab-pane>
-                        <template #leftExtra>
-                            <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
-             <span class="svg-icon align-center">
+                                            </a-col>
+                                        </a-row>
+                                    </a-tab-pane>
+
+                                    <template #leftExtra>
+                                        <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0"  shape="circle" class="tab-navigation">
+             <span class="h-5 w-5 flex">
                             <inline-svg
+                                class="w-full"
                                 src="/assets/icons/duotone/Navigation/Angle-left.svg"
                             />
                         </span>
-                            </a-button>
-                        </template>
-                        <template #rightExtra>
-                            <a-button @click="moveByRight(tabIndex)" :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)" style="height: 36px; width: 36px" shape="circle">
+                                        </a-button>
+                                    </template>
+                                    <template #rightExtra>
+                                        <a-button @click="moveByRight(tabIndex)" :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)" style="height: 36px; width: 36px" shape="circle">
 
-            <span class="svg-icon align-center" >
+            <span class="h-5 w-5 flex">
                             <inline-svg
+                                class="w-full"
                                 src="/assets/icons/duotone/Navigation/Angle-right.svg"
                             />
                         </span>
-                            </a-button>
-                        </template>
-                    </a-tabs>
+                                        </a-button>
+                                    </template>
+                                </a-tabs>
+                            </div>
+                        </div>
+                    </a-col>
+
+
+
+
+
 
                     <!-- Standart column -->
                     <a-col v-for="col in row.children.filter(c=>c.type === 'col')"
