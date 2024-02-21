@@ -70,7 +70,8 @@ export default {
             extraButtons: [],
             disableReset: false,
             withBackButton: false,
-            tabIndex: 0
+            tabIndex: 0,
+            noFooter:false
         }
     },
 
@@ -106,7 +107,7 @@ export default {
     created() {
         window.showInformationModal = this.showInformationModal
         if (this.schemaID) {
-            this.initForm()
+            this.initForm();
         }
     },
 
@@ -121,10 +122,10 @@ export default {
             }
         },
 
-        do_render(val) {
+        do_render(val){
             if (!val) {
-                this.viewMode = false
-                this.handleReset(this.meta.model + '-' + this.schemaID)
+                this.handleReset(this.meta.model + '-' + this.schemaID);
+                this.viewMode = false;
             }
         },
 
@@ -178,6 +179,27 @@ export default {
             } else {
                 return false
             }
+        },
+        getStepData(row){
+            if (typeof row === "object" && row !== null) {
+                if(row.hasOwnProperty("children")){
+
+                    const stepsPre = row.children.filter(c=>this.isVisibleSection(c));
+                    let steps = [];
+
+                    stepsPre.forEach((c, index)=>{
+                        steps.push({
+                            index
+                        })
+                    })
+
+
+                    return  steps
+
+                }
+            }
+
+            return [];
         },
 
         showAbleFields(items) {
@@ -402,16 +424,20 @@ export default {
                 if (item.type == 'form') {
 
                     this.setModel(item.model, item.default, item.formType)
-                    this.$watch('model.' + item.model, {
-                        handler: (value, oldValue) => {
-                            if (this.do_render) {
-                                if (value !== oldValue) {
-                                    this.afterChange(item.model, value, oldValue)
+
+                    if(Object.hasOwnProperty('model.' + item.model)){
+                        this.$watch('model.' + item.model, {
+                            handler: (value, oldValue) => {
+                                if (this.do_render) {
+                                    if (value !== oldValue) {
+                                        this.afterChange(item.model, value, oldValue)
+                                    }
                                 }
-                            }
-                        },
-                        deep: true
-                    })
+                            },
+                            deep: true
+                        })
+
+                    }
 
 
                     if (!item.rules) {
@@ -448,6 +474,10 @@ export default {
                                 this.$data.rule['current_password'] = rules_for_current_password
                             }
                         }
+                    }
+
+                    if (item.formType === 'process_status' && item.model === 'status') {
+                        this.noFooter = true;
                     }
 
                 } else if (item.formType == 'SubForm') {
@@ -848,7 +878,8 @@ export default {
                                 this.setEditModel(this.ui.schema)
                             }
                             this.setUserConditionValues(false)
-                            this.setCustomData()
+                            this.setCustomData();
+
                         }
                     }).catch(e => {
                     if (e.response.data) {
