@@ -434,7 +434,7 @@
                                         direction="vertical"
                                         size="small"
                                         v-model:current="tabIndex"
-                                        :items="row.children.filter(c=>isVisibleSection(c))"
+                                        :items="getStepData(row)"
                                     ></a-steps>
                                 </div>
                             </div>
@@ -568,7 +568,7 @@
                 </a-row>
             </div>
             <a-spin v-if='loadConfig' fix></a-spin>
-            <div class='dataform-footer' v-if='!viewMode  && !use2ColumnLayout && !hideFooter'>
+            <div class='dataform-footer' v-if='!viewMode  && !use2ColumnLayout && !hideFooter && !noFooter'>
                 <fromFooter
                     :withBackButton="withBackButton"
                     :save_btn_text="save_btn_text"
