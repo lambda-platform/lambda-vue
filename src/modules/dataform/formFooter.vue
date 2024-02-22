@@ -21,7 +21,7 @@
     </a-button>
     <a-button @click="handleReset" v-if='!editMode && !disableReset'
               style='margin-left: 8px'>
-        {{ lang.fillInTheNewOne }}
+        {{ lang.reset }}
     </a-button>
     <span v-for='button in getFooterButtons()' class='extra-buttons'>
                     <a-popconfirm

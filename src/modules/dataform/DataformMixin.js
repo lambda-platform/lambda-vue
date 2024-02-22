@@ -92,7 +92,7 @@ export default {
             }
         },
         lang() {
-            const labels = ['save', 'pleaseWait', 'fillInTheNewOne', 'close', 'pleaseEnterPasswordYouUCurrentlyUsing', 'pleaseReEnterYourPassword',
+            const labels = ['save', 'pleaseWait', 'reset', 'close', 'pleaseEnterPasswordYouUCurrentlyUsing', 'pleaseReEnterYourPassword',
                 'passwordConfirmError', 'informationIsIncomplete', 'trRMandatoryFieldsFillInformationLookFormAFillRequiredFieldsWithRedBorder',
                 'successfullySaved', 'errorSaving', 'error'
             ]

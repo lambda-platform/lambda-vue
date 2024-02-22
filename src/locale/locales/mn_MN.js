@@ -72,7 +72,7 @@ export default {
         "men": "Эрэгтэй",
         "women": "Эмэгтэй",
         "phone": "Утас",
-        "fillInTheNewOne": "Шинээр бөглөх",
+        "reset": "Шинээр бөглөх",
         "permission": "Хандах эрх",
         "loginName": "Нэвтрэх нэр",
         "confirmPassword": "Нууц үг баталгаажуулах",
@@ -309,7 +309,7 @@ export default {
     "dataForm": {
         "save": "Хадгалах",
         "pleaseWait": "Түр хүлээнэ үү!",
-        "fillInTheNewOne": "Шинээр бөглөх",
+        "reset": "Шинээр бөглөх",
         "close": "Хаах",
         "basicSettings": "Үндсэн тохиргоо",
         "configureTheData": "Өгөгдөл тохируулах",

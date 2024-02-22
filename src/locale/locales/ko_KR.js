@@ -72,7 +72,7 @@ export default {
         "men": "남자들",
         "women": "여성",
         "phone": "핸드폰",
-        "fillInTheNewOne": "새로운 것을 채우십시오",
+        "reset": "새로운 것을 채우십시오",
         "permission": "허가",
         "loginName": "로그인 이름",
         "confirmPassword": "비밀번호 확인",
@@ -309,7 +309,7 @@ export default {
     dataForm:{
         "save":"저장",
         "pleaseWait":"잠시만 기다려주세요!",
-        "fillInTheNewOne": "새로운 것을 채우십시오",
+        "reset": "새로운 것을 채우십시오",
         "close":"닫다",
         "basicSettings":"기본 설정",
         "configureTheData":"데이터 구성",
