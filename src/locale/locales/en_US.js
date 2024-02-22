@@ -309,7 +309,7 @@ export default {
     "dataForm": {
         "save": "Save",
         "pleaseWait": "Please wait for a moment!",
-        "reset": "Fill in the new one",
+        "reset": "Reset",
         "close": "Close",
         "basicSettings": "Basic settings",
         "configureTheData": "Configure the data",
