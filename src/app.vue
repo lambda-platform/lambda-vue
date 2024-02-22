@@ -18,10 +18,6 @@
                     </Select>
                 </div>
             </div>
-
-            <!--            <div slot="brand" class="logo">-->
-            <!--                <span class="app-text">{{ app_text }}</span>-->
-            <!--            </div>-->
             <ul>
                 <li class="sub-title" v-if="isMicroservice">
                     <span>Microservice</span>
