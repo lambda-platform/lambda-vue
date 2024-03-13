@@ -425,11 +425,13 @@ export default {
 
                     this.setModel(item.model, item.default, item.formType)
 
-                    if(Object.hasOwnProperty('model.' + item.model)){
+                    if(this.model.hasOwnProperty(item.model)){
+
                         this.$watch('model.' + item.model, {
                             handler: (value, oldValue) => {
                                 if (this.do_render) {
                                     if (value !== oldValue) {
+                                        console.log(value, oldValue)
                                         this.afterChange(item.model, value, oldValue)
                                     }
                                 }
