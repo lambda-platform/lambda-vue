@@ -431,7 +431,6 @@ export default {
                             handler: (value, oldValue) => {
                                 if (this.do_render) {
                                     if (value !== oldValue) {
-                                        console.log(value, oldValue)
                                         this.afterChange(item.model, value, oldValue)
                                     }
                                 }
