@@ -667,13 +667,23 @@ export default {
             }
         },
         validateWithSubForm() {
-            let subValid = true
-            this.subFormValidations.forEach(sbValidation => {
-                let isArray = _.isArray(this.model[sbValidation.model])
-                if (this.model[sbValidation.model] === undefined || this.model[sbValidation.model] === null || isArray) {
+            this.$refs[this.meta.model +'-'+ this.schemaID].validate().then(() => {
+                let subValid = true
+                this.subFormValidations.forEach(sbValidation => {
+                    let isArray = _.isArray(this.model[sbValidation.model])
+                    if (this.model[sbValidation.model] === undefined || this.model[sbValidation.model] === null || isArray) {
 
-                    if (isArray) {
-                        if (this.model[sbValidation.model].length == 0) {
+                        if (isArray) {
+                            if (this.model[sbValidation.model].length == 0) {
+
+                                notification["error"]({
+                                    message: this.lang.informationIsIncomplete,
+                                    description: sbValidation.emptyErrorMsg,
+                                });
+                                subValid = false
+                            }
+                        } else {
+
 
                             notification["error"]({
                                 message: this.lang.informationIsIncomplete,
@@ -681,20 +691,13 @@ export default {
                             });
                             subValid = false
                         }
-                    } else {
-
-
-                        notification["error"]({
-                            message: this.lang.informationIsIncomplete,
-                            description: sbValidation.emptyErrorMsg,
-                        });
-                        subValid = false
                     }
+                })
+                if (subValid) {
+                    this.postData()
                 }
             })
-            if (subValid) {
-                this.postData()
-            }
+
         },
 
         postData() {

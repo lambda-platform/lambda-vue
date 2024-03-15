@@ -1,6 +1,6 @@
 {
     "name": "@lambda-platform/lambda-vue",
-    "version": "3.2.51",
+    "version": "3.2.52",
     "description": "lambda builder",
     "main": "src/index.js",
     "repository": "git@github.com:lambda-platform/lambda-vue.git",
