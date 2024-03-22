@@ -2,7 +2,7 @@
     <portal to="header-left">
         <div class="flex">
             <div class="page-title ">
-                <div class="float-left pt-3">
+                <div class="float-left">
                     <h1 class="text-gray-700 dark:text-gray-200 text-base m-0 ">{{ title }}</h1>
                     <h2 class="text-gray-400 text-xs m-0">
                         <span v-for="(p, index) in parent" :key="p.index">
