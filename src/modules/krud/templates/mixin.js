@@ -19,6 +19,7 @@ export default {
             isRefresh: false,
             isSave: false,
             rowId: null,
+            cloneID: null,
             visibleDataForm:false,
             isExcelUpload: false,
             excelUploadCustomUrl: null,
@@ -136,8 +137,10 @@ export default {
                 this.form_width = window.innerWidth;
             }
 
-            if(this.editMode && this.rowId !== null && this.rowId !== undefined){
+            if(this.editMode && this.rowId !== null && this.rowId !== undefined && this.cloneID === null){
                 this.$refs.form.editModel(this.rowId);
+            } else if(this.editMode && this.rowId !== null && this.rowId !== undefined && this.cloneID !== null){
+                this.$refs.form.cloneModel(this.rowId);
             }
 
         },
@@ -157,6 +160,8 @@ export default {
             }
 
             this.editMode = false;
+            this.rowId = null;
+            this.cloneID = null;
 
             //From template
             if (this.templateOnSuccess) {
