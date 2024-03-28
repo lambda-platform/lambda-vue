@@ -26,17 +26,21 @@
 <script>
 import mixin from "./_mixin"
 import mn_MN from "../../../antlocale/date_mn_MN";
+import en_EN from "../../../antlocale/date_en_EN";
 export default {
     mixins:[mixin],
-    data(){
-        return {
-            locale:mn_MN
 
-        }
-    },
     computed:{
         withTimeZone(){
             return window.withTimezone ? true : false;
+        },
+        locale(){
+            if(this.$i18n.locale === "mn_MN"){
+                return mn_MN
+            } else {
+                return en_EN
+            }
+
         }
     },
     methods:{

@@ -27,7 +27,7 @@ export function doFormula(formulas, model, model_, schema_, rule_, subFormModelN
         let formula_index = formulas.findIndex(formula => formula.model == model)
         if (formula_index <= -1) {
             formulas.map(formula => {
-                if(formula.template.includes(model)){
+                if (formula.template.includes(model)) {
                     doFormula2(formula, model, model_, schema_, rule_, subFormModelName)
                 }
             });
@@ -36,16 +36,21 @@ export function doFormula(formulas, model, model_, schema_, rule_, subFormModelN
         }
     }
 }
+
 function doFormula2(formula, model, model_, schema_, rule_, subFormModelName) {
 
     let use_formula = false;
+
     if (formula['form']) {
-        if (formula['form'] == 'main')
-            use_formula = true;
-        else if (subFormModelName) {
-            if (formula['form'] == subFormModelName)
+
+        if (subFormModelName) {
+            if(formula['form'] === subFormModelName){
                 use_formula = true
+            }
+        } else if (formula['form'] == 'main') {
+            use_formula = true;
         }
+
     } else
         use_formula = true;
 
@@ -78,7 +83,7 @@ function doFormula2(formula, model, model_, schema_, rule_, subFormModelName) {
                         }
                     }
                 })
-            } catch (e){
+            } catch (e) {
                 console.log(e)
             }
         }
@@ -94,10 +99,10 @@ export function doTrigger(model, val, model_, schema_, refs, Message, editMode) 
                 if (fieldTimeout) {
                     clearTimeout(fieldTimeout);
                 }
-                 fieldTimeout = setTimeout(() => {
+                fieldTimeout = setTimeout(() => {
 
                     callFieldTrigger(schema_[model_index]['trigger'], model_, schema_, refs, Message, editMode);
-                 }, schema_[model_index]['triggerTimeout'] != undefined && schema_[model_index]['triggerTimeout'] !== null && schema_[model_index]['triggerTimeout'] != ''  ? schema_[model_index]['triggerTimeout'] : 0);
+                }, schema_[model_index]['triggerTimeout'] != undefined && schema_[model_index]['triggerTimeout'] !== null && schema_[model_index]['triggerTimeout'] != '' ? schema_[model_index]['triggerTimeout'] : 0);
             }
         }
     }
@@ -123,7 +128,7 @@ function setValueProps(field, model_, schema_, refs, is_sub) {
 
                 let current_schema = schema_[schema_index];
                 if (current_schema.formType === "Date" || current_schema.formType === "DateTime") {
-                    model_[field.field] =  field.value;
+                    model_[field.field] = field.value;
                 } else if (current_schema.formType === "SubForm") {
                     model_[field.field] = field.value;
                     refs[`sf${field.field}`][0].fillData(field.value);
@@ -147,7 +152,7 @@ function callFieldTrigger(trigger_url, model_, schema_, refs, Message, editMode)
 
     let services = trigger_url.split(",");
 
-    services.forEach(service=>{
+    services.forEach(service => {
         axios.post(service, {model: {...model_}, editMode: editMode})
             .then(({data}) => {
                 if (data['schema']) {
@@ -168,14 +173,14 @@ function callFieldTrigger(trigger_url, model_, schema_, refs, Message, editMode)
                     if (data['message']['type'] == 'success') {
                         Message["success"]({
                             duration: 3,
-                            message:data['message']['message'],
-                            description:data['message']['message']
+                            message: data['message']['message'],
+                            description: data['message']['message']
                         });
                     } else {
                         Message["error"]({
                             duration: 3,
-                            message:data['message']['message'],
-                            description:data['message']['message']
+                            message: data['message']['message'],
+                            description: data['message']['message']
                         });
                     }
                 }

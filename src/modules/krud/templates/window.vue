@@ -62,7 +62,7 @@
                                       :url="url"
                                       :schemaID="grid"
                                       :paginate="50"
-                                      :fnClone="clone"
+                                      :fnClone="templateClone"
                                       :fnEdit="templateEdit"
                                       :fnQuickEdit="quickEdit"
                                       :fnView="view"
@@ -141,6 +141,23 @@ export default {
 
             }
         },
+        templateClone(id){
+            let query = this.getQuery();
+            query["clone"] = true;
+            query["id"] = id;
+            if(this.$route.params.id && this.$route.query.edit){
+                if(this.$route.params.id.toString() !== id.toString()){
+
+                    this.$router.push({query:query });
+
+
+                }
+            } else {
+                this.$router.push({query: query});
+
+
+            }
+        },
         templateOnSuccess () {
             this.hideSide()
         },
@@ -148,11 +165,17 @@ export default {
 
             let add = this.$route.query.add;
             let edit = this.$route.query.edit;
+            let clone = this.$route.query.clone;
             let id = this.$route.query.id;
             if(add === 'true' || add === true){
                 this.openSlidePanel = true;
             } else if(edit === 'true' || edit === true){
                 this.rowId = id;
+                this.editMode = true;
+                this.openSlidePanel = true;
+            } else if(clone === 'true' || clone === true){
+                this.rowId = id;
+                this.cloneID = id;
                 this.editMode = true;
                 this.openSlidePanel = true;
             } else {
