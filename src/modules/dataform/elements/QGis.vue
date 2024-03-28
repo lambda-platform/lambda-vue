@@ -331,7 +331,7 @@ export default {
                 source: vectorSource
             });
 
-            console.log("I am here", this.markerLayer);
+
 
             this.map.addLayer(this.markerLayer);
         },
