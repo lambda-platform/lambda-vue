@@ -1,7 +1,7 @@
 <template>
     <div :class="viewMode ? 'dataform view-mode' : 'dataform'">
         <a-form :ref="meta.model +'-'+ schemaID" :model='model' :label-position=meta.option.labelPosition
-              :layout="meta.option.labelPosition === 'top' ? 'vertical' : 'horizontal'"
+                :layout="meta.option.labelPosition === 'top' ? 'vertical' : 'horizontal'"
                 :rules="rule"
                 @finish="handleSubmit"
                 @finishFailed="finishFailed"
@@ -9,26 +9,30 @@
                 id="data-form"
         >
             <div class='dataform-header' v-if="!hideTitle">
-                <h3>{{ title ? title : formTitle }}{{showID}}<b v-if='showID && model[identity]'><span v-if='model[identity]'>: {{model[identity]}}</span></b></h3>
+                <h3>{{ title ? title : formTitle }}{{ showID }}<b v-if='showID && model[identity]'><span
+                    v-if='model[identity]'>: {{ model[identity] }}</span></b></h3>
             </div>
 
             <div class="dataform-body" v-if='!loadConfig && use2ColumnLayout'>
                 <a-row :gutter="16">
                     <a-col :span="18">
                         <div class="two-column-form-left">
-                                <a-row v-for='row in ui.schema.filter(r=>!r.use2ColumnLayout)' :gutter="10">
-                        <!-- Section -->
-                        <a-col v-for='col in row.children.filter(c=>isVisibleSection(c))' v-if='!row.sectionRenderByTab'
-                               :xs='col.span.xs'
-                               :sm='col.span.sm' :md='col.span.md' :lg='col.span.lg'>
-                            <div :class="col.name != '' ? 'fieldset' : ''">
-                                <legend v-if="col.name != ''">{{ col.name }}</legend>
-                                <a-row v-for='srow in col.children' :gutter="10">
-                                    <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
-                                           :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
-                                        <a-divider v-if='scol.name' orientation='left' class='form-divider'>{{ scol.name }}
-                                        </a-divider>
-                                        <span v-for='item in scol.children' :key='item.index'>
+                            <a-row v-for='row in ui.schema.filter(r=>!r.use2ColumnLayout)' :gutter="10">
+                                <!-- Section -->
+                                <a-col v-for='col in row.children.filter(c=>isVisibleSection(c))'
+                                       v-if='!row.sectionRenderByTab'
+                                       :xs='col.span.xs'
+                                       :sm='col.span.sm' :md='col.span.md' :lg='col.span.lg'>
+                                    <div :class="col.name != '' ? 'fieldset' : ''">
+                                        <legend v-if="col.name != ''">{{ col.name }}</legend>
+                                        <a-row v-for='srow in col.children' :gutter="10">
+                                            <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index'
+                                                   :xs='24'
+                                                   :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
+                                                <a-divider v-if='scol.name' orientation='left' class='form-divider'>
+                                                    {{ scol.name }}
+                                                </a-divider>
+                                                <span v-for='item in scol.children' :key='item.index'>
                                         <component
                                             :key='item.model'
                                             :ref="'sf'+item.model"
@@ -64,21 +68,24 @@
                                             :validateWithSubForm='validateWithSubForm'
                                         />
                                         </span>
-                                    </a-col>
-                                </a-row>
-                            </div>
-                        </a-col>
+                                            </a-col>
+                                        </a-row>
+                                    </div>
+                                </a-col>
 
-                        <!-- Tab -->
-                        <a-tabs v-model:activeKey='tabIndex' v-if='row.sectionRenderByTab'>
-                            <a-tab-pane :tab='col.name' :key='colIndex' v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
-                            >
-                                <a-row v-for='srow in col.children' :key='srow.index' :gutter="10">
-                                    <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
-                                           :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
-                                        <a-divider v-if='scol.name' orientation='left' class='form-divider'>{{ scol.name }}
-                                        </a-divider>
-                                        <span v-for='item in scol.children' :key='item.index'>
+                                <!-- Tab -->
+                                <a-tabs v-model:activeKey='tabIndex' v-if='row.sectionRenderByTab'>
+                                    <a-tab-pane :tab='col.name' :key='colIndex'
+                                                v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
+                                    >
+                                        <a-row v-for='srow in col.children' :key='srow.index' :gutter="10">
+                                            <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index'
+                                                   :xs='24'
+                                                   :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
+                                                <a-divider v-if='scol.name' orientation='left' class='form-divider'>
+                                                    {{ scol.name }}
+                                                </a-divider>
+                                                <span v-for='item in scol.children' :key='item.index'>
                                         <component
                                             :ref="'sf'+item.model"
                                             v-if="isShow(item.model) && item.formType == 'SubForm' && item.subtype"
@@ -111,35 +118,42 @@
                                             :relation_data='getRelation'>
                                         </component>
                                         </span>
-                                    </a-col>
-                                </a-row>
-                            </a-tab-pane>
-                            <template #leftExtra>
-                                <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
+                                            </a-col>
+                                        </a-row>
+                                    </a-tab-pane>
+                                    <template #leftExtra>
+                                        <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0"
+                                                  style="height: 36px; width: 36px" shape="circle"
+                                                  class="tab-navigation">
              <span class="svg-icon align-center">
                             <inline-svg
                                 src="/assets/icons/duotone/Navigation/Angle-left.svg"
                             />
                         </span>
-                                </a-button>
-                            </template>
-                            <template #rightExtra>
-                                <a-button @click="moveByRight(tabIndex)" :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)" style="height: 36px; width: 36px" shape="circle">
+                                        </a-button>
+                                    </template>
+                                    <template #rightExtra>
+                                        <a-button @click="moveByRight(tabIndex)"
+                                                  :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)"
+                                                  style="height: 36px; width: 36px" shape="circle">
 
-            <span class="svg-icon align-center" >
+            <span class="svg-icon align-center">
                             <inline-svg
                                 src="/assets/icons/duotone/Navigation/Angle-right.svg"
                             />
                         </span>
-                                </a-button>
-                            </template>
-                        </a-tabs>
+                                        </a-button>
+                                    </template>
+                                </a-tabs>
 
-                        <!-- Standart column -->
-                        <a-col v-for="col in row.children.filter(c=>c.type === 'col')" :xs='col.span.xs'
-                               :sm='col.span.sm' :md='col.span.md' :lg='col.span.lg'>
-                            <a-divider v-if='col.name' orientation='left' class='form-divider'>{{ col.name }}</a-divider>
-                            <span v-for='item in col.children' :key='item.index'>
+                                <!-- Standart column -->
+                                <a-col v-for="col in row.children.filter(c=>c.type === 'col')" :xs='col.span.xs'
+                                       :sm='col.span.sm' :md='col.span.md' :lg='col.span.lg'>
+                                    <a-divider v-if='col.name' orientation='left' class='form-divider'>{{
+                                            col.name
+                                        }}
+                                    </a-divider>
+                                    <span v-for='item in col.children' :key='item.index'>
                             <component
                                 :key='item.model'
                                 :ref="'sf'+item.model"
@@ -177,8 +191,8 @@
                                 :relation_data='getRelation'>
                             </component>
                             </span>
-                        </a-col>
-                    </a-row>
+                                </a-col>
+                            </a-row>
                         </div>
                     </a-col>
                     <a-col :span="6">
@@ -186,15 +200,18 @@
                             <div class="two-column-form">
                                 <a-row v-for='row in ui.schema.filter(r=>r.use2ColumnLayout)' :gutter="10">
                                     <!-- Section -->
-                                    <a-col v-for='col in row.children.filter(c=>isVisibleSection(c))' v-if='!row.sectionRenderByTab'
+                                    <a-col v-for='col in row.children.filter(c=>isVisibleSection(c))'
+                                           v-if='!row.sectionRenderByTab'
                                            :xs='col.span.xs'
                                            :sm='col.span.sm' :md='col.span.md' :lg='col.span.lg'>
                                         <div :class="col.name != '' ? 'fieldset' : ''">
                                             <legend v-if="col.name != ''">{{ col.name }}</legend>
                                             <a-row v-for='srow in col.children' :gutter="10">
-                                                <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
+                                                <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index'
+                                                       :xs='24'
                                                        :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
-                                                    <a-divider v-if='scol.name' orientation='left' class='form-divider'>{{ scol.name }}
+                                                    <a-divider v-if='scol.name' orientation='left' class='form-divider'>
+                                                        {{ scol.name }}
                                                     </a-divider>
                                                     <span v-for='item in scol.children' :key='item.index'>
                                         <component
@@ -237,12 +254,15 @@
                                     </a-col>
                                     <!-- Tab -->
                                     <a-tabs v-model:activeKey='tabIndex' v-if='row.sectionRenderByTab'>
-                                        <a-tab-pane :tab='col.name' :key='colIndex' v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
+                                        <a-tab-pane :tab='col.name' :key='colIndex'
+                                                    v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
                                         >
                                             <a-row v-for='srow in col.children' :key='srow.index' :gutter="10">
-                                                <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
+                                                <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index'
+                                                       :xs='24'
                                                        :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
-                                                    <a-divider v-if='scol.name' orientation='left' class='form-divider'>{{ scol.name }}
+                                                    <a-divider v-if='scol.name' orientation='left' class='form-divider'>
+                                                        {{ scol.name }}
                                                     </a-divider>
                                                     <span v-for='item in scol.children' :key='item.index'>
                                         <component
@@ -281,7 +301,9 @@
                                             </a-row>
                                         </a-tab-pane>
                                         <template #leftExtra>
-                                            <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0" style="height: 36px; width: 36px" shape="circle" class="tab-navigation">
+                                            <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0"
+                                                      style="height: 36px; width: 36px" shape="circle"
+                                                      class="tab-navigation">
              <span class="svg-icon align-center">
                             <inline-svg
                                 src="/assets/icons/duotone/Navigation/Angle-left.svg"
@@ -290,9 +312,11 @@
                                             </a-button>
                                         </template>
                                         <template #rightExtra>
-                                            <a-button @click="moveByRight(tabIndex)" :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)" style="height: 36px; width: 36px" shape="circle">
+                                            <a-button @click="moveByRight(tabIndex)"
+                                                      :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)"
+                                                      style="height: 36px; width: 36px" shape="circle">
 
-            <span class="svg-icon align-center" >
+            <span class="svg-icon align-center">
                             <inline-svg
                                 src="/assets/icons/duotone/Navigation/Angle-right.svg"
                             />
@@ -304,7 +328,10 @@
                                     <!-- Standart column -->
                                     <a-col v-for="col in row.children.filter(c=>c.type === 'col')" :xs='col.span.xs'
                                            :sm='col.span.sm' :md='col.span.md' :lg='col.span.lg'>
-                                        <a-divider v-if='col.name' orientation='left' class='form-divider'>{{ col.name }}</a-divider>
+                                        <a-divider v-if='col.name' orientation='left' class='form-divider'>{{
+                                                col.name
+                                            }}
+                                        </a-divider>
                                         <span v-for='item in col.children' :key='item.index'>
                             <component
                                 :key='item.model'
@@ -369,19 +396,19 @@
                     </a-col>
                 </a-row>
             </div>
-            <div class='dataform-body' v-if='!loadConfig && !use2ColumnLayout' >
+            <div class='dataform-body' v-if='!loadConfig && !use2ColumnLayout'>
                 <!-- Tab Section -->
                 <a-row v-for='row in ui.schema' :gutter="10">
                     <!-- Section -->
                     <a-col v-for='col in row.children.filter(c=>isVisibleSection(c))' v-if='!row.sectionRenderByTab'
 
                            :span='col.span.md'
-                           >
+                    >
                         <div :class="col.name != '' ? 'fieldset' : ''">
                             <legend v-if="col.name != ''">{{ col.name }}</legend>
                             <a-row v-for='srow in col.children' :gutter="10">
                                 <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
-                                     :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
+                                       :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
                                     <a-divider v-if='scol.name' orientation='left' class='form-divider'>{{ scol.name }}
                                     </a-divider>
                                     <span v-for='item in scol.children' :key='item.index'>
@@ -426,7 +453,7 @@
                     </a-col>
 
                     <a-col v-if='row.sectionRenderByTab'>
-                        <div class="flex w-full pr-2" >
+                        <div class="flex w-full pr-2">
 
                             <div class="pt-3 flex  items-center">
                                 <div>
@@ -440,16 +467,19 @@
                             </div>
 
 
-                            <div class="flex-grow tab-section" >
+                            <div class="flex-grow tab-section">
 
-                                <a-tabs v-model:activeKey='tabIndex' >
-                                    <a-tab-pane class="max-w-full" :tab='col.name' :key='colIndex' v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
+                                <a-tabs v-model:activeKey='tabIndex'>
+                                    <a-tab-pane class="max-w-full" :tab='col.name' :key='colIndex'
+                                                v-for='(col, colIndex) in row.children.filter(c=>isVisibleSection(c))'
                                     >
 
                                         <a-row v-for='srow in col.children' :key='srow.index' :gutter="10">
-                                            <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index' :xs='24'
+                                            <a-col v-for='scol in srow.children' :id='scol.id' :key='scol.index'
+                                                   :xs='24'
                                                    :sm='24' :md='scol.span.md' :lg='scol.span.lg'>
-                                                <a-divider v-if='scol.name' orientation='left' class='form-divider'>{{ scol.name }}
+                                                <a-divider v-if='scol.name' orientation='left' class='form-divider'>
+                                                    {{ scol.name }}
                                                 </a-divider>
                                                 <span v-for='item in scol.children' :key='item.index'>
                                         <component
@@ -490,7 +520,8 @@
                                     </a-tab-pane>
 
                                     <template #leftExtra>
-                                        <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0"  shape="circle" class="tab-navigation">
+                                        <a-button @click="moveByLeft(tabIndex)" :disabled="tabIndex <= 0" shape="circle"
+                                                  class="tab-navigation">
              <span class="h-5 w-5 flex">
                             <inline-svg
                                 class="w-full"
@@ -500,7 +531,9 @@
                                         </a-button>
                                     </template>
                                     <template #rightExtra>
-                                        <a-button @click="moveByRight(tabIndex)" :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)" style="height: 36px; width: 36px" shape="circle">
+                                        <a-button @click="moveByRight(tabIndex)"
+                                                  :disabled="row.children.filter(c=>isVisibleSection(c)).length <= (tabIndex + 1)"
+                                                  style="height: 36px; width: 36px" shape="circle">
 
             <span class="h-5 w-5 flex">
                             <inline-svg
@@ -514,10 +547,6 @@
                             </div>
                         </div>
                     </a-col>
-
-
-
-
 
 
                     <!-- Standart column -->
@@ -567,8 +596,11 @@
                     </a-col>
                 </a-row>
             </div>
-            <a-spin v-if='loadConfig' fix></a-spin>
-            <div class='dataform-footer' v-if='!viewMode  && !use2ColumnLayout && !hideFooter && !noFooter'>
+            <div v-if='loadConfig'>
+                <a-spin fix v-if="!hideLoader"></a-spin>
+            </div>
+            <div class='dataform-footer'
+                 v-if='!loadConfig && !viewMode  && !use2ColumnLayout && !hideFooter && !noFooter'>
                 <fromFooter
                     :withBackButton="withBackButton"
                     :save_btn_text="save_btn_text"
