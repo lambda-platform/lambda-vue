@@ -667,6 +667,45 @@ export default {
                 this.postData()
             }
         },
+        async validateDataForm(){
+            try {
+               await this.$refs[this.meta.model +'-'+ this.schemaID].validate();
+
+                let subValid = true;
+                this.subFormValidations.forEach(sbValidation => {
+                    let isArray = _.isArray(this.model[sbValidation.model])
+                    if (this.model[sbValidation.model] === undefined || this.model[sbValidation.model] === null || isArray) {
+
+                        if (isArray) {
+                            if (this.model[sbValidation.model].length == 0) {
+
+                                notification["error"]({
+                                    message: this.lang.informationIsIncomplete,
+                                    description: sbValidation.emptyErrorMsg,
+                                });
+                                subValid = false
+                            }
+                        } else {
+
+
+                            notification["error"]({
+                                message: this.lang.informationIsIncomplete,
+                                description: sbValidation.emptyErrorMsg,
+                            });
+                            subValid = false
+                        }
+                    }
+                })
+                if (subValid) {
+                   return true;
+                } else {
+                    return false;
+                }
+            } catch (error) {
+                this.finishFailed();
+                return false;
+            }
+        },
         validateWithSubForm() {
             this.$refs[this.meta.model +'-'+ this.schemaID].validate().then(() => {
                 let subValid = true
