@@ -697,6 +697,8 @@ export default {
                 if (subValid) {
                     this.postData()
                 }
+            }).catch(e=>{
+                this.finishFailed();
             })
 
         },
