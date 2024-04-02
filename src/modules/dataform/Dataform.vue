@@ -46,7 +46,7 @@
                                             :asyncMode='asyncMode'
                                             :viewMode='viewMode'
                                             :editMode='editMode'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                         />
                                         <component
                                             :key='item'
@@ -65,7 +65,7 @@
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
                                             :relation_data='getRelation'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                         />
                                         </span>
                                             </a-col>
@@ -96,7 +96,7 @@
                                             :url='url'
                                             :relations='relations'
                                             :asyncMode='asyncMode'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                             :editMode='editMode'>
                                         </component>
                                         <component
@@ -114,7 +114,7 @@
                                             :getSchemaByModel='getSchemaByModel'
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                             :relation_data='getRelation'>
                                         </component>
                                         </span>
@@ -167,7 +167,7 @@
                                 :formula='formula'
                                 :schemaID='schemaID'
                                 :url='url'
-                                :validateWithSubForm='validateWithSubForm'
+                                :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                 :editMode='editMode'>
                             </component>
                             <component
@@ -186,7 +186,7 @@
                                 :getSchemaByModel='getSchemaByModel'
                                 :getSchemaRelationByModel='getSchemaRelationByModel'
                                 :setSchemaByModel='setSchemaByModel'
-                                :validateWithSubForm='validateWithSubForm'
+                                :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                 :url='url'
                                 :relation_data='getRelation'>
                             </component>
@@ -226,7 +226,7 @@
                                             :relations='relations'
                                             :asyncMode='asyncMode'
                                             :editMode='editMode'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                         />
                                         <component
                                             :key='item'
@@ -245,7 +245,7 @@
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
                                             :relation_data='getRelation'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                         />
                                         </span>
                                                 </a-col>
@@ -275,7 +275,7 @@
                                             :url='url'
                                             :relations='relations'
                                             :asyncMode='asyncMode'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                             :editMode='editMode'>
                                         </component>
                                         <component
@@ -293,7 +293,7 @@
                                             :getSchemaByModel='getSchemaByModel'
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                             :relation_data='getRelation'>
                                         </component>
                                         </span>
@@ -347,7 +347,7 @@
                                 :schemaID='schemaID'
                                 :viewMode='viewMode'
                                 :url='url'
-                                :validateWithSubForm='validateWithSubForm'
+                                :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                 :editMode='editMode'>
                             </component>
                             <component
@@ -366,7 +366,7 @@
                                 :getSchemaByModel='getSchemaByModel'
                                 :getSchemaRelationByModel='getSchemaRelationByModel'
                                 :setSchemaByModel='setSchemaByModel'
-                                :validateWithSubForm='validateWithSubForm'
+                                :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                 :url='url'
                                 :relation_data='getRelation'>
                             </component>
@@ -425,7 +425,7 @@
                                             :viewMode='viewMode'
                                             :asyncMode='asyncMode'
                                             :editMode='editMode'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                         />
                                         <component
                                             :key='item'
@@ -444,7 +444,7 @@
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
                                             :relation_data='getRelation'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                         />
                                         </span>
                                 </a-col>
@@ -493,7 +493,7 @@
                                             :relations='relations'
                                             :asyncMode='asyncMode'
                                             :viewMode='viewMode'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                             :editMode='editMode'>
                                         </component>
                                         <component
@@ -511,7 +511,7 @@
                                             :getSchemaByModel='getSchemaByModel'
                                             :getSchemaRelationByModel='getSchemaRelationByModel'
                                             :setSchemaByModel='setSchemaByModel'
-                                            :validateWithSubForm='validateWithSubForm'
+                                            :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                             :relation_data='getRelation'>
                                         </component>
                                         </span>
@@ -569,7 +569,7 @@
                                 :schemaID='schemaID'
                                 :viewMode='viewMode'
                                 :url='url'
-                                :validateWithSubForm='validateWithSubForm'
+                                :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                 :editMode='editMode'>
                             </component>
                             <component
@@ -588,7 +588,7 @@
                                 :getSchemaByModel='getSchemaByModel'
                                 :getSchemaRelationByModel='getSchemaRelationByModel'
                                 :setSchemaByModel='setSchemaByModel'
-                                :validateWithSubForm='validateWithSubForm'
+                                :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                 :url='url'
                                 :relation_data='getRelation'>
                             </component>
