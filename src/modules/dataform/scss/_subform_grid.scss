@@ -10,6 +10,31 @@
     .ant-form-item-label{
         display: none !important;
     }
+    .grid-selector-label{
+        .ant-form-item-label {
+            display: block !important;
+        }
+        .ant-form-item-has-success{
+            .ant-form-item-explain{
+                display: none;
+
+            }
+        }
+
+    }
+
+    .ant-form-item-has-error {
+        .grid-selector{
+            tbody tr td {
+                border: 1px solid #ff4d4f;
+
+            }
+            thead tr th {
+                border: 1px solid #ff4d4f;
+
+            }
+        }
+    }
     .subform-header {
 
         margin-top: 2px;
@@ -316,4 +341,7 @@
             //display: none;
         }
     }
+}
+.grid-selector-wrapper{
+    margin-bottom: 0;
 }
