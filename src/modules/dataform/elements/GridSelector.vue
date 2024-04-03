@@ -50,7 +50,7 @@
                         </tbody>
                     </table>
 
-                    <a-button @click="showInfoModal" v-if="meta.info_url && model.form[model.component] && model.component" class="ml-2">
+                    <a-button @click="showInfoModal" v-if="meta.info_url && model.form[model.component] && model.component" class="ml-2" type="text">
                         <template #icon>
                     <span class="svg-icon ">
                                  <inline-svg
