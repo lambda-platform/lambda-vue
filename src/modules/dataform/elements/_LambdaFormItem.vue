@@ -1,5 +1,5 @@
 <template>
-    <a-form-item :label=label :name="name" class="data-form-item">
+    <a-form-item :label=label :name="name" class="data-form-item" :validateStatus="validateStatus">
         <slot  :disabled="meta && meta.disabled ? meta.disabled : false"></slot>
         <template #help v-if="meta.warn !== '' && meta.warn !== undefined">
             {{meta.warn}}
@@ -9,6 +9,6 @@
 
 <script>
 export default {
-    props: ["label", "name", "meta"],
+    props: ["label", "name", "meta", "validateStatus"],
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="subform-grid">
+    <div class="subform-grid grid-selector-wrapper">
         <div v-if="meta.GSOption.infoTemplate" class="relative">
             <a href="javascript:void(0);" class="link link-icon absolute right-0 top-0" @click="showAddSourceModal"
                v-if="!meta.disabled"
@@ -13,45 +13,55 @@
             </div>
         </div>
 
-        <lambda-form-item v-else :label=label :name="model.component" :meta="meta">
+        <div v-else class="grid-selector-label">
+            <lambda-form-item  :label=label :name="model.component" :meta="meta" :validateStatus="model.form[model.component] ? 'success' : undefined">
 
+                <div class="flex items-center">
+                    <table border="1" class="grid-selector">
+                        <thead>
+                        <tr>
 
-                <table border="1">
-                    <thead>
-                    <tr>
-
-                        <th v-for="item in meta.GSOption.sourceGridTargetColumns"
-                            :key="item.index"
-                        >
-                            {{ item.label }}
-                        </th>
-                        <th class="action">...</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-
-                        <td v-for="item in meta.GSOption.sourceGridTargetColumns"
-                            :key="item.index"
-                        >
-                            {{ selectedRow[item.model] }}
-                        </td>
-                        <td class="action">
-                            <a href="javascript:void(0);" class="link link-icon" @click="showAddSourceModal"
-                               v-if="!meta.disabled"
+                            <th v-for="item in meta.GSOption.sourceGridTargetColumns"
+                                :key="item.index"
                             >
+                                {{ item.label }}
+                            </th>
+                            <th class="action">...</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+
+                            <td v-for="item in meta.GSOption.sourceGridTargetColumns"
+                                :key="item.index"
+                            >
+                                {{ selectedRow[item.model] }}
+                            </td>
+                            <td class="action">
+                                <a href="javascript:void(0);" class="link link-icon" @click="showAddSourceModal"
+                                   v-if="!meta.disabled"
+                                >
                            <span class="svg-icon ">
                                <inline-svg src="/assets/icons/duotune/general/gen021.svg"/>
                            </span>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-
-
-        </lambda-form-item>
+                    <a-button @click="showInfoModal" v-if="meta.info_url && model.form[model.component] && model.component" class="ml-2">
+                        <template #icon>
+                    <span class="svg-icon ">
+                                 <inline-svg
+                                     src="/assets/icons/duotone/Code/Info-circle.svg"
+                                 />
+                        </span>
+                        </template>
+                    </a-button>
+                </div>
+            </lambda-form-item>
+        </div>
         <a-modal
             :name="`grid-modal-${meta.GSOption.sourceGridID}`"
             v-model:open="modal_grid_show"
@@ -170,7 +180,11 @@ export default {
     },
 
     methods: {
-
+        showInfoModal () {
+            if (this.model.form[this.model.component]) {
+                window.showInformationModal(`${this.meta.info_url}${this.model.form[this.model.component]}`, this.placeholder)
+            }
+        },
         callRowData () {
 
             let filter = {}
