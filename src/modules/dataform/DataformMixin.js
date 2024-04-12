@@ -391,12 +391,27 @@ export default {
                         if (item.fillByUserField !== null && item.fillByUserField !== '' && item.fillByUserField !== undefined) {
                             this.setModel(item.model, window.init.user[item.fillByUserField], item.formType)
                         }
+
+
                         if (this.isValid(item.param)) {
                             if (item.param in this.$route.params) {
                                 let param = this.$route.params[item.param]
                                 if (param !== 'null') {
+                                    if(this.isNumberString(param)){
+                                        this.$data.model[item.model] = param * 1;
+                                    } else {
+                                        this.$data.model[item.model] = param;
+                                    }
+                                }
+                            }
+                            let param = this.$route.query[item.param]
+                            if (param !== 'null') {
+                                if(this.isNumberString(param)){
+                                    this.$data.model[item.model] = param * 1;
+                                } else {
                                     this.$data.model[item.model] = param;
                                 }
+
                             }
                         }
                     }
@@ -418,6 +433,9 @@ export default {
             } else {
                 callback()
             }
+        },
+        isNumberString(str) {
+            return /^-?\d+(\.\d+)?$/.test(str);
         },
 
         setUiSchemaFormItem(items) {
