@@ -1,7 +1,7 @@
 import { isValid } from '../utils/methods'
 
 export default {
-    props: ['model', 'label', 'meta', 'do_render', 'editMode', 'is_show', 'relation_data', 'showInformationModal', 'url', 'setSchemaByModel', 'getSchemaByModel', 'isBuilder', 'rowIndex'],
+    props: ['model', 'label', 'meta', 'do_render', 'editMode', 'is_show', 'relation_data', 'showInformationModal', 'url', 'setSchemaByModel', 'getSchemaByModel', 'isBuilder', 'rowIndex', 'subFormFillData'],
     computed: {
         placeholder () {
             return this.meta && this.meta.placeHolder !== null && this.meta.placeHolder !== '' && this.meta.placeHolder !== undefined ? this.meta.placeHolder : this.label
