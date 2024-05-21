@@ -91,27 +91,33 @@ export default {
                 appId: window.init.firebase_config.appId,
                 measurementId: window.init.firebase_config.measurementId
             }
-            // Initialize Firebase
-            const app = initializeApp(firebaseConfig)
+            try {
+                // Initialize Firebase
+                const app = initializeApp(firebaseConfig)
 
-            const messaging = getMessaging(app);
+                const messaging = getMessaging(app);
 
-            getToken(messaging, window.init.firebase_config.publicKey).then((currentToken) => {
+                getToken(messaging, window.init.firebase_config.publicKey).then((currentToken) => {
 
-                if (currentToken) {
-                    axios.get('/lambda/notify/token/' + this.$props.userID + '/' + currentToken).then(o => {
+                    if (currentToken) {
+                        axios.get('/lambda/notify/token/' + this.$props.userID + '/' + currentToken).then(o => {
 
-                    })
-                } else {
-                    console.log('No Instance ID token available. Request permission to generate one.')
-                }
-            }).catch((err) => {
-                console.log('An error occurred while retrieving token. ', err)
-            })
+                        })
+                    } else {
+                        console.log('No Instance ID token available. Request permission to generate one.')
+                    }
+                }).catch((err) => {
+                    console.log('An error occurred while retrieving token. ', err)
+                })
 
-            onMessage(messaging, (payload) => {
-                this.notify(payload.data)
-            })
+                onMessage(messaging, (payload) => {
+                    this.notify(payload.data)
+                })
+            } catch (e){
+
+            }
+
+
 
         },
 
