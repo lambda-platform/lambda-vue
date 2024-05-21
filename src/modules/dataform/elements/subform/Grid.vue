@@ -1,5 +1,6 @@
 <template>
     <div class="subform-grid" :style="subStyle">
+
         <h3 style="display: none">{{ rowLength }}</h3>
         <div class="subform-header" v-if="!form.min_height && !form.disableCreate && !viewMode">
             {{ form.name }}
@@ -15,55 +16,67 @@
             </a-button>
 
         </div>
-        <table border="1">
-            <thead>
-            <tr>
-                <th class="row-number" v-if="form.showRowNumber">ДД</th>
-                <th @click="sort(item)" v-for="item in form.schema.filter(i=>i.label !== '' && !i.hidden)"
-                    :key="item.index">
-                    <div class="th-title">
-                        {{ item.label }}<i class="ti-exchange-vertical"/></div>
-                </th>
-                <th class="action" v-if="!form.disableDelete">...</th>
-            </tr>
-            </thead>
-            <tbody>
-            <grid-form v-for="(item, index) in listData"
-                       :key="index"
-                       :rowIndex="index"
-                       :f="item.form"
-                       :model="item.model"
-                       :editMode="editMode"
-                       :relations="relations"
-                       :url='url'
-                       :schema="form.schema"
-                       :formula="formula">
-                <template #action v-if="!form.disableDelete">
-                    <a href="javascript:void(0);" class="btn btn-icon" @click="remove(index)">
+        <div class="relative">
+
+            <table border="1" :ref="model.component">
+                <thead>
+                <tr>
+                    <th class="row-number" v-if="form.showRowNumber">ДД</th>
+                    <th @click="sort(item)" v-for="item in form.schema.filter(i=>i.label !== '' && !i.hidden)"
+                        :key="item.index">
+                        <div class="th-title">
+                            {{ item.label }}<i class="ti-exchange-vertical"/></div>
+                    </th>
+                    <th class="action" v-if="!form.disableDelete">...</th>
+                </tr>
+                </thead>
+                <tbody>
+                <grid-form v-for="(item, index) in listData"
+                           :key="index"
+                           :rowIndex="index"
+                           :f="item.form"
+                           :model="item.model"
+                           :editMode="editMode"
+                           :relations="relations"
+                           :url='url'
+                           :schema="form.schema"
+                           :formula="formula">
+                    <template #action v-if="!form.disableDelete">
+                        <a href="javascript:void(0);" class="btn btn-icon" @click="remove(index)">
                         <span class="svg-icon ">
                                   <inline-svg
                                       src="/assets/icons/duotone/General/Trash.svg"
                                   />
                         </span>
-                    </a>
-                </template>
-                <template #rowNumber v-if="form.showRowNumber">
-                    <span>{{ index + 1 }}</span>
-                </template>
-            </grid-form>
-            </tbody>
-            <tfoot v-if="hasEq">
-            <tr>
-                <td v-for="(item, index) in equationData" :key="index">
-                    <span v-if="item.preStaticWord!=null && item.preStaticWord!=''"> {{ item.preStaticWord }} </span>
-                    <span v-if="item.hasEquation">{{ item.data.toLocaleString() }}</span>
-                    <span v-if="item.prefix!=null && item.prefix!=''"> {{ item.prefix }}</span>
-                </td>
-                <td>
-                </td>
-            </tr>
-            </tfoot>
-        </table>
+                        </a>
+                    </template>
+                    <template #rowNumber v-if="form.showRowNumber">
+                        <span>{{ index + 1 }}</span>
+                    </template>
+                </grid-form>
+                </tbody>
+                <tfoot v-if="hasEq">
+                <tr>
+                    <td v-for="(item, index) in equationData" :key="index">
+                        <span v-if="item.preStaticWord!=null && item.preStaticWord!=''"> {{ item.preStaticWord }} </span>
+                        <span v-if="item.hasEquation">{{ item.data.toLocaleString() }}</span>
+                        <span v-if="item.prefix!=null && item.prefix!=''"> {{ item.prefix }}</span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+            <a class="sub-grid-add" href="javascript:void(0)"  @click="exportToExcel" >
+             <span class="svg-icon ">
+                                 <inline-svg
+                                     class="w-4 h-4"
+                                     src="/assets/icons/duotone/Files/Download.svg"
+                                 />
+                        </span>
+                Татах
+            </a>
+        </div>
         <a class="sub-grid-add" href="javascript:void(0)" @click="add" v-if="form.min_height && !form.disableCreate && !viewMode">
              <span class="svg-icon ">
                                  <inline-svg
@@ -144,7 +157,7 @@ import {element} from "../index";
 import GridForm from "./GridForm";
 import subFormMix from "./subFormMix";
 import {Modal} from 'ant-design-vue'
-
+import * as XLSX from 'xlsx';
 export default {
     props: ["form", "model", "editMode", "relations", "formula", "url", "viewMode"],
     mixins: [subFormMix],
@@ -254,6 +267,77 @@ export default {
         };
     },
     methods: {
+        exportToExcel() {
+            const table = this.$refs[this.model.component];
+
+            // Collect the input values and text content
+            const rows = table.querySelectorAll('tr');
+            const data = [];
+
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+
+                cells.forEach(cell => {
+                    let cellValue = '';
+
+                    // Check if there is an input element
+                    const input = cell.querySelector('input');
+                    if (input) {
+                        cellValue = input.value;
+                    }
+
+                    // Check if there is a select item
+                    const selectItem = cell.querySelector('.ant-select-selection-item');
+                    if (selectItem) {
+                        cellValue = selectItem.textContent.trim();
+                    }
+
+                    // If no input or select item, get the text content
+                    if (!cellValue) {
+                        cellValue = cell.innerText.trim() || cell.textContent.trim();
+                    }
+
+                    rowData.push(cellValue);
+                });
+
+                if (rowData.length > 0) {
+                    data.push(rowData);
+                }
+            });
+
+            // Create a new table with the collected data
+            const newTable = document.createElement('table');
+            data.forEach(rowData => {
+                const tr = newTable.insertRow();
+                rowData.forEach(cellData => {
+                    const td = tr.insertCell();
+                    td.textContent = cellData;
+                });
+            });
+
+            // Convert the new table to a workbook and export it
+            const wb = XLSX.utils.table_to_book(newTable, { sheet: this.form.name });
+            const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+            function s2ab(s) {
+                const buf = new ArrayBuffer(s.length);
+                const view = new Uint8Array(buf);
+                for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            const blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${this.form.name}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        },
+
 
         element: element,
 
