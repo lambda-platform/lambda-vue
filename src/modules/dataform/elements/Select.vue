@@ -121,7 +121,7 @@ export default {
                 } else {
                     if (val === '') {
                         this.model.form[this.model.component] = null
-                    } else if (!isNaN(val)) {
+                    } else if (!isNaN(val) && !/^0\d+$/.test(val)) {
                         this.model.form[this.model.component] = val * 1
                     } else {
                         this.model.form[this.model.component] = val
