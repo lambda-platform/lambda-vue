@@ -557,7 +557,7 @@ export default {
                 case 'Select':
                     if (value === '' || value === null) {
                         this.$data.model[name] = null;
-                    } else if (!isNaN(value)) {
+                    } else if (!isNaN(value) && !/^0\d+$/.test(value)) {
                         this.$data.model[name] = value * 1;
                     } else {
 
