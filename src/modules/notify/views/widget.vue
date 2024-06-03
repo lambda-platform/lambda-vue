@@ -1,5 +1,5 @@
 <template>
-    <a-popover placement="bottom" overlayClassName="header-notice-wrapper"  trigger="click"  :overlayStyle="{ width: isMobile?'250px':'300px', top: '50px' }">
+    <a-popover placement="bottom" overlayClassName="header-notice-wrapper" trigger="click" :overlayStyle="{ width: isMobile?'250px':'300px', top: '50px' }">
         <span class="header-notice">
             <a-badge :count="count">
                 <span class="btn btn-icon">
@@ -12,36 +12,40 @@
             </a-badge>
         </span>
         <template #content>
-            <div class="header-notification-info">
-                <h3>{{ lang.notice }}</h3>
-            </div>
-            <a-list v-if="notifications.length > 0" >
-                <a-list-item v-for="(notif, index) in notifications" :class="notif.seen ? 'seen' : ''">
-                    <a-list-item-meta :title="`${notif.title}, ${notif.first_name != null ? notif.first_name : notif.login}`" :description="`${notif.body} \n ${$date(notif.created_at)}`" @click="setSeen(notif.id, notif.link)">
+           <div class="notification-container">
+               <div class="header-notification-info">
+                   <h3>{{ lang.notice }}</h3>
+               </div>
+               <a-list v-if="notifications.length > 0" >
+                   <a-list-item v-for="notif in notifications" :class="notif.seen ? 'seen' : ''">
+                       <a-list-item-meta :title="`${notif.title}, ${notif.first_name != null ? notif.first_name : notif.login}`" @click="setSeen(notif.id, notif.link)">
+                           <template v-slot:description class="notif-content">
+                               <span>{{ notif.body }}</span><br>
+                               <span class="notification-date">{{ timeAgo(notif.created_at) }}</span>
+                           </template>
+                       </a-list-item-meta>
+                   </a-list-item>
+               </a-list>
+               <div v-else class="no-notifs">
+                   {{ lang.no_notice }}
+               </div>
 
-                    </a-list-item-meta>
-                </a-list-item>
-            </a-list>
-            <div v-else class="no-notifs">
-                {{ lang.no_notice }}
-            </div>
-
-            <a class="all-notif" href="javascript:void(0)" @click="getAllNotification">
-                <span>{{ lang.view_all_notifications }}</span> &nbsp;
-                <i class="ti-arrow-right"></i>
-            </a>
+               <a class="all-notif" href="javascript:void(0)" @click="getAllNotification">
+                   <span>{{ lang.view_all_notifications }}</span> &nbsp;
+                   <i class="ti-arrow-right"></i>
+               </a>
+           </div>
         </template>
     </a-popover>
 </template>
 
 <script>
-import {
-    initializeApp,
-    getApps
-} from '@firebase/app'
-import {getMessaging, getToken, onMessage} from '@firebase/messaging'
+import {initializeApp, getApps} from '@firebase/app';
+import {getMessaging, getToken, onMessage} from '@firebase/messaging';
+import axios from 'axios';
+import {formatTimeAgo} from "@vueuse/core";
+import {toDateTime, getDateTime} from "../../../utils/date";
 
-import axios from 'axios'
 export default {
     props: ['userID', 'isMobile'],
     data () {
@@ -59,8 +63,8 @@ export default {
             }
             this.getUnseenNotification()
         }
-
     },
+
     computed: {
         lang () {
             const labels = ['notice', 'no_notice', 'view_all_notifications']
@@ -69,9 +73,21 @@ export default {
                 return obj
             }, {})
         },
-    },
-    methods: {
 
+        timeAgo() {
+            return (createdAt) => {
+                const formattedDateTime = toDateTime(createdAt);
+                return formatTimeAgo(formattedDateTime, {
+                    max: 'hour',
+                    fullDateFormatter: (createdAt) => {
+                        return getDateTime(createdAt);
+                    }
+                });
+            }
+        }
+    },
+
+    methods: {
         getNotificationGrant () {
             Notification.requestPermission().then((permission) => {
                 if (permission !== 'granted') {
@@ -79,9 +95,9 @@ export default {
                 }
             })
         },
-        initFirebase () {
 
-            var firebaseConfig = {
+        initFirebase () {
+            let firebaseConfig = {
                 apiKey: window.init.firebase_config.apiKey,
                 authDomain: window.init.firebase_config.authDomain,
                 databaseURL: window.init.firebase_config.databaseURL,
@@ -113,12 +129,7 @@ export default {
                 onMessage(messaging, (payload) => {
                     this.notify(payload.data)
                 })
-            } catch (e){
-
-            }
-
-
-
+            } catch (e){}
         },
 
         getUnseenNotification () {
@@ -127,6 +138,7 @@ export default {
                 this.notifications = o.data.notifications
             })
         },
+
         getAllNotification () {
             axios.get('/lambda/notify/all/' + this.$props.userID).then(o => {
                 this.count = 0
@@ -138,7 +150,7 @@ export default {
             axios.get('/lambda/notify/seen/' + id).then(o => {
                 if (o.status) {
                     this.count = this.count >= 1 ? this.count - 1 : 0
-                    let currentNotif = this.notifications.find(item => item.id == id)
+                    let currentNotif = this.notifications.find(item => item.id === id)
                     if (currentNotif) {
                         currentNotif.seen = true
                     }
@@ -148,13 +160,12 @@ export default {
         },
 
         notify (msg) {
-            console.log(msg)
             // let parsedMsg = JSON.parse(msg.message);
             // console.log(parsedMsg);
 
-            let nIndex = this.notifications.findIndex(noti => noti.id == msg.id)
+            let nIndex = this.notifications.findIndex(noti => noti.id === msg.id)
 
-            if (nIndex == -1) {
+            if (nIndex === -1) {
                 this.notifications.unshift({
                     title: msg.title,
                     body: msg.body,
@@ -172,7 +183,6 @@ export default {
                 body: msg.body,
                 icon: msg.icon,
             })
-
         },
     }
 }
@@ -193,9 +203,15 @@ export default {
             font-size: 14px;
         }
     }
+}
 
-    &-notice {
+.notification-container {
+    height: 50vh;
+    overflow-y: auto;
+}
 
-    }
+.notification-date {
+   font-size: 12px;
+    font-style: italic;
 }
 </style>
