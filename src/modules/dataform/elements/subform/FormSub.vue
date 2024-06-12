@@ -98,6 +98,7 @@
 
 
                 <div class="form-body">
+
                     <dataform ref="form" v-if="modal_show" :schemaID="form.formId"
                               :do_render="modal_show"
                               :editMode="editIndex >= 0"
@@ -310,7 +311,12 @@ export default {
 
             if (this.editIndex >= 0) {
                 this.$nextTick(() => {
+                    if(this.viewMode){
+                        this.$refs.form.viewMode = true;
+                    }
                     this.$refs.form.editModel(this.listData[this.editIndex].model[this.form.identity], {...this.listData[this.editIndex].model});
+
+
                 });
             }
 
