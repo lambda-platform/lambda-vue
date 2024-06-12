@@ -724,7 +724,7 @@ export default {
                 return false;
             }
         },
-        validateWithSubForm() {
+        validateWithSubForm(ignoreSuccess) {
             this.$refs[this.meta.model +'-'+ this.schemaID].validate().then(() => {
                 let subValid = true
                 this.subFormValidations.forEach(sbValidation => {
@@ -752,7 +752,7 @@ export default {
                     }
                 })
                 if (subValid) {
-                    this.postData()
+                    this.postData(ignoreSuccess)
                 }
             }).catch(e=>{
                 this.finishFailed();
@@ -760,7 +760,7 @@ export default {
 
         },
 
-        postData() {
+        postData(ignoreSuccess) {
             if (this.isSubForm) {
                 this.$props.onSuccess(this.$data.model)
             } else {
@@ -776,20 +776,23 @@ export default {
                                     description: this.lang.successfullySaved
                                 });
                             }
-                            if (!this.editMode) {
+                            if(!ignoreSuccess){
+                                if (!this.editMode) {
 
-                                this.$data.model[this.identity] = data[this.identity]
-                                if (this.$props.onSuccess) {
-                                    this.$props.onSuccess(data.data)
-                                }
+                                    this.$data.model[this.identity] = data[this.identity]
+                                    if (this.$props.onSuccess) {
+                                        this.$props.onSuccess(data.data)
+                                    }
 
-                                this.handleReset(this.meta.model + '-' + this.schemaID)
+                                    this.handleReset(this.meta.model + '-' + this.schemaID)
 
-                            } else {
-                                if (this.$props.onSuccess) {
-                                    this.$props.onSuccess(data.data)
+                                } else {
+                                    if (this.$props.onSuccess) {
+                                        this.$props.onSuccess(data.data)
+                                    }
                                 }
                             }
+
                         } else {
 
                             if(!this.hideErrorDialog){
@@ -851,6 +854,7 @@ export default {
                     })
             }
         },
+
 
         handleReset() {
             this.model = {}

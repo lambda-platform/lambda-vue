@@ -30,6 +30,8 @@ export const  getOptionsData = async (schema, setSchemaByModel, optionUrl) => {
 
 
                 return relationData;
+            }else {
+                return  await getOptionsByRelations('', relationsData, optionUrl)
             }
 
         } else {
