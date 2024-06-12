@@ -37,6 +37,7 @@
                                             :key='item.model'
                                             :ref="'sf'+item.model"
                                             :url='url'
+                                            :viewMode='viewMode'
                                             v-if="isShow(item.model) && item.formType == 'SubForm' && item.subtype"
                                             :is='element(`subform/${item.subtype}`)'
                                             :model='{form: model, component: item.model}'
@@ -44,7 +45,7 @@
                                             :formula='formula'
                                             :relations='relations'
                                             :asyncMode='asyncMode'
-                                            :viewMode='viewMode'
+
                                             :editMode='editMode'
                                             :validateWithSubForm='validateWithSubForm'
                                             :validateDataForm='validateDataForm'
@@ -97,6 +98,7 @@
                                             :form='setMeta(item, true)'
                                             :formula='formula'
                                             :url='url'
+                                            :viewMode='viewMode'
                                             :relations='relations'
                                             :asyncMode='asyncMode'
                                             :validateWithSubForm='validateWithSubForm'
@@ -173,6 +175,7 @@
                                 :formula='formula'
                                 :schemaID='schemaID'
                                 :url='url'
+                                :viewMode='viewMode'
                                 :validateWithSubForm='validateWithSubForm' :validateDataForm='validateDataForm'
                                 :editMode='editMode'>
                             </component>
@@ -233,6 +236,7 @@
                                             :relations='relations'
                                             :asyncMode='asyncMode'
                                             :editMode='editMode'
+                                            :viewMode='viewMode'
                                             :validateWithSubForm='validateWithSubForm'
                                             :validateDataForm='validateDataForm'
                                         />
@@ -284,6 +288,7 @@
                                             :formula='formula'
                                             :url='url'
                                             :relations='relations'
+                                            :viewMode='viewMode'
                                             :asyncMode='asyncMode'
                                             :validateWithSubForm='validateWithSubForm'
                                             :validateDataForm='validateDataForm'
@@ -439,6 +444,7 @@
                                             :viewMode='viewMode'
                                             :asyncMode='asyncMode'
                                             :editMode='editMode'
+
                                             :validateWithSubForm='validateWithSubForm'
                                             :validateDataForm='validateDataForm'
                                         />
