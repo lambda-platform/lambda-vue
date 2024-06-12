@@ -183,7 +183,7 @@ import GridForm from "./GridForm";
 import subFormMix from "./subFormMix";
 import { Modal } from 'ant-design-vue'
 export default {
-    props: ["form", "model", "editMode", "relations", "formula", "url", "viewMode"],
+    props: ["form", "model", "editMode", "relations", "formula", "url", "viewMode", "validateWithSubForm"],
     mixins: [subFormMix],
     components: {
         "grid-form": GridForm,
@@ -386,6 +386,9 @@ export default {
             }
 
 
+            if(this.editMode){
+                this.validateWithSubForm(true);
+            }
             this.closeModal();
         },
         element: element,
