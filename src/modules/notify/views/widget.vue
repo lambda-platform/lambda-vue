@@ -1,72 +1,94 @@
 <template>
-    <a-popover placement="bottom" overlayClassName="header-notice-wrapper" trigger="click" :overlayStyle="{ width: isMobile?'250px':'300px', top: '50px' }">
+    <a-popover placement="bottom" overlayClassName="header-notice-wrapper" trigger="click"
+               :overlayStyle="{ width: isMobile?'250px':'300px', top: '50px' }"
+    >
         <span class="header-notice">
             <a-badge :count="count">
                 <span class="btn btn-icon">
                  <span class="svg-icon">
-                     <inline-svg
-                          src="/assets/icons/duotune/general/gen007.svg"
-                      />
+                     <inline-svg src="/assets/icons/duotune/general/gen007.svg"/>
                  </span>
                 </span>
             </a-badge>
         </span>
         <template #content>
-           <div class="notification-container">
-               <div class="header-notification-info">
-                   <h3>{{ lang.notice }}</h3>
-               </div>
-               <a-list v-if="notifications.length > 0" >
-                   <a-list-item v-for="notif in notifications" :class="notif.seen ? 'seen' : ''">
-                       <a-list-item-meta :title="`${notif.title}, ${notif.first_name != null ? notif.first_name : notif.login}`" @click="setSeen(notif.id, notif.link)">
-                           <template v-slot:description class="notif-content">
-                               <span>{{ notif.body }}</span><br>
-                               <span class="notification-date">{{ timeAgo(notif.created_at) }}</span>
-                           </template>
-                       </a-list-item-meta>
-                   </a-list-item>
-               </a-list>
-               <div v-else class="no-notifs">
-                   {{ lang.no_notice }}
-               </div>
-
-               <a class="all-notif" href="javascript:void(0)" @click="getAllNotification">
-                   <span>{{ lang.view_all_notifications }}</span> &nbsp;
-                   <i class="ti-arrow-right"></i>
-               </a>
-           </div>
+            <div class="notification-container">
+                <div class="header-notification-info">
+                    <h3>{{ lang.notice }}</h3>
+                </div>
+                <a-list v-if="notifications?.length">
+                    <a-list-item v-for="notif in notifications"
+                                 :key="notif.id"
+                                 :class="notif.seen ? 'seen' : ''"
+                    >
+                        <a-list-item-meta
+                            :title="`${notif.title}, ${notif.first_name != null ? notif.first_name : notif.login}`"
+                            @click="setSeen(notif.id, notif.link)"
+                        >
+                            <template #description>
+                                <span class="notif-content">
+                                    <span>{{ notif.body }}</span><br>
+                                    <span class="notification-date">{{ timeAgo(notif.created_at) }}</span>
+                                </span>
+                            </template>
+                        </a-list-item-meta>
+                    </a-list-item>
+                </a-list>
+                <div v-else class="no-notifs">
+                    {{ lang.no_notice }}
+                </div>
+                <a class="all-notif" href="javascript:void(0)" @click="getAllNotification">
+                    <span>{{ lang.view_all_notifications }}</span> &nbsp;
+                    <i class="ti-arrow-right"></i>
+                </a>
+            </div>
         </template>
     </a-popover>
+
+    <a-modal
+        v-model:open="isModalVisible"
+        @ok="handleRequest"
+        :centered="isMobile"
+        wrap-class-name="full-modal"
+    >
+        <template #title>
+            <inline-svg class="w-5 h-5" src="/assets/icons/duotune/general/gen007.svg"/>
+            <div>Мэдэгдэл зөвшөөрөх</div>
+        </template>
+        <template #footer>
+            <a-button key="submit" type="primary" @click="handleRequest">Зөвшөөрөх</a-button>
+            <a-button key="back" @click="handleCancel">Дахин харуулахгүй</a-button>
+        </template>
+        <p>Системээс илгээж буй чухал мэдэгдлүүдийг цаг алдалгүй хүлээж авахыг хүсвэл
+            <span style="white-space: nowrap;">"Зөвшөөрөх > Allow"</span> дарна уу.</p>
+    </a-modal>
 </template>
 
 <script>
-import {initializeApp, getApps} from '@firebase/app';
 import {getMessaging, getToken, onMessage} from '@firebase/messaging';
-import axios from 'axios';
-import {formatTimeAgo} from "@vueuse/core";
 import {toDateTime, getDateTime} from "../../../utils/date";
+import {initializeApp, getApps} from '@firebase/app';
+import {formatTimeAgo} from "@vueuse/core";
+import axios from 'axios';
 
 export default {
     props: ['userID', 'isMobile'],
-    data () {
+
+    data() {
         return {
+            isModalVisible: false,
             notifications: [],
-            count: 0
+            count: 0,
         }
     },
 
-    mounted () {
-        if(window.init.firebase_config.apiKey){
-            if (getApps().length === 0) {
-                this.initFirebase()
-                this.getNotificationGrant()
-            }
-            this.getUnseenNotification()
-        }
+    mounted() {
+        this.isSupported();
+        this.getUnseenNotification();
     },
 
     computed: {
-        lang () {
+        lang() {
             const labels = ['notice', 'no_notice', 'view_all_notifications']
             return labels.reduce((obj, key, i) => {
                 obj[key] = this.$t('notify.' + labels[i])
@@ -88,65 +110,120 @@ export default {
     },
 
     methods: {
-        getNotificationGrant () {
-            Notification.requestPermission().then((permission) => {
-                if (permission !== 'granted') {
-                    console.log('Unable to get permission to notify.')
+        isSupported() {
+            if (!("Notification" in window)) {
+                console.log("This browser does not support desktop notification");
+            } else {
+                if (Notification.permission === "default") {
+                    const showModal = localStorage.getItem(`showNotificationModal_${this.userID}`);
+                    if (showModal !== 'false') {
+                        this.isModalVisible = true;
+                    }
+                } else if (Notification.permission === "granted") {
+                    this.initializeFirebase();
                 }
-            })
+            }
         },
 
-        initFirebase () {
-            let firebaseConfig = {
-                apiKey: window.init.firebase_config.apiKey,
-                authDomain: window.init.firebase_config.authDomain,
-                databaseURL: window.init.firebase_config.databaseURL,
-                projectId: window.init.firebase_config.projectId,
-                storageBucket: window.init.firebase_config.storageBucket,
-                messagingSenderId: window.init.firebase_config.messagingSenderId,
-                appId: window.init.firebase_config.appId,
-                measurementId: window.init.firebase_config.measurementId
-            }
+        async handleRequest() {
+            this.isModalVisible = false;
             try {
-                // Initialize Firebase
-                const app = initializeApp(firebaseConfig)
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    this.initializeFirebase();
+                } else if (permission === 'denied') {
+                    console.warn('Notification permission denied.');
+                }
+            } catch (error) {
+                console.error('Error during notification setup:', error);
+            }
+        },
 
+        handleCancel() {
+            this.isModalVisible = false;
+            localStorage.setItem(`showNotificationModal_${this.userID}`, 'false');
+        },
+
+        initializeFirebase() {
+            const maxRetries = 50;
+            let retries = 0;
+
+            if (window.init?.firebase_config) {
+                if (getApps().length === 0) {
+                    this.setupFirebase();
+                }
+            } else {
+                const checkInitInterval = setInterval(() => {
+                    if (window.init?.firebase_config) {
+                        clearInterval(checkInitInterval);
+                        if (getApps().length === 0) {
+                            this.setupFirebase();
+                        }
+                    } else if (retries >= maxRetries) {
+                        clearInterval(checkInitInterval);
+                        console.error('Firebase config not found after maximum retries.');
+                    }
+                    retries++;
+                }, 100);
+            }
+        },
+
+        async setupFirebase(attempt = 0) {
+            let firebaseConfig = window.init.firebase_config;
+            const MAX_RETRY_ATTEMPTS = 3;
+
+            try {
+                const app = initializeApp(firebaseConfig);
                 const messaging = getMessaging(app);
 
-                getToken(messaging, window.init.firebase_config.publicKey).then((currentToken) => {
-
-                    if (currentToken) {
-                        axios.get('/lambda/notify/token/' + this.$props.userID + '/' + currentToken).then(o => {
-
-                        })
-                    } else {
-                        console.log('No Instance ID token available. Request permission to generate one.')
-                    }
-                }).catch((err) => {
-                    console.log('An error occurred while retrieving token. ', err)
-                })
-
                 onMessage(messaging, (payload) => {
-                    this.notify(payload.data)
-                })
-            } catch (e){}
+                    this.notify(payload)
+                });
+
+                try {
+                    const currentToken = await getToken(messaging, {vapidKey: firebaseConfig.publicKey});
+                    if (currentToken) {
+                        try {
+                            await axios.get(`/lambda/notify/token/${this.$props.userID}/${currentToken}`);
+                        } catch (error) {
+                            console.error('Error sending token to server:', error);
+                        }
+                    } else {
+                        console.warn('No registration token available. Request permission to generate one.');
+                    }
+                } catch (err) {
+                    if (err instanceof DOMException && err.message.includes('Subscription failed - no active Service Worker')) {
+                        if (attempt < MAX_RETRY_ATTEMPTS) {
+                            console.error(`Service Worker not ready, retrying (${attempt + 1}/${MAX_RETRY_ATTEMPTS})...`, err);
+                            setTimeout(() => this.setupFirebase(attempt + 1), 1000);
+                        } else {
+                            console.error('Service Worker failed to activate after multiple attempts. Please try again later.', err);
+                        }
+                    } else {
+                        console.error('An error occurred while retrieving token.', err);
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error during Firebase setup:', error);
+            }
         },
 
-        getUnseenNotification () {
+        getUnseenNotification() {
             axios.get('/lambda/notify/new/' + this.$props.userID).then(o => {
                 this.count = o.data.count
                 this.notifications = o.data.notifications
             })
         },
 
-        getAllNotification () {
+        getAllNotification() {
             axios.get('/lambda/notify/all/' + this.$props.userID).then(o => {
                 this.count = 0
                 this.notifications = o.data.notifications
             })
         },
 
-        setSeen (id, link) {
+        setSeen(id, link) {
             axios.get('/lambda/notify/seen/' + id).then(o => {
                 if (o.status) {
                     this.count = this.count >= 1 ? this.count - 1 : 0
@@ -159,29 +236,26 @@ export default {
             })
         },
 
-        notify (msg) {
-            // let parsedMsg = JSON.parse(msg.message);
-            // console.log(parsedMsg);
-
-            let nIndex = this.notifications.findIndex(noti => noti.id === msg.id)
+        notify(msg) {
+            let nIndex = this.notifications.findIndex(noti => noti.id === msg.data.id)
 
             if (nIndex === -1) {
                 this.notifications.unshift({
-                    title: msg.title,
-                    body: msg.body,
-                    link: msg.link,
-                    first_name: msg.first_name,
-                    created_at: msg.created_at,
-                    id: msg.id,
+                    title: msg.notification.title,
+                    body: msg.notification.body,
+                    link: msg.data.link,
+                    first_name: msg.data.first_name,
+                    created_at: msg.data.created_at,
+                    id: msg.data.id,
                 })
                 this.count = this.count + 1
             }
-            let notificationAudio = new Audio(msg.sound)
+            let notificationAudio = new Audio(msg.data.sound)
             notificationAudio.play()
-            new Notification(msg.title, {
-                title: msg.title,
-                body: msg.body,
-                icon: msg.icon,
+            new Notification(msg.notification.title, {
+                title: msg.notification.title,
+                body: msg.notification.body,
+                icon: msg.data.icon,
             })
         },
     }
@@ -206,12 +280,42 @@ export default {
 }
 
 .notification-container {
-    height: 50vh;
+    max-height: 50vh;
     overflow-y: auto;
 }
 
 .notification-date {
-   font-size: 12px;
+    font-size: 12px;
     font-style: italic;
+}
+
+.full-modal {
+    .ant-modal {
+        max-width: 100%;
+    }
+
+    .ant-modal-title {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ant-modal-title div {
+        margin-left: 8px;
+    }
+
+    .ant-modal-content {
+        text-align: center;
+        color: gray;
+    }
+
+    .ant-modal-footer {
+        text-align: center;
+    }
+
+    .ant-modal-footer button {
+        width: 180px;
+    }
 }
 </style>
