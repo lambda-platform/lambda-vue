@@ -1,6 +1,6 @@
 <template>
-    <a-popover placement="bottom" overlayClassName="header-notice-wrapper" trigger="click"
-               :overlayStyle="{ width: isMobile?'250px':'300px', top: '50px' }"
+    <a-popover placement="bottomRight" overlayClassName="header-notice-wrapper" trigger="click"
+               :overlayStyle="{ width: isMobile?'250px':'350px', top: '50px' }"
     >
         <span class="header-notice">
             <a-badge :count="count">
@@ -13,13 +13,13 @@
         </span>
         <template #content>
             <div class="notification-container">
-                <div class="header-notification-info">
+                <div class="notification-header">
                     <h3>{{ lang.notice }}</h3>
                 </div>
                 <a-list v-if="notifications?.length">
                     <a-list-item v-for="notif in notifications"
                                  :key="notif.id"
-                                 :class="notif.seen ? 'seen' : ''"
+                                 :class="notif.seen === 0 ? 'notification-unseen' : ''"
                     >
                         <a-list-item-meta
                             :title="`${notif.title}, ${notif.first_name != null ? notif.first_name : notif.login}`"
@@ -89,10 +89,10 @@ export default {
 
     computed: {
         lang() {
-            const labels = ['notice', 'no_notice', 'view_all_notifications']
+            const labels = ['notice', 'no_notice', 'view_all_notifications'];
             return labels.reduce((obj, key, i) => {
                 obj[key] = this.$t('notify.' + labels[i])
-                return obj
+                return obj;
             }, {})
         },
 
@@ -209,35 +209,44 @@ export default {
             }
         },
 
-        getUnseenNotification() {
-            axios.get('/lambda/notify/new/' + this.$props.userID).then(o => {
-                this.count = o.data.count
-                this.notifications = o.data.notifications
-            })
+        async getUnseenNotification() {
+            try {
+                const response = await axios.get('/lambda/notify/new/' + this.$props.userID);
+                this.count = response.data.count;
+                this.notifications = response.data.notifications;
+            } catch (error) {
+                console.error('Error fetching unseen notifications:', error);
+            }
         },
 
-        getAllNotification() {
-            axios.get('/lambda/notify/all/' + this.$props.userID).then(o => {
-                this.count = 0
-                this.notifications = o.data.notifications
-            })
+        async getAllNotification() {
+            try {
+                const response = await axios.get('/lambda/notify/all/' + this.$props.userID);
+                this.count = 0;
+                this.notifications = response.data.notifications;
+            } catch (error) {
+                console.error('Error fetching all notifications:', error);
+            }
         },
 
-        setSeen(id, link) {
-            axios.get('/lambda/notify/seen/' + id).then(o => {
-                if (o.status) {
-                    this.count = this.count >= 1 ? this.count - 1 : 0
-                    let currentNotif = this.notifications.find(item => item.id === id)
-                    if (currentNotif) {
-                        currentNotif.seen = true
+        async setSeen(id, link) {
+            try {
+                let currentNotif = this.notifications.find(item => item.id === id);
+                if (currentNotif && currentNotif.seen === 0) {
+                    const response = await axios.get('/lambda/notify/seen/' + id);
+                    if (response.status === 200) {
+                        currentNotif.seen = 1;
+                        this.count = Math.max(0, this.count - 1);
                     }
-                    this.$router.push(link)
                 }
-            })
+                this.$router.push(link);
+            } catch (error) {
+                console.error('Error setting notification as seen:', error);
+            }
         },
 
         notify(msg) {
-            let nIndex = this.notifications.findIndex(noti => noti.id === msg.data.id)
+            let nIndex = this.notifications.findIndex(noti => noti.id === msg.data.id);
 
             if (nIndex === -1) {
                 this.notifications.unshift({
@@ -247,16 +256,21 @@ export default {
                     first_name: msg.data.first_name,
                     created_at: msg.data.created_at,
                     id: msg.data.id,
+                    seen: 0,
                 })
                 this.count = this.count + 1
             }
-            let notificationAudio = new Audio(msg.data.sound)
-            notificationAudio.play()
+
+            let notificationAudio = new Audio(msg.data.sound);
+            notificationAudio.play().catch(error => {
+                console.error('Error playing notification sound:', error);
+            });
+
             new Notification(msg.notification.title, {
                 title: msg.notification.title,
                 body: msg.notification.body,
                 icon: msg.data.icon,
-            })
+            });
         },
     }
 }
@@ -284,9 +298,20 @@ export default {
     overflow-y: auto;
 }
 
+.notification-header {
+    font-weight: bold;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 10px;
+}
+
 .notification-date {
     font-size: 12px;
     font-style: italic;
+}
+
+.notification-unseen {
+    font-weight: bold;
+    border-left: 4px solid #3471f6;
 }
 
 .full-modal {
