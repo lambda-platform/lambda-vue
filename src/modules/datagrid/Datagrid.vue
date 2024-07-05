@@ -332,19 +332,18 @@ export default {
         },
 
         async initFromServerData(customSchemaId) {
-
             if (customSchemaId) {
                 this.customShemaId = customSchemaId;
             } else {
                 this.customShemaId = null;
             }
 
-
             try {
                 let response = await axios.get(this.page_id ? `${this.baseUrl}/lambda/puzzle/schema/grid/${this.customShemaId ? this.customShemaId : this.$props.schemaID}?page_id=${this.page_id}` : `${this.baseUrl}/lambda/puzzle/schema/grid/${this.customShemaId ? this.customShemaId : this.$props.schemaID}`);
 
                 this.gridTitle = response.data.data.name;
-                let data = JSON.parse(response.data.data.schema);
+                let convertedString = response.data.data.schema.replace(/\bTRUE\b/g, 'true').replace(/\bFALSE\b/g, 'false').replace(/\bNULL\b/g, 'null');
+                let data = JSON.parse(convertedString);
                 data['grid_id'] = response.data.data.id;
                 return data;
             } catch (e) {
