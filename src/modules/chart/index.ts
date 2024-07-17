@@ -1,12 +1,14 @@
 import { App } from "vue";
-import Chart from "./Chart.vue";
-import ChartRest from "./ChartRest.vue";
+import { defineAsyncComponent } from 'vue';
 
 /**
  * Initialize Chart component
  * @param app vue instance
  */
 export function installChart(app: App<Element>) {
-    app.component("Chart", Chart);
-    app.component("ChartRest", ChartRest);
+    const AsyncChart = defineAsyncComponent(() => import("./Chart.vue"));
+    const AsyncChartRest = defineAsyncComponent(() => import("./ChartRest.vue"));
+
+    app.component("Chart", AsyncChart);
+    app.component("ChartRest", AsyncChartRest);
 }

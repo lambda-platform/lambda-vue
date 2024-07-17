@@ -1,10 +1,13 @@
 import { App } from "vue";
-import DataGrid from "./Datagrid.vue";
+import { defineAsyncComponent } from 'vue'
 
 /**
  * Initialize DataGrid component
  * @param app vue instance
  */
 export function installDataGrid(app: App<Element>) {
-    app.component("datagrid", DataGrid);
+
+    const AsyncDatagrid = defineAsyncComponent(() => import("./Datagrid.vue"));
+
+    app.component("datagrid", AsyncDatagrid);
 }
