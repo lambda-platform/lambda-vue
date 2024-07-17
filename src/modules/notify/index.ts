@@ -1,15 +1,13 @@
-import { App } from "vue";
-
-import widget from "./views/widget.vue";
-
+import {App, defineAsyncComponent} from "vue";
 /**
  * Initialize DataForm component
  * @param app vue instance
  */
 export function installNotification(app: App<Element>) {
 
+    const AsyncWidget = defineAsyncComponent(() => import("./views/widget.vue"));
 
-    app.component("notif-widget", widget);
+    app.component("notif-widget", AsyncWidget);
 
 
 }

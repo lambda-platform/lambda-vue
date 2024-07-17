@@ -1,10 +1,12 @@
-import { App } from "vue";
-import krud from "./krud.vue";
+import {App, defineAsyncComponent} from "vue";
 
 /**
  * Initialize Krud component
  * @param app vue instance
  */
 export function installKrud(app: App<Element>) {
-    app.component("krud", krud);
+
+    const AsyncKrud = defineAsyncComponent(() => import("./krud.vue"));
+
+    app.component("krud", AsyncKrud);
 }

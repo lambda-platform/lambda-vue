@@ -1,6 +1,6 @@
 import { App } from "vue";
-import Dataform from "./Dataform.vue";
-import LambdaFormItem from "./elements/_LambdaFormItem.vue";
+import { defineAsyncComponent } from 'vue'
+
 import "./bootstrap"
 /**
  * Initialize DataForm component
@@ -8,6 +8,10 @@ import "./bootstrap"
  */
 export function installDataForm(app: App<Element>) {
 
-    app.component("dataform", Dataform);
-    app.component("LambdaFormItem", LambdaFormItem);
+    const AsyncDataform = defineAsyncComponent(() => import("./Dataform.vue"));
+    const AsyncLambdaFormItem = defineAsyncComponent(() => import("./elements/_LambdaFormItem.vue"));
+
+    app.component("dataform", AsyncDataform);
+    app.component("LambdaFormItem", AsyncLambdaFormItem);
+
 }
