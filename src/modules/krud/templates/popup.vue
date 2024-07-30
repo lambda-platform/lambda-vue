@@ -1,6 +1,6 @@
 <template>
     <div class="card drawer-wrappper">
-        <common :parent="parent" :title="title" :addAction="openSide" :permissions="permissions"></common>
+        <common :parent="parent" :title="title" :addAction="openSide" :permissions="permissions" :CRUD_ID="CRUD_ID"></common>
         <portal to="header-right" >
             <Krudtools :search="search"
                        :refresh="refresh"
@@ -23,7 +23,7 @@
                 <div class="crud-page-body">
                     <div id="drawer-container">
                         <div :class="openSlidePanel ? 'dg-flex open-drawer' : 'dg-flex'">
-                            <datagrid v-if="permissions ? permissions.r : false" ref="grid"
+                            <datagrid v-if="permissions ? permissions.r : false" ref="dataGrid"
                                       :url="url"
                                       :schemaID="grid"
                                       :paginate="50"
@@ -51,12 +51,12 @@
             :maskClosable="false"
             :title="withCrudLog ? `${title} : ${rowId}` : title"
             :forceRender="true"
-            :width="this.form_width"
+            :width="form_width"
             :footer="null"
             placement="right"
         >
             <dataform
-                ref="form"
+                ref="dataForm"
                 :hideTitle="true"
                 :schemaID="form"
                 :title="title"
@@ -72,55 +72,78 @@
                 :close="hideSide"
             >
             </dataform>
+            <crud-log v-if="withCrudLog && editMode" :form="form" :rowId="rowId" :grid="grid"/>
 
         </a-modal>
     </div>
 </template>
-<script>
+<script setup>
+import { ref } from 'vue';
+import { useCrud } from './useCrud';
+import {useI18n} from "vue-i18n";
+const { t } = useI18n();
+import common from '../components/common';
+import Krudtools from '../components/krudtools';
+import crudLog from '../components/crudLog';
 
-import common from '../components/common'
-import Krudtools from '../components/krudtools'
-import mixins from './mixin'
-import { Modal } from 'ant-design-vue'
-export default {
-    inheritAttrs: false,
-    name: 'Canvas',
-    mixins: [mixins],
-    data () {
-        return {
-            form_width: 800,
-            openSlidePanel: false,
-            exportLoading: false,
-        }
-    },
-    components: {
-        common,
-        Krudtools,
-        "a-modal": Modal,
-    },
-    methods: {
-        hideSide () {
-            this.openSlidePanel = false;
-            this.editMode = false;
-
-        },
-        openSide () {
-            this.openSlidePanel = true
-            // let unit = (window.innerWidth - 300) / 100
-            // let w = parseInt(unit * 40)
-            // this.$refs.panel.style.width = w + 'px'
-            // this.$refs.panel.style.flex = `0 0 ${w + 'px'}`
-        },
-
-        templateEdit () {
-            this.openSide()
-        },
-        templateOnSuccess () {
-            this.hideSide()
-        },
-    },
-    mounted () {
-
-    },
+const props = defineProps({
+    title: String,
+    icon: String,
+    main_tab_title: String,
+    grid: Number,
+    form: Number,
+    projects_id: Number,
+    hideHeader: Boolean,
+    hasSelection: Boolean,
+    actions: String,
+    dbClickAction: Function,
+    onRowSelect: Function,
+    rowCurrentChange: Function,
+    permissions: Object,
+    user_condition: Object,
+    custom_condition: Object,
+    view_url: String,
+    mode: String,
+    onPropertySuccess: Function,
+    onPropertyError: Function,
+    page_id: String,
+    withoutHeader: Boolean,
+    withCrudLog: Boolean,
+    base_url: String,
+    form_width: [Number, String],
+    edit_id: [Number, String],
+    CRUD_ID: [Number, String],
+    template: String ,
+    parent: Object
+});
+const dataForm = ref(null);
+const dataGrid = ref(null);
+const openSlidePanel = ref(false);
+function hideSide (){
+    openSlidePanel.value = false;
+    editMode.value = false;
 }
+function openSide () {
+    openSlidePanel.value = true;
+}
+
+function templateEdit () {
+    openSide()
+}
+function templateOnSuccess () {
+    hideSide()
+}
+
+function templateOnError () {
+
+}
+
+const {
+    closeByBtn, gridSrc, formSrc, editMode, searchModel, form_width, exportLoading,
+    isPrint, isExcel, isRefresh, isSave, rowId, cloneID, visibleDataForm, isExcelUpload,
+    excelUploadCustomUrl, showID, hasVNavSlot, hasNavSlot, hasLeftSlot, url, lang,
+    view, edit, clone, quickEdit, refresh, search, stopLoading, exportExcel, print,
+    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording
+} = useCrud(props, dataForm, dataGrid, templateEdit, templateOnSuccess, templateOnError, t, props.CRUD_ID);
+
 </script>

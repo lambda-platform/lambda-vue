@@ -808,6 +808,7 @@ export default {
                         this.asyncMode = false
                     })
                     .catch(e => {
+                        console.log(e)
                         let errorDesc = ''
                         if (e.response) {
 
@@ -845,11 +846,12 @@ export default {
 
 
                         }
-
-                        this.asyncMode = false
+                        this.asyncMode = false;
                         if (this.$props.onError) {
                             this.$props.onError()
                         }
+
+
 
                     })
             }
