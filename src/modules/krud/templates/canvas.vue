@@ -1,6 +1,6 @@
 <template>
     <div class="krud-canvas">
-        <common :parent="parent" :title="title" :addAction="openSide" :permissions="permissions"></common>
+        <common :parent="parent" :title="title" :addAction="openSide" :permissions="permissions" :CRUD_ID="CRUD_ID"></common>
         <portal to="header-right" >
             <Krudtools :search="search"
                        :refresh="refresh"
@@ -24,7 +24,7 @@
                     <div id="drawer-container">
                         <div :class="openSlidePanel ? 'dg-flex open-drawer' : 'dg-flex'">
 
-                            <datagrid v-if="permissions ? permissions.r : false" ref="grid"
+                            <datagrid v-if="permissions ? permissions.r : false" ref="dataGrid"
                                       :url="url"
                                       :schemaID="grid"
                                       :paginate="50"
@@ -32,12 +32,12 @@
                                       :fnEdit="edit"
                                       :fnQuickEdit="quickEdit"
                                       :fnView="view"
-                                      :actions="$props.actions"
-                                      :dblClick="$props.dbClickAction"
-                                      :onRowSelect="$props.onRowSelect"
+                                      :actions="actions"
+                                      :dblClick="dbClickAction"
+                                      :onRowSelect="onRowSelect"
                                       :permissions="permissions"
                                       :page_id="page_id"
-                                      :custom_condition="$props.custom_condition? $props.custom_condition :null"
+                                      :custom_condition="custom_condition? custom_condition :null"
                                       :user_condition="user_condition ? user_condition.gridCondition : null"
                             >
                             </datagrid>
@@ -58,7 +58,7 @@
         >
             <div :class="withCrudLog && editMode ? 'with-crud-log' : 'crud-form'">
                 <dataform
-                    ref="form"
+                    ref="dataForm"
                     :hideTitle="true"
                     :schemaID="form"
                     :title="title"
@@ -79,45 +79,79 @@
         </a-drawer>
     </div>
 </template>
-<script>
+<script setup>
+import { useCrud } from './useCrud';
+import {useI18n} from "vue-i18n";
+const { t } = useI18n();
+import common from '../components/common';
+import Krudtools from '../components/krudtools';
+import crudLog from '../components/crudLog';
+import {onMounted, ref} from "vue";
 
-import common from '../components/common'
-import Krudtools from '../components/krudtools'
-import mixins from './mixin'
-
-export default {
-    inheritAttrs: false,
-    name: 'Canvas',
-    mixins: [mixins],
-    data () {
-        return {
-
-            openSlidePanel: false,
-            exportLoading: false,
-        }
-    },
-    components: {
-        common,
-        Krudtools
-    },
-    methods: {
-        hideSide () {
-            this.openSlidePanel = false;
-            this.editMode = false;
-
-        },
-        openSide () {
-            this.openSlidePanel = true
-
-        },
-
-        templateEdit () {
-            this.openSide()
-        },
-        templateOnSuccess () {
-            this.hideSide()
-        },
-
-    },
+const props = defineProps({
+    title: String,
+    icon: String,
+    main_tab_title: String,
+    grid: Number,
+    form: Number,
+    projects_id: Number,
+    hideHeader: Boolean,
+    hasSelection: Boolean,
+    actions: String,
+    dbClickAction: Function,
+    onRowSelect: Function,
+    rowCurrentChange: Function,
+    permissions: Object,
+    user_condition: Object,
+    custom_condition: Object,
+    view_url: String,
+    mode: String,
+    onPropertySuccess: Function,
+    onPropertyError: Function,
+    page_id: String,
+    withoutHeader: Boolean,
+    withCrudLog: Boolean,
+    base_url: String,
+    form_width: [Number, String],
+    edit_id: [Number, String],
+    CRUD_ID: [Number, String],
+    template: String ,
+    parent: Object
+});
+const dataForm = ref(null);
+const dataGrid = ref(null);
+const openSlidePanel = ref(false);
+function hideSide (){
+    openSlidePanel.value = false;
+    editMode.value = false;
 }
+
+function templateEdit () {
+    openSide()
+}
+function templateOnSuccess () {
+    hideSide();
+}
+
+function templateOnError () {
+
+}
+
+const {
+    closeByBtn, gridSrc, formSrc, editMode, searchModel, form_width, exportLoading,
+    isPrint, isExcel, isRefresh, isSave, rowId, cloneID, visibleDataForm, isExcelUpload,
+    excelUploadCustomUrl, showID, hasVNavSlot, hasNavSlot, hasLeftSlot, url, lang,
+    view, edit, clone, quickEdit, refresh, search, stopLoading, exportExcel, print,
+    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording, recordAndDoAction
+} = useCrud(props, dataForm, dataGrid, templateEdit, templateOnSuccess, templateOnError, t, props.CRUD_ID);
+
+async function  openSide () {
+    const canDoAction = await recordAndDoAction();
+    if (canDoAction) {
+        openSlidePanel.value = true;
+    }
+
+}
+
 </script>
+

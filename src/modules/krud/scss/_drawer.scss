@@ -10,7 +10,6 @@
 
   }
   #right_panel {
-
     padding-left: 4px;
     height: 100%;
     position: relative;
@@ -19,7 +18,8 @@
     width: 0;
     flex: 0 0 0;
     //background: var(--surface-0) !important;
-    background: transparent !important;
+      background: #fff;
+      border-radius: 0 !important;
     .p-sidebar-header{
       justify-content: space-between;
     }

@@ -58,22 +58,28 @@
     </portal>
 </template>
 
-<script>
+<script setup>
+import { computed, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toRefs, defineProps } from 'vue';
 
-export default {
-    name: 'common',
-    props:["parent", "addAction", "title", "hideAction", "permissions"],
-    computed:{
-        lang() {
-            const labels = [
-                '_add',
-                'Information_viewing_history','excelUpload'
-            ];
-            return labels.reduce((obj, key, i) => {
-                obj[key] = this.$t('crud.' + labels[i]);
-                return obj;
-            }, {});
-        },
-    }
-}
+const props = defineProps({
+    parent: Object,
+    addAction: Function,
+    title: String,
+    hideAction: Boolean,
+    permissions: Object,
+    CRUD_ID: [Number, String],
+});
+
+
+const { t } = useI18n();
+
+const labels = ['_add', 'Information_viewing_history', 'excelUpload'];
+const lang = computed(() => {
+    return labels.reduce((obj, key, i) => {
+        obj[key] = t('crud.' + labels[i]);
+        return obj;
+    }, {});
+});
 </script>

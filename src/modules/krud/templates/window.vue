@@ -1,6 +1,6 @@
 <template>
     <div class="card drawer-wrappper window-crud">
-        <common :parent="parent" :title="title" :addAction="openSide" :hide-action="openSlidePanel" :permissions="permissions"></common>
+        <common :parent="parent" :title="title" :addAction="openSide" :hide-action="openSlidePanel" :permissions="permissions" :CRUD_ID="CRUD_ID"></common>
         <portal to="header-right" v-if="!openSlidePanel">
             <Krudtools :search="search"
                        :refresh="refresh"
@@ -34,7 +34,7 @@
 
                                     <div :class="withCrudLog && editMode ? 'with-crud-log' : 'crud-form'">
                                         <dataform
-                                            ref="form"
+                                            ref="dataForm"
                                             :hideTitle="true"
                                             :schemaID="form"
                                             :title="title"
@@ -58,7 +58,7 @@
                     </div>
                     <div  v-if="!openSlidePanel" id="drawer-container">
                         <div :class="openSlidePanel ? 'dg-flex open-drawer' : 'dg-flex'">
-                            <datagrid v-if="permissions ? permissions.r : false" ref="grid"
+                            <datagrid v-if="permissions ? permissions.r : false" ref="dataGrid"
                                       :url="url"
                                       :schemaID="grid"
                                       :paginate="50"
@@ -83,131 +83,156 @@
 
     </div>
 </template>
-<script>
-import common from '../components/common'
-import Krudtools from '../components/krudtools'
-import mixins from './mixin'
+<script setup>
+import { ref, watch, onBeforeMount, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useCrud } from './useCrud';
+import common from '../components/common';
+import Krudtools from '../components/krudtools';
+import crudLog from '../components/crudLog';
+import {useI18n} from "vue-i18n";
+const { t } = useI18n();
+const props = defineProps({
+    title: String,
+    icon: String,
+    main_tab_title: String,
+    grid: Number,
+    form: Number,
+    projects_id: Number,
+    hideHeader: Boolean,
+    hasSelection: Boolean,
+    actions: String,
+    dbClickAction: Function,
+    onRowSelect: Function,
+    rowCurrentChange: Function,
+    permissions: Object,
+    user_condition: Object,
+    custom_condition: Object,
+    view_url: String,
+    mode: String,
+    onPropertySuccess: Function,
+    onPropertyError: Function,
+    page_id: String,
+    withoutHeader: Boolean,
+    withCrudLog: Boolean,
+    base_url: String,
+    form_width: [Number, String],
+    edit_id: [Number, String],
+    CRUD_ID: [Number, String],
+    template: String ,
+    parent: Object
+});
+const dataForm = ref(null);
+const dataGrid = ref(null);
+const openSlidePanel = ref(false);
+const router = useRouter();
+const route = useRoute();
 
-export default {
-    inheritAttrs: false,
-    name: 'Canvas',
-    mixins: [mixins],
-    data () {
-        return {
-            form_width: 800,
-            openSlidePanel: false,
-            exportLoading: false,
-        }
-    },
-    computed:{
-      path(){
-          return this.$route.fullPath
-      }
-    },
-    components: {
-        common,
-        Krudtools
-    },
-    methods: {
-        hideSide () {
-            this.openSlidePanel = false;
+function templateOnError () {
 
-
-            this.$router.push({query: this.getQuery()});
-            this.editMode = false;
-
-        },
-        openSide () {
-            let query = this.getQuery();
-            query["add"] = true;
-            this.$router.push({query:query});
-            this.openSlidePanel = true;
-        },
-
-        templateEdit (id) {
-            let query = this.getQuery();
-            query["edit"] = true;
-            query["id"] = id;
-            if(this.$route.params.id && this.$route.query.edit){
-                if(this.$route.params.id.toString() !== id.toString()){
-
-                    this.$router.push({query:query });
-
-
-                }
-            } else {
-                this.$router.push({query: query});
-
-
-            }
-        },
-        templateClone(id){
-            let query = this.getQuery();
-            query["clone"] = true;
-            query["id"] = id;
-            if(this.$route.params.id && this.$route.query.edit){
-                if(this.$route.params.id.toString() !== id.toString()){
-
-                    this.$router.push({query:query });
-
-
-                }
-            } else {
-                this.$router.push({query: query});
-
-
-            }
-        },
-        templateOnSuccess () {
-            this.hideSide()
-        },
-        handleChange(){
-
-            let add = this.$route.query.add;
-            let edit = this.$route.query.edit;
-            let clone = this.$route.query.clone;
-            let id = this.$route.query.id;
-            if(add === 'true' || add === true){
-                this.openSlidePanel = true;
-            } else if(edit === 'true' || edit === true){
-                this.rowId = id;
-                this.editMode = true;
-                this.openSlidePanel = true;
-            } else if(clone === 'true' || clone === true){
-                this.rowId = id;
-                this.cloneID = id;
-                this.editMode = true;
-                this.openSlidePanel = true;
-            } else {
-                this.rowId = 0;
-                this.editMode = false;
-                this.openSlidePanel = false;
-            }
-        },
-        getQuery(){
-            let query = { };
-            if(this.$route.query.sort){
-                query["sort"] = this.$route.query.sort
-            }
-            if(this.$route.query.order){
-                query["order"] = this.$route.query.order
-            }
-            if(this.$route.query.paginate){
-                query["paginate"] = this.$route.query.paginate
-            }
-            if(this.$route.query.currentPage){
-                query["currentPage"] = this.$route.query.currentPage
-            }
-            return query;
-        }
-    },
-    watch:{
-        path(){
-            this.handleChange();
-        }
-    },
-    beforeMount () {
-      this.handleChange();
-    },
 }
+
+
+const path = computed(() => route.fullPath);
+
+const hideSide = () => {
+    openSlidePanel.value = false;
+    editMode.value = false;
+    router.push({ query: getQuery() });
+};
+
+const openSide = () => {
+    let query = getQuery();
+    query["add"] = true;
+    router.push({ query });
+    openSlidePanel.value = true;
+};
+
+const templateEdit = (id) => {
+    let query = getQuery();
+    query["edit"] = true;
+    query["id"] = id;
+    if (route.params.id && route.query.edit) {
+        if (route.params.id.toString() !== id.toString()) {
+            router.push({ query });
+        }
+    } else {
+        router.push({ query });
+    }
+};
+
+const templateClone = (id) => {
+    let query = getQuery();
+    query["clone"] = true;
+    query["id"] = id;
+    if (route.params.id && route.query.edit) {
+        if (route.params.id.toString() !== id.toString()) {
+            router.push({ query });
+        }
+    } else {
+        router.push({ query });
+    }
+};
+
+const templateOnSuccess = () => {
+    hideSide();
+};
+
+const handleChange = () => {
+    let add = route.query.add;
+    let edit = route.query.edit;
+    let clone = route.query.clone;
+    let id = route.query.id;
+    if (add === 'true' || add === true) {
+        openSlidePanel.value = true;
+    } else if (edit === 'true' || edit === true) {
+        rowId.value = id;
+        editMode.value = true;
+        openSlidePanel.value = true;
+    } else if (clone === 'true' || clone === true) {
+        rowId.value = id;
+        cloneID.value = id;
+        editMode.value = true;
+        openSlidePanel.value = true;
+    } else {
+        rowId.value = 0;
+        editMode.value = false;
+        openSlidePanel.value = false;
+    }
+};
+
+const getQuery = () => {
+    let query = {};
+    if (route.query.sort) {
+        query["sort"] = route.query.sort;
+    }
+    if (route.query.order) {
+        query["order"] = route.query.order;
+    }
+    if (route.query.paginate) {
+        query["paginate"] = route.query.paginate;
+    }
+    if (route.query.currentPage) {
+        query["currentPage"] = route.query.currentPage;
+    }
+    return query;
+};
+const {
+    closeByBtn, gridSrc, formSrc, editMode, searchModel, form_width, exportLoading,
+    isPrint, isExcel, isRefresh, isSave, rowId, cloneID, visibleDataForm, isExcelUpload,
+    excelUploadCustomUrl, showID, hasVNavSlot, hasNavSlot, hasLeftSlot, url, lang,
+    view, edit, clone, quickEdit, refresh, search, stopLoading, exportExcel, print,
+    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording
+} = useCrud(props, dataForm, dataGrid, templateEdit, templateOnSuccess, templateOnError, t, props.CRUD_ID);
+
+
+
+
+watch(path, () => {
+    handleChange();
+});
+
+onBeforeMount(() => {
+    handleChange();
+});
 </script>

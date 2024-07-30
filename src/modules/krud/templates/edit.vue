@@ -1,6 +1,6 @@
 <template>
     <div class="card drawer-wrappper">
-        <common :parent="parent" :title="title" :hideAction="true" :permissions="permissions"></common>
+        <common :parent="parent" :title="title" :hideAction="true" :permissions="permissions" :CRUD_ID="CRUD_ID"></common>
 
         <section class="offcanvas-template">
             <div class="crud-page">
@@ -11,7 +11,7 @@
 
                                 <div class="ant-drawer-body">
                                     <dataform
-                                        ref="form"
+                                        ref="dataForm"
                                         :hideTitle="true"
                                         :schemaID="form"
                                         :title="title"
@@ -38,75 +38,102 @@
 
     </div>
 </template>
-<script>
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useCrud } from './useCrud';
+import common from '../components/common';
+import {useI18n} from "vue-i18n";
+const { t } = useI18n();
+// Define props
 
-import common from '../components/common'
-import Krudtools from '../components/krudtools'
-import mixins from './mixin'
+const props = defineProps({
+    title: String,
+    icon: String,
+    main_tab_title: String,
+    grid: Number,
+    form: Number,
+    projects_id: Number,
+    hideHeader: Boolean,
+    hasSelection: Boolean,
+    actions: String,
+    dbClickAction: Function,
+    onRowSelect: Function,
+    rowCurrentChange: Function,
+    permissions: Object,
+    user_condition: Object,
+    custom_condition: Object,
+    view_url: String,
+    mode: String,
+    onPropertySuccess: Function,
+    onPropertyError: Function,
+    page_id: String,
+    withoutHeader: Boolean,
+    withCrudLog: Boolean,
+    base_url: String,
+    form_width: [Number, String],
+    edit_id: [Number, String],
+    CRUD_ID: [Number, String],
+    template: String ,
+    parent: Object
+});
 
-export default {
-    inheritAttrs: false,
-    name: 'Canvas',
-    mixins: [mixins],
-    data () {
-        return {
-            form_width: 800,
-            formIdentity:null,
-            exportLoading: false,
-        }
-    },
-    components: {
-
-        common,
-        Krudtools
-    },
-    methods: {
-        templateOnSuccess () {
-            if(this.actions) {
-                this.editMode = true;
-                this.$refs.form.editModel(this.actions);
-            } else {
-                if(this.formIdentity){
-                    this.editMode = true;
-                    this.$refs.form.editModel(this.formIdentity);
-                }
-
-            }
-        },
-        onReadyEdit(formSchema, schema){
-            if(this.actions){
-                this.editMode = true;
-                this.$refs.form.editModel(this.actions);
-            } else {
-                this.checkEdit(formSchema);
-            }
-        },
-        checkEdit(formSchema){
-            if(this.user_condition){
-                if(this.user_condition.formCondition){
-                    let formIdentity = formSchema["identity"];
-                    let editUserConditionIndex = this.user_condition.formCondition.findIndex(c=>c.form_field === formIdentity);
-                    if(editUserConditionIndex >= 0){
-                        let userField = this.user_condition.formCondition[editUserConditionIndex]["user_field"];
-
-                        if(window.init){
-                            if(window.init.user){
-                                if(window.init.user[userField]){
-                                    this.editMode = true;
-                                    this.formIdentity = window.init.user[userField];
-                                    this.$refs.form.editModel(this.formIdentity);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+const dataForm = ref(null);
+const dataGrid = ref(null);
 
 
-        }
-    },
-    mounted () {
+const formIdentity = ref(null);
 
-    },
+
+function templateEdit () {
+
 }
+const templateOnSuccess = () => {
+    if (props.actions) {
+        editMode.value = true;
+        dataForm.value.editModel(props.actions);
+    } else {
+        if (formIdentity.value) {
+            editMode.value = true;
+            dataForm.value.editModel(formIdentity.value);
+        }
+    }
+};
+
+const onReadyEdit = (formSchema, schema) => {
+    console.log(props.actions)
+    if (props.actions) {
+        editMode.value = true;
+        dataForm.value.editModel(props.actions);
+    } else {
+        checkEdit(formSchema);
+    }
+};
+function templateOnError () {
+
+}
+const {
+    closeByBtn, gridSrc, formSrc, editMode, searchModel, form_width, exportLoading,
+    isPrint, isExcel, isRefresh, isSave, rowId, cloneID, visibleDataForm, isExcelUpload,
+    excelUploadCustomUrl, showID, hasVNavSlot, hasNavSlot, hasLeftSlot, url, lang,
+    view, edit, clone, quickEdit, refresh, search, stopLoading, exportExcel, print,
+    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording
+} = useCrud(props, dataForm, dataGrid, templateEdit, templateOnSuccess, templateOnError, t, props.CRUD_ID);
+
+
+
+
+const checkEdit = (formSchema) => {
+    if (props.user_condition && props.user_condition.formCondition) {
+        const formIdentity = formSchema["identity"];
+        const editUserConditionIndex = props.user_condition.formCondition.findIndex(c => c.form_field === formIdentity);
+        if (editUserConditionIndex >= 0) {
+            const userField = props.user_condition.formCondition[editUserConditionIndex]["user_field"];
+            if (window.init && window.init.user && window.init.user[userField]) {
+                editMode.value = true;
+                formIdentity.value = window.init.user[userField];
+                dataForm.value.editModel(formIdentity.value);
+            }
+        }
+    }
+};
 </script>
