@@ -1,7 +1,7 @@
 <template>
     <div class="krud-canvas">
         <common :parent="parent" :title="title" :addAction="openSide" :permissions="permissions" :CRUD_ID="CRUD_ID"></common>
-        <portal to="header-right" >
+        <portal to="header-right">
             <Krudtools :search="search"
                        :refresh="refresh"
                        :exportExcel="exportExcel"
@@ -39,6 +39,7 @@
                                       :page_id="page_id"
                                       :custom_condition="custom_condition? custom_condition :null"
                                       :user_condition="user_condition ? user_condition.gridCondition : null"
+                                      :changeKrudTool="changeKrudTool"
                             >
                             </datagrid>
                         </div>
@@ -142,7 +143,7 @@ const {
     isPrint, isExcel, isRefresh, isSave, rowId, cloneID, visibleDataForm, isExcelUpload,
     excelUploadCustomUrl, showID, hasVNavSlot, hasNavSlot, hasLeftSlot, url, lang,
     view, edit, clone, quickEdit, refresh, search, stopLoading, exportExcel, print,
-    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording, recordAndDoAction
+    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording, recordAndDoAction, changeKrudTool
 } = useCrud(props, dataForm, dataGrid, templateEdit, templateOnSuccess, templateOnError, t, props.CRUD_ID);
 
 async function  openSide () {

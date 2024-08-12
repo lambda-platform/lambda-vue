@@ -38,6 +38,7 @@
                                       :page_id="page_id"
                                       :custom_condition="$props.custom_condition? $props.custom_condition :null"
                                       :user_condition="user_condition ? user_condition.gridCondition : null"
+                                      :changeKrudTool="changeKrudTool"
                             >
                             </datagrid>
                         </div>
@@ -143,7 +144,7 @@ const {
     isPrint, isExcel, isRefresh, isSave, rowId, cloneID, visibleDataForm, isExcelUpload,
     excelUploadCustomUrl, showID, hasVNavSlot, hasNavSlot, hasLeftSlot, url, lang,
     view, edit, clone, quickEdit, refresh, search, stopLoading, exportExcel, print,
-    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording
+    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording, changeKrudTool
 } = useCrud(props, dataForm, dataGrid, templateEdit, templateOnSuccess, templateOnError, t, props.CRUD_ID);
 
 </script>
