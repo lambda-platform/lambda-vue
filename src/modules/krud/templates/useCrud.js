@@ -30,6 +30,21 @@ export function useCrud(props, dataForm, dataGrid, templateEdit = undefined, tem
     const recordedChunks = ref([]);
     let stream = null;
 
+    const changeKrudTool = (t, v) => {
+        if(t === "isExcel"){
+            isExcel.value = v;
+        } else if(t === "isPrint"){
+            isPrint.value = v;
+        } else if(t === "isRefresh"){
+            isRefresh.value = v;
+        } else if(t === "isSave"){
+            isRefresh.value = v;
+        } else if(t === "isExcelUpload"){
+            isRefresh.value = v;
+        }
+
+    }
+
     const showScreenRecordConfirm = () => {
         return new Promise((resolve, reject) => {
             Modal.confirm({
@@ -279,6 +294,6 @@ export function useCrud(props, dataForm, dataGrid, templateEdit = undefined, tem
         isPrint, isExcel, isRefresh, isSave, rowId, cloneID, visibleDataForm, isExcelUpload,
         excelUploadCustomUrl, showID, hasVNavSlot, hasNavSlot, hasLeftSlot, url, lang,
         view, edit, clone, quickEdit, refresh, search, stopLoading, exportExcel, print,
-        excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording, recordAndDoAction
+        excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording, recordAndDoAction, changeKrudTool
     };
 }

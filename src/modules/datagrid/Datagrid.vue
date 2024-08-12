@@ -244,7 +244,8 @@ export default {
         'actionvisibility',
         'gridSelector',
         'url',
-        'filter'
+        'filter',
+        'changeKrudTool'
     ],
     computed: {
         // ...mapGetters({
@@ -507,24 +508,25 @@ export default {
 
             //Tool buttons
             if (gridSchema.isPrint) {
-                this.$parent.isPrint = this.isPrint = gridSchema.isPrint;
+               this.isPrint = gridSchema.isPrint;
+                this.changeKrudTool('isPrint', gridSchema.isPrint);
                 this.printSize = gridSchema.printSize;
             }
 
             if (gridSchema.isExcel) {
-                this.$parent.isExcel = gridSchema.isExcel;
+                this.changeKrudTool('isExcel', gridSchema.isExcel);
             }
 
             if (gridSchema.isExcelUpload) {
-                this.$parent.isExcelUpload = gridSchema.isExcelUpload;
+                this.changeKrudTool('isExcelUpload', gridSchema.isExcelUpload);
             }
 
             if (gridSchema.isExcelUploadSample) {
-                this.$parent.isExcelUploadSample = gridSchema.isExcelUploadSample;
+                this.changeKrudTool('isExcelUploadSample', gridSchema.isExcelUploadSample);
             }
 
             if (gridSchema.isRefresh) {
-                this.$parent.isRefresh = gridSchema.isRefresh;
+                this.changeKrudTool('isRefresh', gridSchema.isRefresh);
             }
 
             //Sidebar configuration

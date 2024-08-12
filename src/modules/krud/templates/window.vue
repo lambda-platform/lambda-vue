@@ -48,6 +48,7 @@
                                             :user_condition="user_condition ? user_condition.formCondition : null"
                                             :onError="onError"
                                             :close="hideSide"
+                                            :changeKrudTool="changeKrudTool"
                                         >
                                         </dataform>
                                         <crud-log v-if="withCrudLog && editMode" :form="form" :rowId="rowId" :grid="grid"/>
@@ -222,7 +223,7 @@ const {
     isPrint, isExcel, isRefresh, isSave, rowId, cloneID, visibleDataForm, isExcelUpload,
     excelUploadCustomUrl, showID, hasVNavSlot, hasNavSlot, hasLeftSlot, url, lang,
     view, edit, clone, quickEdit, refresh, search, stopLoading, exportExcel, print,
-    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording
+    excelUploadMethod, save, onReady, onSuccess, onError, mediaRecorder, recordedChunks, showScreenRecordConfirm, startRecording, stopRecording, changeKrudTool
 } = useCrud(props, dataForm, dataGrid, templateEdit, templateOnSuccess, templateOnError, t, props.CRUD_ID);
 
 
