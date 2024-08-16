@@ -38,9 +38,9 @@ export function useCrud(props, dataForm, dataGrid, templateEdit = undefined, tem
         } else if(t === "isRefresh"){
             isRefresh.value = v;
         } else if(t === "isSave"){
-            isRefresh.value = v;
+            isSave.value = v;
         } else if(t === "isExcelUpload"){
-            isRefresh.value = v;
+            isExcelUpload.value = v;
         }
 
     }
