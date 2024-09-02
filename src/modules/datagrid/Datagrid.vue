@@ -507,25 +507,25 @@ export default {
             }
 
             //Tool buttons
-            if (gridSchema.isPrint) {
+            if (gridSchema.isPrint && this.changeKrudTool) {
                this.isPrint = gridSchema.isPrint;
                 this.changeKrudTool('isPrint', gridSchema.isPrint);
                 this.printSize = gridSchema.printSize;
             }
 
-            if (gridSchema.isExcel) {
+            if (gridSchema.isExcel && this.changeKrudTool) {
                 this.changeKrudTool('isExcel', gridSchema.isExcel);
             }
 
-            if (gridSchema.isExcelUpload) {
+            if (gridSchema.isExcelUpload && this.changeKrudTool) {
                 this.changeKrudTool('isExcelUpload', gridSchema.isExcelUpload);
             }
 
-            if (gridSchema.isExcelUploadSample) {
+            if (gridSchema.isExcelUploadSample && this.changeKrudTool) {
                 this.changeKrudTool('isExcelUploadSample', gridSchema.isExcelUploadSample);
             }
 
-            if (gridSchema.isRefresh) {
+            if (gridSchema.isRefresh && this.changeKrudTool) {
                 this.changeKrudTool('isRefresh', gridSchema.isRefresh);
             }
 
