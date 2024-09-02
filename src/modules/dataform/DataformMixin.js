@@ -445,7 +445,6 @@ export default {
                     this.setModel(item.model, item.default, item.formType)
 
                     if(this.model.hasOwnProperty(item.model)){
-
                         this.$watch('model.' + item.model, {
                             handler: (value, oldValue) => {
                                 if (this.do_render) {
@@ -456,9 +455,7 @@ export default {
                             },
                             deep: true
                         })
-
                     }
-
 
                     if (!item.rules) {
                         item.rules = [];
@@ -567,6 +564,8 @@ export default {
                 case 'Number':
                     if (value !== null) {
                         this.$data.model[name] = value * 1;
+                    } else {
+                        this.$data.model[name] = value;
                     }
                     break
                 case 'Date':
