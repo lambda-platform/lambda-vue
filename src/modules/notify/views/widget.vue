@@ -2,7 +2,7 @@
     <a-popover placement="bottomRight" overlayClassName="header-notice-wrapper" trigger="click"
                :overlayStyle="{ width: isMobile?'250px':'350px', top: '50px' }"
     >
-        <span class="header-notice">
+        <span :class="`header-notice ${extraClass ? extraClass : ''}`">
             <a-badge :count="count">
                 <span class="btn btn-icon">
                  <span class="svg-icon">
@@ -72,7 +72,7 @@ import {formatTimeAgo} from "@vueuse/core";
 import axios from 'axios';
 
 export default {
-    props: ['userID', 'isMobile'],
+    props: ['userID', 'isMobile', 'extraClass'],
 
     data() {
         return {
