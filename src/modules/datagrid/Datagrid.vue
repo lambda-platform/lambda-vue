@@ -1212,19 +1212,26 @@ export default {
 
         restoreFilter() {
             if (!this.isClient) {
-                let gridSavedFilter = JSON.parse(localStorage.getItem(`grid-${this.schemaID}`));
-                this.filterModel = {};
-                for (let key in gridSavedFilter) {
-                    this.filterModel[key] = gridSavedFilter[key];
+                const savedFilter = localStorage.getItem(`grid-${this.schemaID}`)
+                if(savedFilter !== undefined && savedFilter !== "undefined" && savedFilter !== "") {
+                    let gridSavedFilter = JSON.parse(savedFilter);
+                    this.filterModel = {};
+                    for (let key in gridSavedFilter) {
+                        this.filterModel[key] = gridSavedFilter[key];
+                    }
                 }
+
             }
         },
 
         restoreFloatFilterValue() {
-            let gridSavedFilter = JSON.parse(localStorage.getItem(`grid-${this.schemaID}`));
-            for (let key in gridSavedFilter) {
-                let filterComponent = this.gridApi.getFilterInstance(key);
-                filterComponent.setModel(gridSavedFilter[key]);
+            const savedFilter = localStorage.getItem(`grid-${this.schemaID}`)
+            if(savedFilter !== undefined && savedFilter !== "undefined" && savedFilter !== "") {
+                let gridSavedFilter = JSON.parse(savedFilter);
+                for (let key in gridSavedFilter) {
+                    let filterComponent = this.gridApi.getFilterInstance(key);
+                    filterComponent.setModel(gridSavedFilter[key]);
+                }
             }
         },
 
@@ -1842,40 +1849,44 @@ export default {
 
         onFilterChanged(event) {
 
-            if (this.saveFilter) {
-                this.saveFilterState(event);
-            }
 
-
-            //when enable server side filter
-            if (!this.isClient) {
-                this.filterModel = {};
-                let filters = event.api.getFilterModel();
-                for (let key in filters) {
-
-                    this.filterModel[key] = filters[key];
+            if(event){
+                if (this.saveFilter) {
+                    this.saveFilterState(event);
                 }
-                this.filterData(1);
 
-            } else {
-                let filters = event.api.getFilterModel();
-                for (let key in filters) {
-                    if (Object.prototype.hasOwnProperty.call(filters, key)) {
-                        console.log(filters[key]);
-                        if (filters[key].filterType == 'set' && this.selectInputModels.includes(key)) {
-                            let instance = this.gridApi.getFilterInstance(key);
-                            // console.log("here");
-                            //             if (instance.isNothingSelected()) {
-                            //                 console.log("I am here nothing");
-                            //                 //     instance.selectEverything();
-                            //                 //     // this.gridApi.onFilterChanged();
-                            //             }
-                            instance.selectNothing();
+
+                //when enable server side filter
+                if (!this.isClient) {
+                    this.filterModel = {};
+                    let filters = event.api.getFilterModel();
+                    for (let key in filters) {
+
+                        this.filterModel[key] = filters[key];
+                    }
+                    this.filterData(1);
+
+                } else {
+                    let filters = event.api.getFilterModel();
+                    for (let key in filters) {
+                        if (Object.prototype.hasOwnProperty.call(filters, key)) {
+                            console.log(filters[key]);
+                            if (filters[key].filterType == 'set' && this.selectInputModels.includes(key)) {
+                                let instance = this.gridApi.getFilterInstance(key);
+                                // console.log("here");
+                                //             if (instance.isNothingSelected()) {
+                                //                 console.log("I am here nothing");
+                                //                 //     instance.selectEverything();
+                                //                 //     // this.gridApi.onFilterChanged();
+                                //             }
+                                instance.selectNothing();
+                            }
                         }
                     }
+                    this.info.total = this.gridApi.getModel().rootNode.childrenAfterFilter.length;
                 }
-                this.info.total = this.gridApi.getModel().rootNode.childrenAfterFilter.length;
             }
+
         },
 
         //Grid inline form functions
