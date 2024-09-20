@@ -94,14 +94,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import {useI18n} from "vue-i18n";
 const { t } = useI18n();
 import { useCrud } from './useCrud';
 import common from '../components/common';
 import Krudtools from '../components/krudtools';
 import crudLog from '../components/crudLog';
-
 
 const props = defineProps({
     title: String,
@@ -199,8 +198,6 @@ function handleResize() {
     }, false);
 }
 
-
-// Ensure to call handleResize when the component is mounted
 onMounted(() => {
     handleResize();
 });
