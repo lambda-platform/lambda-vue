@@ -27,7 +27,7 @@
                         >
                             <template #description>
                                 <span>
-                                    <span class="notification-body">{{ notif.body }}</span><br>
+                                    <span>{{ notif.body }}</span><br>
                                     <span :class="notif.seen === 0 ? 'notification-date-unseen' : 'notification-date'">{{ timeAgo(notif.created_at) }}</span>
                                 </span>
                             </template>
@@ -304,15 +304,6 @@ export default {
     font-weight: bold;
     border-bottom: 1px solid #f5f5f5;
     padding-bottom: 10px;
-}
-
-.notification-body {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
 }
 
 .notification-date {
