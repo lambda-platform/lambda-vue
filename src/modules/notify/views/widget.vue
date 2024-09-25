@@ -1,8 +1,8 @@
 <template>
-    <a-popover placement="bottomRight" overlayClassName="header-notice-wrapper" trigger="click"
+    <a-popover :placement="isMobile?'bottom':'bottomRight'" overlayClassName="header-notice-wrapper" trigger="click"
                :overlayStyle="{ width: isMobile?'250px':'350px', top: '50px' }"
     >
-        <span :class="`header-notice ${extraClass ? extraClass : ''}`">
+        <span :class="['header-notice', $attrs.class]">
             <a-badge :count="count">
                 <span class="btn btn-icon">
                  <span class="svg-icon">
@@ -12,36 +12,37 @@
             </a-badge>
         </span>
         <template #content>
+            <div class="notification-header">
+                <h3>{{ lang.notice }}</h3>
+            </div>
             <div class="notification-container">
-                <div class="notification-header">
-                    <h3>{{ lang.notice }}</h3>
-                </div>
                 <a-list v-if="notifications?.length">
                     <a-list-item v-for="notif in notifications"
                                  :key="notif.id"
                                  :class="notif.seen === 0 ? 'notification-unseen' : ''"
                     >
                         <a-list-item-meta
-                            :title="`${notif.title}, ${notif.first_name != null ? notif.first_name : notif.login}`"
+                            :title="`${notif.title}`"
                             @click="setSeen(notif.id, notif.link)"
                         >
                             <template #description>
-                                <span class="notif-content">
-                                    <span>{{ notif.body }}</span><br>
-                                    <span class="notification-date">{{ timeAgo(notif.created_at) }}</span>
+                                <span>
+                                    <span class="notification-body">{{ notif.body }}</span><br>
+                                    <span :class="notif.seen === 0 ? 'notification-date-unseen' : 'notification-date'">{{ timeAgo(notif.created_at) }}</span>
                                 </span>
                             </template>
                         </a-list-item-meta>
+                        <span v-if="notif.seen === 0" class="notification-dot"></span>
                     </a-list-item>
                 </a-list>
-                <div v-else class="no-notifs">
+                <div v-else class="no-notification">
                     {{ lang.no_notice }}
                 </div>
-                <a class="all-notif" href="javascript:void(0)" @click="getAllNotification">
-                    <span>{{ lang.view_all_notifications }}</span> &nbsp;
-                    <i class="ti-arrow-right"></i>
-                </a>
             </div>
+            <a class="notification-footer" href="javascript:void(0)" @click="getAllNotification">
+                <span>{{ lang.view_all_notifications }}</span> &nbsp;
+                <i class="ti-arrow-right"></i>
+            </a>
         </template>
     </a-popover>
 
@@ -73,6 +74,7 @@ import axios from 'axios';
 
 export default {
     props: ['userID', 'isMobile', 'extraClass'],
+    inheritAttrs: false,
 
     data() {
         return {
@@ -304,14 +306,48 @@ export default {
     padding-bottom: 10px;
 }
 
+.notification-body {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
 .notification-date {
     font-size: 12px;
     font-style: italic;
 }
 
+.notification-date-unseen {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--ant-primary-color);
+}
+
 .notification-unseen {
     font-weight: bold;
-    border-left: 4px solid #3471f6;
+}
+
+.notification-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--ant-primary-color);
+    margin-left: 8px;
+}
+
+.notification-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    border-top: 1px solid #f5f5f5;
+}
+
+.no-notification {
+    padding: 20px;
 }
 
 .full-modal {
