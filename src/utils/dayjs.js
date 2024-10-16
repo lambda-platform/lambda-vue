@@ -7,6 +7,7 @@ import weekOfYear from 'dayjs/esm/plugin/weekOfYear/index'
 import weekYear from 'dayjs/esm/plugin/weekYear/index'
 import isoWeek from 'dayjs/esm/plugin/isoWeek'
 import updateLocale from 'dayjs/esm/plugin/updateLocale'
+import relativeTime from 'dayjs/esm/plugin/relativeTime'
 
 import  'dayjs/esm/locale/mn';
 dayjs.extend(customParseFormat)
@@ -15,6 +16,7 @@ dayjs.extend(weekday)
 dayjs.extend(localeData)
 dayjs.extend(weekOfYear)
 dayjs.extend(weekYear)
+dayjs.extend(relativeTime)
 dayjs.extend(isoWeek)
 dayjs.extend(updateLocale)
 

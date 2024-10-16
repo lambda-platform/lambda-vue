@@ -70,8 +70,8 @@
 import {getMessaging, getToken, onMessage} from '@firebase/messaging';
 import {toDateTime, getDateTime} from "../../../utils/date";
 import {initializeApp, getApps} from '@firebase/app';
-import moment from 'moment';
-import 'moment/locale/mn'; // Import Mongolian locale
+import dayjs from '../../../utils/dayjs';
+
 import axios from 'axios';
 
 export default {
@@ -104,11 +104,11 @@ export default {
             return (createdAt) => {
                 // Check if the current locale is Mongolian
                 if (this.$i18n.locale === 'mn_MN') {
-                    moment.locale('mn');  // Set locale to Mongolian
+                    dayjs.locale('mn');  // Set locale to Mongolian
                 } else {
-                    moment.locale('en');  // Set locale to English
+                    dayjs.locale('en');  // Set locale to English
                 }
-                return moment(createdAt).fromNow(); // Use moment to calculate time ago
+                return dayjs(createdAt).fromNow(); // Use moment to calculate time ago
             }
         }
     },
