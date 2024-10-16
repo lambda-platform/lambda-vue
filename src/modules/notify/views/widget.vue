@@ -23,11 +23,12 @@
                     >
                         <a-list-item-meta
                             :title="`${notif.title}`"
+                            class="cursor-pointer"
                             @click="setSeen(notif.id, notif.link)"
                         >
                             <template #description>
                                 <span>
-                                    <span>{{ notif.body }}</span><br>
+                                    <span>{{ notif.body }} babab</span><br>
                                     <span :class="notif.seen === 0 ? 'notification-date-unseen' : 'notification-date'">{{ timeAgo(notif.created_at) }}</span>
                                 </span>
                             </template>
@@ -69,7 +70,8 @@
 import {getMessaging, getToken, onMessage} from '@firebase/messaging';
 import {toDateTime, getDateTime} from "../../../utils/date";
 import {initializeApp, getApps} from '@firebase/app';
-import {formatTimeAgo} from "@vueuse/core";
+import moment from 'moment';
+import 'moment/locale/mn'; // Import Mongolian locale
 import axios from 'axios';
 
 export default {
@@ -100,13 +102,13 @@ export default {
 
         timeAgo() {
             return (createdAt) => {
-                const formattedDateTime = toDateTime(createdAt);
-                return formatTimeAgo(formattedDateTime, {
-                    max: 'hour',
-                    fullDateFormatter: (createdAt) => {
-                        return getDateTime(createdAt);
-                    }
-                });
+                // Check if the current locale is Mongolian
+                if (this.$i18n.locale === 'mn_MN') {
+                    moment.locale('mn');  // Set locale to Mongolian
+                } else {
+                    moment.locale('en');  // Set locale to English
+                }
+                return moment(createdAt).fromNow(); // Use moment to calculate time ago
             }
         }
     },
@@ -232,6 +234,7 @@ export default {
         },
 
         async setSeen(id, link) {
+
             try {
                 let currentNotif = this.notifications.find(item => item.id === id);
                 if (currentNotif && currentNotif.seen === 0) {

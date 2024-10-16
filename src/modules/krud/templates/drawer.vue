@@ -39,7 +39,7 @@
                           :page_id="page_id"
                           :custom_condition="$props.custom_condition? $props.custom_condition :null"
                           :user_condition="user_condition ? user_condition.gridCondition : null"
-                          :changeKrudToo="changeKrudTool"
+                          :changeKrudTool="changeKrudTool"
                 >
                 </datagrid>
               </div>

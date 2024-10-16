@@ -1,9 +1,16 @@
 <template>
-    <Textarea v-model="$props.model.form[model.component]" />
+    <div>
+        <lambda-form-item  :label=label  :name="model.component" :meta="meta">
+            <a-textarea v-model:value="model.form[model.component]"
+                     :placeholder="placeholder"
+                     :disabled="disabled"
+            />
+        </lambda-form-item>
+    </div>
 </template>
-
 <script>
+import mixin from "./_mixin"
 export default {
-    props: ["model", "label"]
+    mixins:[mixin],
 };
 </script>

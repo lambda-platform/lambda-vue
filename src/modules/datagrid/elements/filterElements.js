@@ -5,6 +5,10 @@ export const elementList = [
          component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Text" */'./Text.vue')),
     },
     {
+        element: "Textarea",
+         component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Text" */'./Textarea.vue')),
+    },
+    {
         element: "Number",
          component: defineAsyncComponent(() => import(/* webpackChunkName: "grid-Number" */'./FilterNumber.vue')),
     },
