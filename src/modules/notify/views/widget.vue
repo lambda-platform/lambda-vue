@@ -28,7 +28,7 @@
                         >
                             <template #description>
                                 <span>
-                                    <span>{{ notif.body }} babab</span><br>
+                                    <span>{{ notif.body }}</span><br>
                                     <span :class="notif.seen === 0 ? 'notification-date-unseen' : 'notification-date'">{{ timeAgo(notif.created_at) }}</span>
                                 </span>
                             </template>

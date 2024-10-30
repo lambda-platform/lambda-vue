@@ -624,6 +624,18 @@ export default {
             return { ...i, disabled };
         },
 
+
+        getLabel(item) {
+
+            let s_index = this.schema.findIndex(schema => schema.model === item.model)
+
+            if(s_index >= 0) {
+                return this.schema[s_index].label ? this.schema[s_index].label : `[${this.schema[s_index].model}]`
+            } else {
+                return ''
+            }
+        },
+
         getSchemaByModel(model) {
             let index = this.schema.findIndex(item => item.model === model)
             if (index >= 0)
@@ -660,7 +672,10 @@ export default {
                         }
 
                     } else {
+
                         this.schema[index][prop] = value;
+
+
                     }
                 }
 
