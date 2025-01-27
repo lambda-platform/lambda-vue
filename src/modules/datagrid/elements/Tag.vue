@@ -32,7 +32,7 @@ export default {
     },
 
     mounted() {
-        let dataUrl = `/lambda/krud/${this.meta.schemaID}/options`;
+        let dataUrl = `/lambda/krud/${this.meta.schemaID}/filter-options`;
         axios.post(dataUrl, this.meta.filter.relation).then(({data}) => {
             this.options = data;
             this.loading = false;

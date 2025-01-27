@@ -1,28 +1,27 @@
 import axios from "axios";
 
-const getOptionsByRelations = async (baseUrl, relationsData, optionUrl)=>{
-    if (Object.keys(relationsData).length >= 1) {
-       let res = await axios.post(`${baseUrl}/lambda/puzzle/get_options${optionUrl}`, {relations: relationsData})
+const getOptionsByRelations = async (baseUrl, schemaID, optionUrl, isGrid)=>{
+    console.log(baseUrl, schemaID, optionUrl, isGrid)
+    let res = await axios.post(`${baseUrl}/lambda/krud${optionUrl}/${schemaID}/${isGrid ? 'filter-': ''}options`, {})
 
-        Object.keys(res.data).map(relation => {
-            let r = {...relationsData[relation], data: res.data[relation]}
-            relationsData[relation] = r;
-
-        })
-    }
-    return relationsData
+    // Object.keys(res.data).map(relation => {
+    //     let r = {...relationsData[relation], data: res.data[relation]}
+    //     relationsData[relation] = r;
+    //
+    // })
+    return res.data;
 }
 
-export const  getOptionsData = async (schema, setSchemaByModel, optionUrl) => {
-    let relationsData = getSelects(schema, undefined, setSchemaByModel)
+export const  getOptionsData = async (schemaID, optionUrl, isGrid) => {
+
     if (window.init) {
         if(window.init.microserviceSettings) {
             if (window.init.microserviceSettings.length >= 1) {
 
                 let relationData = {}
                 for (const microserviceSetting of window.init.microserviceSettings) {
-                    let relations = getSelects(schema, microserviceSetting.project_id)
-                    let relationsDataCurrent = await getOptionsByRelations(microserviceSetting.production_url, relations, optionUrl);
+
+                    let relationsDataCurrent = await getOptionsByRelations(schemaID, optionUrl, isGrid);
 
                     relationData = {...relationData, ...relationsDataCurrent}
 
@@ -31,19 +30,20 @@ export const  getOptionsData = async (schema, setSchemaByModel, optionUrl) => {
 
                 return relationData;
             }else {
-                return  await getOptionsByRelations('', relationsData, optionUrl)
+                return  await getOptionsByRelations('', schemaID, optionUrl,isGrid)
             }
 
         } else {
-            return  await getOptionsByRelations('', relationsData, optionUrl)
+            return  await getOptionsByRelations('', schemaID, optionUrl,isGrid)
         }
     } else {
-        return await getOptionsByRelations('', relationsData, optionUrl)
+        return await getOptionsByRelations('', schemaID, optionUrl,isGrid)
     }
 
 
 
 }
+/*
 const getSelectItem = (item, selects, setSchemaByModel) =>{
 
     if (item.relation.filterWithUser) {
@@ -153,3 +153,4 @@ const getSelects = (schema, microserviceID) =>{
 
     return selects
 }
+*/

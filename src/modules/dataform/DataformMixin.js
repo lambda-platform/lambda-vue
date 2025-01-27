@@ -365,7 +365,7 @@ export default {
                 }
             }
 
-            this.relations = await getOptionsData(formSchema.schema,this.setSchemaByModel, this.optionUrl);
+            this.relations = await getOptionsData(this.schemaID, this.optionUrl);
 
             this.setUiSchemaFormItem(formSchema.ui.schema)
             this.setHiddenItemModel(formSchema.schema)
