@@ -1,14 +1,8 @@
 import axios from "axios";
 
 const getOptionsByRelations = async (baseUrl, schemaID, optionUrl, isGrid)=>{
-    console.log(baseUrl, schemaID, optionUrl, isGrid)
     let res = await axios.post(`${baseUrl}/lambda/krud${optionUrl}/${schemaID}/${isGrid ? 'filter-': ''}options`, {})
 
-    // Object.keys(res.data).map(relation => {
-    //     let r = {...relationsData[relation], data: res.data[relation]}
-    //     relationsData[relation] = r;
-    //
-    // })
     return res.data;
 }
 
