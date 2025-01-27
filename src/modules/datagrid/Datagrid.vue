@@ -873,7 +873,7 @@ export default {
                         case 'Set-Filter':
                             if (!this.isClient) {
                                 let t = this.schema.find(col => col.model == item.model);
-                                let dataUrl = `/lambda/krud/${this.schemaID}/options`;
+                                let dataUrl = `/lambda/krud/${this.schemaID}/filter-options`;
 
                                 colItem.filter = "agSetColumnFilter";
                                 colItem.filterParams = {

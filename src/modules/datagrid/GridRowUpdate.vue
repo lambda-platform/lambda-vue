@@ -150,17 +150,7 @@ export default {
             return getRelationData({...i, relation:i.filter.relation}, this.relations)
         },
         async getRelations(){
-            let schema = []
-            this.schema.forEach(s=>{
-                if(s.updateable){
-                    schema.push({
-                        ...s, formType: s.filter.type, relation:s.filter.relation
-                    })
-                }
-            });
-
-            this.relations = await getOptionsData(schema, undefined, '');
-
+           this.relations = await getOptionsData(this.schemaID, "", true);
         }
     }
 }

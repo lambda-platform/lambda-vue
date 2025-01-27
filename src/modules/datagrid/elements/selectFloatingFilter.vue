@@ -38,7 +38,7 @@ export default {
     },
 
     created() {
-        let dataUrl = `/lambda/krud/${this.params.schemaID}/options`;
+        let dataUrl = `/lambda/krud/${this.params.schemaID}/filter-options`;
         axios.post(dataUrl, this.params.column.filter.relation).then(({data}) => {
             this.options = data;
             this.loading = false;

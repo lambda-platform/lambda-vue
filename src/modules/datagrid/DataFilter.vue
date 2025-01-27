@@ -39,10 +39,10 @@
 <script>
     import {element} from "./elements/filterElements";
     import GridRowUpdate from "./GridRowUpdate";
-    import {getRelationData} from "../dataform/utils/helpers";
     import {getOptionsData} from "../../utils/relation";
 
     import { SearchOutlined } from '@ant-design/icons-vue';
+    import {getRelationData} from "../dataform/utils/helpers";
     export default {
         props: ["model", "schema", "schemaID", "permissions", "url", 'hideTitle', 'filterData', "refresh"],
         components:{
@@ -84,15 +84,7 @@
                 return getRelationData({...i, relation:i.filter.relation}, this.relations)
             },
             async getRelations(){
-                let schema = []
-                this.schema.forEach(s=>{
-                    if(s.filterable){
-                        schema.push({
-                            ...s, formType: s.filter.type, relation:s.filter.relation
-                        })
-                    }
-                });
-                this.relations = await getOptionsData(schema, undefined, '');
+               this.relations = await getOptionsData(this.schemaID, '', true);
             }
         },
         async mounted() {
