@@ -55,7 +55,7 @@
                 <div id="msg">
                     <span v-if="isSuccess" class="success">{{ lang.loginSuccess }}</span>
                     <span v-if="isError" class="error">{{ lang.loginError }}</span>
-                    <span v-if="errorMessage" class="error">{{ errorMessage }}</span>
+                    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
                 </div>
 
