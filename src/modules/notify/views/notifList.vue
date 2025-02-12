@@ -45,7 +45,7 @@
         },
         methods: {
             getUnseenNotification() {
-                axios.get('/lambda/notify/all/' + this.$props.user).then(o => {
+                axios.get('/lambda/notify/all').then(o => {
                     this.count = o.data.count;
                     this.notifications = o.data.notifications;
                 });

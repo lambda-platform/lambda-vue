@@ -188,7 +188,7 @@ export default {
                     const currentToken = await getToken(messaging, {vapidKey: firebaseConfig.publicKey});
                     if (currentToken) {
                         try {
-                            await axios.get(`/lambda/notify/token/${this.$props.userID}/${currentToken}`);
+                            await axios.get(`/lambda/notify/token/${currentToken}`);
                         } catch (error) {
                             console.error('Error sending token to server:', error);
                         }
@@ -215,7 +215,7 @@ export default {
 
         async getUnseenNotification() {
             try {
-                const response = await axios.get('/lambda/notify/new/' + this.$props.userID);
+                const response = await axios.get('/lambda/notify/new');
                 this.count = response.data.count;
                 this.notifications = response.data.notifications;
             } catch (error) {
@@ -225,7 +225,7 @@ export default {
 
         async getAllNotification() {
             try {
-                const response = await axios.get('/lambda/notify/all/' + this.$props.userID);
+                const response = await axios.get('/lambda/notify/all');
                 this.count = 0;
                 this.notifications = response.data.notifications;
             } catch (error) {
@@ -238,7 +238,7 @@ export default {
             try {
                 let currentNotif = this.notifications.find(item => item.id === id);
                 if (currentNotif && currentNotif.seen === 0) {
-                    const response = await axios.get('/lambda/notify/seen/' + id);
+                    const response = await axios.get('/lambda/notify/seen/'+id);
                     if (response.status === 200) {
                         currentNotif.seen = 1;
                         this.count = Math.max(0, this.count - 1);

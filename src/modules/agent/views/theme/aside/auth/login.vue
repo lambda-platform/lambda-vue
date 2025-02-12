@@ -55,6 +55,8 @@
                 <div id="msg">
                     <span v-if="isSuccess" class="success">{{ lang.loginSuccess }}</span>
                     <span v-if="isError" class="error">{{ lang.loginError }}</span>
+                    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
                 </div>
 
 <!--                <div class="space-x-2 ">-->
@@ -78,6 +80,7 @@ export default {
             loading: false,
             isSuccess: false,
             isError: false,
+            errorMessage: null,
             rememberMe: false,
             credentials: {
                 login: null,
@@ -111,12 +114,16 @@ export default {
                         this.isError = true;
                         this.loading = false;
                     }
+                    this.errorMessage = null;
                 }).catch(e => {
                     this.loading = false;
                     this.isError = true;
 
                     if(this.onError){
                         this.onError();
+                    }
+                    if (e.response && e.response.data.error) {
+                        this.errorMessage = e.response.data.error; // Монгол хэл дээр алдаа харуулах
                     }
                 })
             }
