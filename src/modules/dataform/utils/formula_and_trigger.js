@@ -170,26 +170,19 @@ function callFieldTrigger(trigger_url, model_, schema_, refs, Message, editMode)
                     })
                 }
                 if (data['message']) {
-                    if (data['message']['type'] == 'success') {
-                        Message["success"]({
-                            duration: 3,
-                            message: data['message']['message'],
-                            description: data['message']['message']
-                        });
-                    } else {
-                        Message["error"]({
-                            duration: 3,
-                            message: data['message']['message'],
-                            description: data['message']['message']
-                        });
-                    }
+                    handleMessage(data, Message)
                 }
                 if (data['info']) {
                     data['info'].forEach(info => {
                         document.getElementById(info.target).innerHTML = info.html;
                     })
                 }
-            })
+            }).catch(e=>{
+
+            if (e.response && e.response.data && e.response.data['message']) {
+                handleMessage(e.response.data, Message)
+            }
+        })
     })
 
 
@@ -197,4 +190,20 @@ function callFieldTrigger(trigger_url, model_, schema_, refs, Message, editMode)
 
 function getSchemaIndex(schema_, model) {
     return schema_.findIndex(item => item.model == model);
+}
+
+function handleMessage(data, Message){
+    if (data['message']['type'] === 'success') {
+        Message["success"]({
+            duration: 3,
+            message: data['message']['message'],
+            description: data['message']['message']
+        });
+    } else {
+        Message["error"]({
+            duration: 3,
+            message: data['message']['message'],
+            description: data['message']['message']
+        });
+    }
 }
