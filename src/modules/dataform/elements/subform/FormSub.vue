@@ -24,6 +24,7 @@
                         {{ item.label }} <i class="ti-exchange-vertical"/></div>
                 </th>
                 <th class="action" v-if="!form.disableEdit || !form.disableDelete" >...</th>
+                <th class="action-for-view" v-if="viewMode" >...</th>
             </tr>
             </thead>
 
@@ -35,6 +36,7 @@
                        :f="item.form"
                        :model="item.model"
                        :editMode="editMode"
+                       :viewMode="viewMode"
                        :relations="relations"
                        :formula="formula"
                        :schema="form.schema"
@@ -48,10 +50,21 @@
                                   />
                         </span>
                     </a>
+
                     <a href="javascript:void(0);" class="btn btn-icon" @click="remove(index)"  v-if="!form.disableDelete">
                         <span class="svg-icon ">
                                   <inline-svg
                                       src="/assets/icons/duotone/General/Trash.svg"
+                                  />
+                        </span>
+                    </a>
+                </template>
+
+                <template #view >
+                    <a href="javascript:void(0);" class="btn btn-icon sub-edit" @click="edit(index)"   v-if="viewMode">
+                        <span class="svg-icon ">
+                                  <inline-svg
+                                      src="/assets/icons/duotone/General/Visible.svg"
                                   />
                         </span>
                     </a>

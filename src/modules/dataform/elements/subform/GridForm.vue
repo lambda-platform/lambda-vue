@@ -27,6 +27,9 @@
         <td class="action" >
             <slot name="action"></slot>
         </td>
+        <td class="action-for-view" v-if="viewMode">
+            <slot name="view"></slot>
+        </td>
     </tr>
 </template>
 
@@ -36,7 +39,7 @@
     import {getRelationData} from "../../utils/helpers";
 
     export default {
-        props: ["f", "model", "editMode", "relations", "formula", "schema", "url", "rowIndex"],
+        props: ["f", "model", "editMode", "relations", "formula", "schema", "url", "rowIndex", "viewMode"],
         emits:["edit"],
         created() {
 
