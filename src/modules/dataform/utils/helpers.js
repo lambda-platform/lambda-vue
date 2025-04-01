@@ -40,9 +40,10 @@ export const getTableMeta = (table)=>{
 
 export const getRelationData = (item, relations) =>{
 
+    let tableName = getTableName(item.relation.table)
     if (item.relation.filter === '' || typeof item.relation.filter === "undefined") {
-        if (relations[item.relation.table])
-            return relations[item.relation.table]
+        if (tableName)
+            return relations[tableName]
         else if (item.relation.filterWithUser){
             if (relations[item.model])
                 return relations[item.model]
@@ -56,4 +57,19 @@ export const getRelationData = (item, relations) =>{
         else
             return []
     }
+}
+function getTableName(fullTableName) {
+    // Remove any leading/trailing whitespace
+    fullTableName = fullTableName.trim();
+
+    // Check if the string contains a dot (.)
+    if (fullTableName.includes('.')) {
+        // Split the string by dot and get the part after the dot (table name)
+        const tableParts = fullTableName.split('.');
+        // Return the last part, trimmed of any whitespace
+        return tableParts[tableParts.length - 1].trim();
+    }
+
+    // If no dot is found, return the original string trimmed
+    return fullTableName;
 }
