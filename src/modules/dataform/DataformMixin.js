@@ -738,7 +738,7 @@ export default {
                 return false;
             }
         },
-        validateWithSubForm(ignoreSuccess) {
+        validateWithSubForm(ignoreSuccess, successCallback, errorCallback) {
             this.$refs[this.meta.model +'-'+ this.schemaID].validate().then(() => {
                 let subValid = true
                 this.subFormValidations.forEach(sbValidation => {
@@ -766,15 +766,19 @@ export default {
                     }
                 })
                 if (subValid) {
-                    this.postData(ignoreSuccess)
+                    this.postData(ignoreSuccess, successCallback, errorCallback)
                 }
             }).catch(e=>{
+                if(errorCallback){
+                    errorCallback(e)
+                }
+
                 this.finishFailed();
             })
 
         },
 
-        postData(ignoreSuccess) {
+        postData(ignoreSuccess, successCallback, errorCallback) {
             if (this.isSubForm) {
                 this.$props.onSuccess(this.$data.model)
             } else {
@@ -793,9 +797,13 @@ export default {
                             if(!ignoreSuccess){
                                 if (!this.editMode) {
 
-                                    this.$data.model[this.identity] = data[this.identity]
+                                    this.$data.model[this.identity] = data.data[this.identity]
                                     if (this.$props.onSuccess) {
                                         this.$props.onSuccess(data.data)
+                                    }
+
+                                    if(successCallback){
+                                        successCallback(data.data, data.data[this.identity]);
                                     }
 
                                     this.handleReset(this.meta.model + '-' + this.schemaID)
@@ -822,7 +830,10 @@ export default {
                         this.asyncMode = false
                     })
                     .catch(e => {
-                        console.log(e)
+                        if(errorCallback){
+                            errorCallback(e)
+                        }
+
                         let errorDesc = ''
                         if (e.response) {
 
