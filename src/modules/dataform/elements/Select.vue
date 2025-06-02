@@ -63,6 +63,8 @@
             <template #footer>
             </template>
         </a-modal>
+
+        {{options}}
     </lambda-form-item>
 </template>
 

@@ -1,5 +1,5 @@
 export const applyDrag = (arr, dragResult) => {
-    const { removedIndex, addedIndex, payload } = dragResult
+    const {removedIndex, addedIndex, payload} = dragResult
     if (removedIndex === null && addedIndex === null) return arr
 
     const result = [...arr]
@@ -23,8 +23,8 @@ export const generateItems = (count, creator) => {
     return result
 }
 
-export const getTableMeta = (table)=>{
-    if(table) {
+export const getTableMeta = (table) => {
+    if (table) {
         if (window.init.dbSchema.tableMeta[table]) {
             return window.init.dbSchema.tableMeta[table]
         }
@@ -38,14 +38,15 @@ export const getTableMeta = (table)=>{
     // return res.data
 }
 
-export const getRelationData = (item, relations) =>{
+export const getRelationData = (item, relations) => {
     let tableNameWithoutSchema = getTableName(item.relation.table)
+
     if (item.relation.filter === '' || typeof item.relation.filter === "undefined") {
         if (relations[item.relation.table])
             return relations[item.relation.table]
         else if (relations[tableNameWithoutSchema])
             return relations[tableNameWithoutSchema]
-        else if (item.relation.filterWithUser){
+        else if (item.relation.filterWithUser) {
             if (relations[item.model])
                 return relations[item.model]
             else
@@ -55,10 +56,17 @@ export const getRelationData = (item, relations) =>{
     } else {
         if (relations[item.model])
             return relations[item.model]
-        else
+        else if (relations[item.relation.table])
+            return relations[item.relation.table]
+        else if (relations[tableNameWithoutSchema]) {
+            return relations[tableNameWithoutSchema]
+        } else {
             return []
+        }
+
     }
 }
+
 function getTableName(fullTableName) {
     // Remove any leading/trailing whitespace
     fullTableName = fullTableName.trim();

@@ -282,7 +282,7 @@ export default {
                     }
                 });
 
-                const relations = await getOptionsData(this.schemaID, '', true);
+                const relations = await getOptionsData(this.schemaID, '', true, filteredKeys);
 
                 this.filterInfos = filterSchema.map(field=>{
                     if(field.filter.type === "Select"){
