@@ -315,6 +315,7 @@ export default {
                     }
                 } else {
                     formSchema = await this.initFromServerData(userCondition)
+
                 }
             } else {
                 formSchema = await this.initFromServerData(userCondition)
@@ -365,7 +366,7 @@ export default {
                 }
             }
 
-            this.relations = await getOptionsData(this.schemaID, this.optionUrl);
+            this.relations = await getOptionsData(this.schemaID, this.optionUrl, false, formSchema.schema);
 
             this.setUiSchemaFormItem(formSchema.ui.schema)
             this.setHiddenItemModel(formSchema.schema)

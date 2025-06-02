@@ -84,7 +84,16 @@
                 return getRelationData({...i, relation:i.filter.relation}, this.relations)
             },
             async getRelations(){
-               this.relations = await getOptionsData(this.schemaID, '', true);
+                let schema = []
+                this.schema.forEach(s=>{
+                    if(s.filterable){
+                        schema.push({
+                            ...s, formType: s.filter.type, relation:s.filter.relation
+                        })
+                    }
+                });
+
+               this.relations = await getOptionsData(this.schemaID, '', true, schema);
             }
         },
         async mounted() {
