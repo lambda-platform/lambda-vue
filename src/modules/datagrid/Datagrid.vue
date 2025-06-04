@@ -712,6 +712,8 @@ export default {
                 this.postModels.push(item.model);
             }
 
+
+
             //if not hidden the set properties
             if (!item.hide) {
                 let colItem = {
@@ -724,6 +726,7 @@ export default {
                     enablePivot: true,
                     suppressMenu: !this.colMenu,
                 };
+                colItem.url = this.url;
 
                 //Sortable
                 if (!item.sortable) {
