@@ -172,7 +172,7 @@
 <script>
 import dayjs from "../../utils/dayjs";
 import axios from 'axios';
-
+axios.defaults.withCredentials = true;
 import 'ag-grid-enterprise';
 import {
     LicenseManager,

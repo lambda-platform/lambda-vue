@@ -8,6 +8,7 @@ import {getRelationData} from './utils/helpers.js'
 import {getOptionsData} from '../../utils/relation.js'
 import {isMobile} from '../../utils/device'
 import axios from 'axios'
+axios.defaults.withCredentials = true;
 import {notification} from 'ant-design-vue';
 import fromFooter from './formFooter';
 import dayjs from "../../utils/dayjs";
