@@ -3,22 +3,6 @@ $color-primary: #007AE5;
 $color-danger: #e74c3c;
 $color-success: #1abc9c;
 
-* {
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-}
 /* BODY */
 
 .aside-theme {
