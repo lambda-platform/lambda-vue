@@ -670,6 +670,8 @@ export default {
                             let sindex = this.schema[index].schema.findIndex(sitem => sitem.model === subModel)
                             if (sindex >= 0) {
                                 this.schema[index].schema[sindex][prop] = value;
+
+                                this.subFormFillData(model);
                             }
                         }
 
