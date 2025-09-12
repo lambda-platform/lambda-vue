@@ -786,10 +786,10 @@ export default {
             if (this.isSubForm) {
                 this.$props.onSuccess(this.$data.model)
             } else {
-                this.asyncMode = true
+                this.asyncMode = true;
+
                 axios.post(this.submitUrl, this.$data.model)
                     .then(({data}) => {
-
                         if (data.status) {
 
                             if(!this.hideSuccessDialog){
@@ -815,6 +815,10 @@ export default {
                                 } else {
                                     if (this.$props.onSuccess) {
                                         this.$props.onSuccess(data.data)
+                                    }
+
+                                    if(successCallback){
+                                        successCallback(data.data, data.data[this.identity]);
                                     }
                                 }
                             }
