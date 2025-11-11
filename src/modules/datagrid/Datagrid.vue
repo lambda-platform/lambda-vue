@@ -699,7 +699,7 @@ export default {
                 }
             }
             //Getting data
-            this.query.src = this.baseUrl + '/lambda/puzzle/grid/data/' + gridSchema['grid_id'];
+            this.query.src = this.baseUrl + '/lambda/puzzle/grid/data/' + gridSchema['grid_id']+`?page_id=${this.page_id}`;
             if (this.saveFilter) {
                 this.restoreFilter();
             }
@@ -1254,7 +1254,7 @@ export default {
             this.isLoading = true;
 
             //Setting source URL
-            let url = `${this.query.src}?&paginate=${this.query.paginate}&page=${
+            let url = `${this.query.src}&paginate=${this.query.paginate}&page=${
                 this.query.currentPage
             }&sort=${this.query.sort}&order=${this.query.order}`;
 
@@ -1370,7 +1370,7 @@ export default {
             this.aggregations.loading = true;
             this.aggregations.forumlaResult = '';
             this.aggregations.data = [];
-            axios.post(`${this.baseUrl}/lambda/puzzle/grid/aggergation/${this.customShemaId ? this.customShemaId : this.$props.schemaID}`, filters).then(({data}) => {
+            axios.post(`${this.baseUrl}/lambda/puzzle/grid/aggergation/${this.customShemaId ? this.customShemaId : this.$props.schemaID}?page_id=${this.page_id}`, filters).then(({data}) => {
                 let mirror_data = {};
 
                 this.aggregations.columnAggregations.map(columnAggregation => {
@@ -1586,7 +1586,7 @@ export default {
             if (this.isClient) {
                 this.gridApi.exportDataAsExcel();
             } else {
-                let url = `${this.baseUrl}/lambda/krud/excel/${this.schemaID}?sort=${this.query.sort}&order=${this.query.order}`;
+                let url = `${this.baseUrl}/lambda/krud/excel/${this.schemaID}?page_id=${this.page_id}&sort=${this.query.sort}&order=${this.query.order}`;
                 let filters = Object.keys(this.filterModel)
                     .filter(e => this.filterModel[e] !== null)
                     .reduce((o, e) => {

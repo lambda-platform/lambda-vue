@@ -197,11 +197,11 @@ export default {
         handleRemove (e) {
 
 
-                if (this.isMultiple) {
-                    this.model.form[this.model.component] = JSON.stringify(this.uploadList.filter(u=>u.response !== e.response))
-                } else {
-                    this.model.form[this.model.component] = null
-                }
+            if (this.isMultiple) {
+                this.model.form[this.model.component] = JSON.stringify(this.uploadList.filter(u=>u.response !== e.response))
+            } else {
+                this.model.form[this.model.component] = null
+            }
 
 
 
