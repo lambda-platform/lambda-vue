@@ -79,10 +79,11 @@ export default {
                 res.data.forEach(log => {
 
                     let datetime =formatDateTime(log.created_at)
+                    const lastName = log.last_name ? log.last_name.charAt(0) + '.' : ""
                     if (log.action !== 'view') {
                         this.logs.push({
                             action: log.action == 'store' ? 'Бүртгэсэн' : 'Зассан',
-                            user: log.last_name.charAt(0) + '.' + log.first_name,
+                            user: lastName + log.first_name,
                             created_at:datetime
                         })
                     }
@@ -90,7 +91,7 @@ export default {
 
 
                         this.reads.push({
-                            user: log.last_name.charAt(0) + '.' + log.first_name,
+                            user: lastName + log.first_name,
                             created_at:datetime
                         })
                     }
