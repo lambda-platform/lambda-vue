@@ -1086,7 +1086,7 @@ export default {
         },
 
         cloneModel(id) {
-            axios.post(`/lambda/krud/${this.$props.schemaID}/edit/${id}`)
+            axios.post(`/lambda/krud/${this.$props.schemaID}/edit/${id}$?page_id=${this.page_id}`, {})
                 .then(({data}) => {
                     if (data.status) {
                         this.model = {...this.model, ...data.data}
