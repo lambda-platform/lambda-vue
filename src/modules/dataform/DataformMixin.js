@@ -84,7 +84,7 @@ export default {
         submitUrl() {
             return this.editMode
                 ? this.page_id ? `${this.baseUrl}/lambda/krud/${this.$props.schemaID}/update/${this.dataID}?page_id=${this.page_id}` : `${this.baseUrl}/lambda/krud/${this.$props.schemaID}/update/${this.dataID}`
-                : this.page_id ? `${this.baseUrl}/lambda/krud$/${this.$props.schemaID}/store?page_id=${this.page_id}` : `${this.baseUrl}/lambda/krud${this.public ? '-public' : ''}/${this.$props.schemaID}/store`
+                : this.page_id ? `${this.baseUrl}/lambda/krud/${this.$props.schemaID}/store?page_id=${this.page_id}` : `${this.baseUrl}/lambda/krud${this.public ? '-public' : ''}/${this.$props.schemaID}/store`
         },
         optionUrl() {
             if (this.public === true) {
