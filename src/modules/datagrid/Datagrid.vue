@@ -3,28 +3,28 @@
         <div class='dg-body bg-white dark:bg-slate-900 rounded-md'
              :style="fullWidth ? `flex: 1` : ''"
              ref='dgBody'>
-            <div :class="`dg-table ${header != null ? 'custom-table' : ''} ${'template-'+template}`">
-                <table ref='customTableHeader' v-if='header != null' border='1'
-                       :style="`width: ${tableWidth != null ? tableWidth+ 'px' : 'auto'}`"
-                       class='custom-header' id='custom-header'>
-                    <tr v-for='tr in header.structure' :key='tr.index'>
-                        <td
-                            v-for='td in tr.children'
-                            :key='td.index'
-                            :colspan='td.colspan'
-                            :rowspan='td.rowspan'>
-                            <div :style='`width: ${td.width}; height: ${td.height}`'
-                                 :class="td.rotate ? 'vertical-column' : ''">
-                                <div>{{ td.label }}</div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+            <div :class="`dg-table ${'template-'+template}  `">
+<!--                <table ref='customTableHeader' v-if='header != null' border='1'-->
+<!--                       :style="`width: ${tableWidth != null ? tableWidth+ 'px' : 'auto'}`"-->
+<!--                       class='custom-header' id='custom-header'>-->
+<!--                    <tr v-for='tr in header.structure' :key='tr.index'>-->
+<!--                        <td-->
+<!--                            v-for='td in tr.children'-->
+<!--                            :key='td.index'-->
+<!--                            :colspan='td.colspan'-->
+<!--                            :rowspan='td.rowspan'>-->
+<!--                            <div :style='`width: ${td.width}px; `'-->
+<!--                                 :class="td.rotate ? 'vertical-column' : ''">-->
+<!--                                <div>{{ td.label }}</div>-->
+<!--                            </div>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </table>-->
 
                 <ag-grid-vue
                     ref='agGrid'
-                    :class="`${$appState.colorScheme === 'dark' ? agGridTheme : agGridTheme} ag-data-grid ag-table ${header != null ? 'custom-header-table custom-table-template' + template  : 'template-'+template} ${sideBar ? '' : 'no-sidebar'} ${fullText ? 'full-text' : ''} ${colFilterButton ? '' : 'no-filter-btn'} ${showGrid ? 'has-grid' : ''} ${theme ? theme : 'normal'}`"
-                    :style="`width: ${tableWidth != null ? tableWidth + 'px' : 'auto'}`"
+                    :class="`${$appState.colorScheme === 'dark' ? agGridTheme : agGridTheme} ag-data-grid ag-table ${ 'template-'+template} ${sideBar ? '' : 'no-sidebar'} ${fullText ? 'full-text' : ''} ${colFilterButton ? '' : 'no-filter-btn'} ${showGrid ? 'has-grid' : ''} ${theme ? theme : 'normal'}`"
+                    :style="`width: auto`"
                     :gridOptions='gridOptions'
                     :columnDefs='columns'
                     :rowData='data'
@@ -318,6 +318,136 @@ export default {
     },
 
     methods: {
+        /**
+         * Main function to build AG Grid Column Definitions from your JSON structure
+         */
+        buildCustomHeaderStructure(structure) {
+            if (!structure || structure.length === 0) return [];
+
+            const topRow = structure[0].children;
+            // If there is a second row, use it; otherwise empty array
+            const bottomRow = structure.length > 1 ? structure[1].children : [];
+
+            let bottomRowCursor = 0; // Tracks which cell in the bottom row we are currently assigning
+            const agColumnDefs = [];
+
+            // 1. Iterate through the Top Row
+            topRow.forEach((cell) => {
+
+                // CHECK: Is this a Column Group?
+                // Logic: It has no model (null) AND has colspan > 1
+                if (!cell.model && parseInt(cell.colspan) > 1) {
+
+                    // It is a Group
+                    const groupDef = {
+                        headerName: cell.label,
+                        children: [],
+                        // Optional: Center the group header
+                        headerClass: 'ag-header-group-center'
+                    };
+
+                    // Determine how many columns from the bottom row belong to this group
+                    const span = parseInt(cell.colspan);
+
+                    // Grab the next 'span' number of cells from the bottom row
+                    for (let i = 0; i < span; i++) {
+                        const childCell = bottomRow[bottomRowCursor];
+
+                        if (childCell) {
+                            // Create the leaf column definition
+                            const childDef = this.createColumnDefinition(childCell);
+                            groupDef.children.push(childDef);
+                        }
+                        // Move the cursor forward
+                        bottomRowCursor++;
+                    }
+
+                    agColumnDefs.push(groupDef);
+
+                } else {
+                    // It is a Top-Level Leaf Column (e.g., "д/д", "Хаанаас, хэнээс")
+                    // Even if it has rowspan, in AG Grid it's just a regular column at the top level
+                    const leafDef = this.createColumnDefinition(cell);
+                    agColumnDefs.push(leafDef);
+                }
+            });
+
+            // Add the checkbox selection column if needed
+            if (this.hasCheckbox || this.hasSelection) {
+                const selectionCol = {
+                    headerName: '',
+                    width: 40,
+                    minWidth: 40,
+                    pinned: 'left',
+                    checkboxSelection: true,
+                    headerCheckboxSelection: !this.gridSelector,
+                    filter: false,
+                    suppressMenu: true,
+                };
+                agColumnDefs.unshift(selectionCol);
+            }
+
+            // Add the Actions column if needed
+            // (You might need to copy your logic from initGrid regarding actions here)
+            // ...
+
+            return agColumnDefs;
+        },
+
+        /**
+         * Helper to create a single column definition
+         * Merges the Layout JSON (width, label) with your Schema JSON (renderers, types)
+         */
+        createColumnDefinition(layoutCell) {
+            let colDef = null;
+
+            // 1. Try to find valid schema definition
+            if (layoutCell.model) {
+                const schemaItem = this.schema.find(item => item.model === layoutCell.model);
+                if (schemaItem) {
+                    // Reuse the core logic
+                    colDef = this.getColDefFromSchema(schemaItem);
+                }
+            }
+
+            // 2. If valid schema found, apply Layout overrides
+            if (colDef) {
+                colDef.headerName = layoutCell.label; // Layout label takes precedence
+
+                // Width override from Layout
+                if (layoutCell.width && layoutCell.width !== 'a' && layoutCell.width !== 'auto') {
+                    colDef.width = parseInt(layoutCell.width);
+                }
+
+                // Vertical Text Support
+                if (layoutCell.rotate) {
+                    colDef.headerClass = 'vertical-header';
+                }
+            } else {
+                // 3. Fallback for columns NOT in schema (e.g. "д/д" or spacers)
+                colDef = {
+                    headerName: layoutCell.label,
+                    field: layoutCell.model || undefined,
+                    width: parseInt(layoutCell.width) || 100,
+                    sortable: false,
+                    filter: false
+                };
+
+                // Specific logic for Row Index
+                if (layoutCell.label === 'д/д' || !layoutCell.model) {
+                    colDef.valueGetter = "node.rowIndex + 1";
+                    colDef.width = 50;
+                }
+            }
+
+            // Ensure global text wrap setting applies to custom header too
+            if (this.fullText) {
+                colDef.cellStyle = { 'white-space': 'normal' };
+                colDef.autoHeight = true;
+            }
+
+            return colDef;
+        },
         onGridReady(params) {
 
             this.gridApi = params.api;
@@ -579,49 +709,65 @@ export default {
             //Has custom header
             if (gridSchema.header && gridSchema.header.render) {
                 this.header = gridSchema.header;
-                this.gridOptions.headerHeight = 0;
-                this.gridOptions.enableColResize = false;
-                this.gridOptions.toolPanelSuppressSideButtons = true;
-                this.isStatic = true;
-                if (this.tableWidth == null) {
-                    this.tableWidth = 0;
-                }
-                gridSchema.header.structure.forEach(tr => {
-                    tr.children.forEach((td) => {
-                        if (td.model != null) {
-                            let schemaItem = gridSchema.schema.find(item => item.model === td.model);
-
-                            if (schemaItem) {
-                                if (schemaItem.filterable) {
-                                    this.filterModel[schemaItem.model] = null;
-                                    filter_not_found = false;
-                                }
-                                schemaItem.width = parseInt(td.width) + 1;
-                                this.tableWidth += schemaItem.width;
-                            }
-
-                        }
-                    });
-                });
-                this.init = true;
-
-                if (gridSchema.hasCheckbox) {
-                    this.tableWidth += 32;
-                }
+            //     // this.gridOptions.headerHeight = 0;
+            //     // this.gridOptions.enableColResize = false;
+            //     // this.gridOptions.toolPanelSuppressSideButtons = true;
+            //     this.isStatic = true;
+            //     if (this.tableWidth == null) {
+            //         this.tableWidth = 0;
+            //     }
+            //
+            //     gridSchema.header.structure.forEach(tr => {
+            //         tr.children.forEach((td) => {
+            //             if (td.model != null) {
+            //                 let schemaItem = gridSchema.schema.find(item => item.model === td.model);
+            //
+            //                 if (schemaItem) {
+            //                     if (schemaItem.filterable) {
+            //                         this.filterModel[schemaItem.model] = null;
+            //                         filter_not_found = false;
+            //                     }
+            //                     schemaItem.width = parseInt(td.width) + 1;
+            //                     this.tableWidth += schemaItem.width;
+            //                 }
+            //
+            //             }
+            //         });
+            //     });
+            //     this.init = true;
+            //
+            //     if (gridSchema.hasCheckbox) {
+            //         this.tableWidth += 32;
+            //     }
             }
+            if (gridSchema.header && gridSchema.header.render) {
 
-            this.schema.forEach((item) => {
-                if (item.filterable) {
-                    if (isValid(item.filter.default)) {
+                // Use the new builder to generate grouped columns
+                this.columns = this.buildCustomHeaderStructure(gridSchema.header.structure);
 
-                        this.filterModel[item.model] = item.filter.default;
-                    } else {
-                        this.filterModel[item.model] = null;
+
+
+                this.columns.forEach(col => {
+
+                    if(col.children) {
+                        col.children.forEach(child => this.tableWidth += (child.width || 100));
                     }
-                    filter_not_found = false;
-                }
-                this.setColumn(item);
-            });
+                });
+
+            } else {
+                this.schema.forEach((item) => {
+                    if (item.filterable) {
+                        if (isValid(item.filter.default)) {
+
+                            this.filterModel[item.model] = item.filter.default;
+                        } else {
+                            this.filterModel[item.model] = null;
+                        }
+                        filter_not_found = false;
+                    }
+                    this.setColumn(item);
+                });
+            }
 
             this.init = true;
 
@@ -705,8 +851,7 @@ export default {
             }
             this.fetchData();
         },
-
-        setColumn(item) {
+        getColDefFromSchema(item){
             //set post models -- hidden could be posted
             if (isValid(item.editable) && (isValid(item.editable) && item.editable.shouldPost)) {
                 this.postModels.push(item.model);
@@ -1193,7 +1338,15 @@ export default {
                 }
 
 
-                this.columns.push(colItem);
+                return colItem;
+            } else {
+                return null;
+            }
+        },
+        setColumn(item) {
+            const colDef = this.getColDefFromSchema(item);
+            if (colDef) {
+                this.columns.push(colDef);
             }
         },
 
