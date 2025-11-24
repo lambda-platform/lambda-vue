@@ -1753,13 +1753,13 @@ export default {
                 if (this.custom_condition) {
                     filters.custom_condition = this.custom_condition;
                 }
-                if (this.header) {
-                    filters.customHeader = JSON.stringify(this.header);
-                }
-
-                if (this.header) {
-                    filters.customHeader = 'customHeader';
-                }
+                // if (this.header) {
+                //     filters.customHeader = JSON.stringify(this.header);
+                // }
+                //
+                // if (this.header) {
+                //     filters.customHeader = 'customHeader';
+                // }
 
                 axios
                     .post(url, filters)
