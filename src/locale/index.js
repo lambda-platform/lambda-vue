@@ -2,11 +2,14 @@ import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
 import mn_MN from './locales/mn_MN.js'
 import en_US from './locales/en_US.js'
+import kk_KZ from './locales/kk_KZ.js'
+import ru_RU from './locales/ru_RU.js'
 
 const messages = {
     mn_MN,
-    en_US
-
+    en_US,
+    kk_KZ,
+    ru_RU
 }
 
 export function setI18nLanguage (i18n, locale) {
