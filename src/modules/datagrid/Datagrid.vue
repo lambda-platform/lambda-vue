@@ -192,7 +192,7 @@ import Print from "./Print";
 import ExcelImport from "./ExcelImport.vue";
 // import ExcelImport from "./ExcelImport";
 import DataFilter from "./DataFilter";
-import {getNumber, formatedNumber} from './utils/number.js';
+import {aggregationNumber, formatedNumber} from './utils/number.js';
 import {isMobile} from '../../utils/device.ts';
 import GridActions from './GridActions';
 
@@ -1542,7 +1542,7 @@ export default {
                         );
                         let calculated = evil(pre_formula);
 
-                        let result = columnAggregationsFormula.title + ': ' + getNumber(calculated) + columnAggregationsFormula.symbol;
+                        let result = columnAggregationsFormula.title + ': ' + aggregationNumber(calculated) + columnAggregationsFormula.symbol;
                         if (this.aggregations.forumlaResult == '') {
                             this.aggregations.forumlaResult = result;
                         } else {
@@ -1570,7 +1570,7 @@ export default {
                         }
                         mirror_data[columnAggregation.column] = data[0][data_key];
                         if (colIndex >= 0) {
-                            bottom_data[column] = getNumber(data[0][data_key]) + ' ' + columnAggregation.symbol;
+                            bottom_data[column] = aggregationNumber(data[0][data_key]) + ' ' + columnAggregation.symbol;
                         }
 
                     }

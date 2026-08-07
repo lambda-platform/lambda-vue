@@ -80,7 +80,7 @@ import axios from "axios"
 import printd from './utils/print'
 import {getPrintStyles} from "./utils/printStyles"
 import {getOptionsData} from "../../utils/relation";
-import {formatedNumber, getNumber} from "./utils/number";
+import {formatedNumber, aggregationNumber} from "./utils/number";
 
 export default {
     props: ["schemaID", "pageSize", "header", "schema", "info", "query", "filter", "search", "isNumber", "gridTitle", "aggregations", "baseUrl", "user_condition"],
@@ -237,7 +237,7 @@ export default {
                         }
                         mirror_data[columnAggregation.column] = data[0][data_key];
                         if (colIndex >= 0) {
-                            bottom_data[column] = getNumber(data[0][data_key]) + ' ' + columnAggregation.symbol;
+                            bottom_data[column] = aggregationNumber(data[0][data_key]) + ' ' + columnAggregation.symbol;
                         }
 
                     }
