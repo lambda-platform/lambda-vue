@@ -192,7 +192,7 @@ import Print from "./Print";
 import ExcelImport from "./ExcelImport.vue";
 // import ExcelImport from "./ExcelImport";
 import DataFilter from "./DataFilter";
-import {getNumber, number, formatedNumber} from './utils/number.js';
+import {getNumber, formatedNumber} from './utils/number.js';
 import {isMobile} from '../../utils/device.ts';
 import GridActions from './GridActions';
 
@@ -1570,7 +1570,7 @@ export default {
                         }
                         mirror_data[columnAggregation.column] = data[0][data_key];
                         if (colIndex >= 0) {
-                            bottom_data[column] = number(data[0][data_key]) + ' ' + columnAggregation.symbol;
+                            bottom_data[column] = getNumber(data[0][data_key]) + ' ' + columnAggregation.symbol;
                         }
 
                     }
